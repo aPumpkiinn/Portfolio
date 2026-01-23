@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PillNav from './PillNav';
+// Remplace par ton chemin réel
 import LOGO_PATH from '../assets/sonic.svg'; 
 
 const NAV_ITEMS = [
   { label: 'Accueil', href: '/' },
   { label: 'À Propos', href: '/about' },
   { label: 'Projets', href: '/projects' },
-  // ✅ LE LIEN CIBLE MAINTENANT L'ANCRE
   { label: 'Contact', href: '/about#contact-section' } 
 ];
 
@@ -17,44 +17,67 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY < 50) { setIsHidden(false); lastScrollY.current = currentScrollY; return; }
       
-      if (currentScrollY > lastScrollY.current + 5) setIsHidden(true);
-      else if (currentScrollY < lastScrollY.current - 5) setIsHidden(false);
+      // 1. Toujours afficher si on est tout en haut de la page
+      if (currentScrollY < 50) { 
+        setIsHidden(false); 
+        lastScrollY.current = currentScrollY; 
+        return; 
+      }
+      
+      // 2. Détection du sens du scroll avec un seuil (delta) de 10px
+      // Scroll vers le bas -> Cacher
+      if (currentScrollY > lastScrollY.current + 10) {
+        setIsHidden(true);
+      } 
+      // Scroll vers le haut -> Afficher
+      else if (currentScrollY < lastScrollY.current - 10) {
+        setIsHidden(false);
+      }
       
       lastScrollY.current = currentScrollY;
     };
+    
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const currentPath = window.location.pathname; 
-  const activeLink = currentPath === '/' ? '/' : currentPath.split('/')[1] ? `/${currentPath.split('/')[1]}` : currentPath;
+  // Logique simple pour déterminer le lien actif
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const activeLink = currentPath === '/' ? '/' : `/${currentPath.split('/')[1]}` || '/';
 
   return (
-    <div 
+    <header
       style={{
-        position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 99, 
-        display: 'flex', justifyContent: 'center', alignItems: 'center',
-        paddingTop: '24px', pointerEvents: 'none',
-        transition: 'transform 0.4s ease-in-out',
-        transform: isHidden ? 'translateY(-150px)' : 'translateY(0)',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        zIndex: 100,
+        display: 'flex',
+        justifyContent: 'center',
+        paddingTop: '20px',
+        pointerEvents: 'none', /* Laisse passer les clics autour du menu */
+        transition: 'transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)', /* Transition douce */
+        transform: isHidden ? 'translateY(-150%)' : 'translateY(0)',
       }}
     >
+      {/* Container cliquable pour le menu lui-même */}
       <div style={{ pointerEvents: 'auto' }}>
         <PillNav
           logo={LOGO_PATH}
-          logoAlt="Logo"
+          logoAlt="Mon Portfolio"
           items={NAV_ITEMS}
-          activeHref={activeLink} 
-          className="portfolio-pill-nav"
-          baseColor="rgb(0, 0, 0)" 
-          pillColor="rgb(255, 255, 255)" 
-          hoveredPillTextColor="rgb(0, 0, 0)" 
-          pillTextColor="rgb(0, 0, 0)"
+          activeHref={activeLink}
+          
+          // --- CONFIGURATION DES COULEURS (Style Noir & Blanc) ---
+          baseColor="#000000"           /* Fond du Logo, du conteneur Menu et de l'animation hover */
+          pillColor="#FFFFFF"           /* Fond des boutons au repos */
+          pillTextColor="#000000"       /* Texte des boutons au repos */
+          hoveredPillTextColor="#FFFFFF" /* Texte des boutons au survol (devient blanc sur fond noir) */
         />
       </div>
-    </div>
+    </header>
   );
 };
 

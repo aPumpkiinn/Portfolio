@@ -7,6 +7,8 @@ import AboutPage from './pages/AboutPage';
 import ContactModal from './components/ContactModal'; 
 import Header from './components/Header'; 
 import PageTransition from './components/PageTransition'; 
+// 👇 1. Import du nouveau composant
+import ScrollToAnchor from './components/ScrollToAnchor'; 
 import './App.css';
 
 function App() {
@@ -19,6 +21,9 @@ function App() {
 
   return (
     <>
+      {/* 👇 2. Ajout du gestionnaire de scroll ici (il est invisible) */}
+      <ScrollToAnchor />
+
       {showIntro && <PageTransition onComplete={() => setShowIntro(false)} />}
 
       {!showIntro && (
@@ -29,8 +34,8 @@ function App() {
         <ContactModal onClose={() => setIsContactOpen(false)} />
       )}
 
+      {/* Tes routes existantes */}
       <Routes location={location} key={location.pathname}>
-        {/* IMPORTANT : On passe la fonction 'openContact' aux pages via une prop */}
         
         <Route 
           path="/" 

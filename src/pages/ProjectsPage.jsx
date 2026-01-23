@@ -46,7 +46,7 @@ const ProjectsPage = () => {
             {displayTitle}
         </h1>
 
-        {/* --- PILL NAV (FILTRES) --- */}
+        `{/* --- PILL NAV (FILTRES) --- */}
         <div className="mb-12 relative z-10">
             <nav className="pill-nav">
                 <div className="pill-nav-items">
@@ -73,7 +73,7 @@ const ProjectsPage = () => {
                     </ul>
                 </div>
             </nav>
-        </div>
+        </div>`
 
         {/* --- CAROUSEL --- */}
         <div className="w-full pb-20">

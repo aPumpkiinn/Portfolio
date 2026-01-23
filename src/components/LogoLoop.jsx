@@ -1,98 +1,146 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { gsap } from 'gsap';
-import './LogoLoop.css';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+import './LogoLoop.css'; // Assurez-vous que le CSS que vous avez fourni est dans ce fichier
 
-const LogoLoop = ({ 
-  logos = [], 
-  speed = 100, 
-  direction = 'left', 
-  logoHeight = 28,
-  gap = 32,
-  hoverSpeed = 0,
+const LogoLoop = ({
+  logos = [],
+  speed = 100,
+  direction = 'left', // 'left', 'right', 'up', 'down'
+  logoHeight = 40,
+  gap = 40,
+  hoverSpeed, // Vitesse au survol (optionnel)
   scaleOnHover = false,
   fadeOut = false,
-  fadeOutColor = '#ffffff',
-  useCustomRender = false,
-  ariaLabel = "Technology partners"
+  fadeOutColor,
+  ariaLabel = "Logos partenaires",
+  className = "",
+  style = {},
 }) => {
-  const containerRef = useRef(null);
   const trackRef = useRef(null);
-  const animationRef = useRef(null);
-  
-  // On crée un tableau répété pour assurer la boucle infinie sans coupure
-  // On le répète 4 fois pour être sûr de couvrir les grands écrans
-  const [items, setItems] = useState([...logos, ...logos, ...logos, ...logos]);
+  const [isHovering, setIsHovering] = useState(false);
+  const animationFrameId = useRef(null);
+  const positionRef = useRef(0);
+  const lastTimeRef = useRef(0);
+
+  // Détermine si le défilement est vertical
+  const isVertical = direction === 'up' || direction === 'down';
+
+  // Gestion de la vitesse (normale ou survol)
+  const currentSpeed = isHovering && hoverSpeed !== undefined ? hoverSpeed : speed;
+
+  const animate = useCallback((time) => {
+    if (!lastTimeRef.current) lastTimeRef.current = time;
+    const delta = time - lastTimeRef.current;
+    lastTimeRef.current = time;
+
+    if (trackRef.current) {
+      // Calcul du déplacement basé sur le temps (delta) pour être fluide sur tous les écrans
+      const moveAmount = (currentSpeed * delta) / 1000;
+      
+      if (direction === 'left' || direction === 'up') {
+        positionRef.current -= moveAmount;
+      } else {
+        positionRef.current += moveAmount;
+      }
+
+      const trackSize = isVertical 
+        ? trackRef.current.scrollHeight / 2 
+        : trackRef.current.scrollWidth / 2;
+
+      // Réinitialisation de la boucle (Infinite Loop Logic)
+      if (direction === 'left' || direction === 'up') {
+        if (positionRef.current <= -trackSize) {
+          positionRef.current += trackSize;
+        }
+      } else {
+        if (positionRef.current >= 0) {
+          positionRef.current -= trackSize;
+        }
+      }
+
+      // Application de la transformation
+      const transform = isVertical
+        ? `translate3d(0, ${positionRef.current}px, 0)`
+        : `translate3d(${positionRef.current}px, 0, 0)`;
+
+      trackRef.current.style.transform = transform;
+    }
+
+    animationFrameId.current = requestAnimationFrame(animate);
+  }, [currentSpeed, direction, isVertical]);
 
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
+    // Démarrer l'animation
+    animationFrameId.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+    };
+  }, [animate]);
 
-    // Calcul de la largeur d'un set d'éléments pour savoir quand boucler
-    const totalWidth = track.scrollWidth / 4; 
+  // Construction des classes CSS
+  const containerClasses = [
+    'logoloop',
+    isVertical ? 'logoloop--vertical' : '',
+    scaleOnHover ? 'logoloop--scale-hover' : '',
+    fadeOut ? 'logoloop--fade' : '',
+    className
+  ].filter(Boolean).join(' ');
 
-    // Configuration de l'animation GSAP
-    const ctx = gsap.context(() => {
-      animationRef.current = gsap.to(track, {
-        x: direction === 'left' ? -totalWidth : 0, // On bouge vers la gauche
-        modifiers: {
-            x: gsap.utils.unitize(x => parseFloat(x) % totalWidth) // Reset automatique pour l'effet infini
-        },
-        duration: totalWidth / speed, // La vitesse dépend de la largeur
-        ease: "none",
-        repeat: -1,
-        // Si direction est right, on commence décalé
-        startAt: direction === 'right' ? { x: -totalWidth } : { x: 0 }
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, [items, speed, direction]);
-
-  // Gestion du survol (Hover)
-  const handleMouseEnter = () => {
-    if (animationRef.current) {
-        if (hoverSpeed === 0) {
-            animationRef.current.pause();
-        } else {
-            animationRef.current.timeScale(hoverSpeed / speed);
-        }
-    }
+  // Injection des variables CSS dynamiques
+  const cssVars = {
+    '--logoloop-gap': `${gap}px`,
+    '--logoloop-logoHeight': `${logoHeight}px`,
+    ...(fadeOutColor && { '--logoloop-fadeColor': fadeOutColor }),
+    ...style
   };
 
-  const handleMouseLeave = () => {
-    if (animationRef.current) {
-        animationRef.current.play();
-        animationRef.current.timeScale(1);
-    }
+  // Fonction pour rendre un logo individuel
+  const renderItem = (item, index) => {
+    const content = (
+      <>
+        {item.src ? (
+          <img src={item.src} alt={item.alt || item.title} loading="lazy" />
+        ) : (
+          <div className="logoloop__node">{item.node}</div>
+        )}
+      </>
+    );
+
+    return (
+      <div key={index} className="logoloop__item" title={item.title}>
+        {item.href ? (
+          <a 
+            href={item.href} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="logoloop__link"
+            tabIndex="-1" // Évite le focus clavier pendant l'animation pour ne pas casser le flow
+          >
+            {content}
+          </a>
+        ) : (
+          content
+        )}
+      </div>
+    );
   };
 
   return (
     <div 
-      className={`logoloop ${scaleOnHover ? 'logoloop--scale-hover' : ''} ${fadeOut ? 'logoloop--fade' : ''}`}
-      ref={containerRef}
-      style={{
-        '--logoloop-gap': `${gap}px`,
-        '--logoloop-logoHeight': `${logoHeight}px`,
-        '--logoloop-fadeColorAuto': fadeOutColor
-      }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      role="marquee"
+      className={containerClasses} 
+      style={cssVars}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      role="region"
       aria-label={ariaLabel}
     >
       <div className="logoloop__track" ref={trackRef}>
-        {items.map((logo, index) => (
-          <div key={index} className="logoloop__item">
-             {/* Gestion des liens si présents */}
-             {logo.href ? (
-                 <a href={logo.href} target="_blank" rel="noopener noreferrer" className="logoloop__link" title={logo.title}>
-                    <div className="logoloop__node">{logo.node || <img src={logo.src} alt={logo.alt} />}</div>
-                 </a>
-             ) : (
-                 <div className="logoloop__node">{logo.node || <img src={logo.src} alt={logo.alt} />}</div>
-             )}
-          </div>
-        ))}
+        {/* On double la liste pour créer l'illusion d'infini */}
+        <div className="logoloop__list">
+          {logos.map((logo, i) => renderItem(logo, `a-${i}`))}
+        </div>
+        <div className="logoloop__list" aria-hidden="true">
+          {logos.map((logo, i) => renderItem(logo, `b-${i}`))}
+        </div>
       </div>
     </div>
   );

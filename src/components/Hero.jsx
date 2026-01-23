@@ -30,7 +30,7 @@ const Hero = () => {
       }}>
           
         <p style={{
-          color: '#737373',
+          color: '#ffffff',
           fontSize: '0.875rem',
           letterSpacing: '0.3em',
           textTransform: 'uppercase',
@@ -42,7 +42,7 @@ const Hero = () => {
         <h1 style={{
           fontSize: 'clamp(3rem, 12vw, 9rem)',
           fontWeight: '300',
-          color: '#1a1a1a',
+          color: '#ffffff',
           marginBottom: '24px',
           lineHeight: '1',
           letterSpacing: '-0.02em'
@@ -56,7 +56,7 @@ const Hero = () => {
 
         <p style={{
           fontSize: 'clamp(1.25rem, 3vw, 1.875rem)',
-          color: '#525252',
+          color: '#ffffff',
           maxWidth: '700px',
           fontWeight: '300',
           lineHeight: '1.6',
@@ -78,7 +78,7 @@ const Hero = () => {
             href="#projects"
             style={{
               padding: '14px 28px',
-              backgroundColor: '#1a1a1a',
+              backgroundColor: '#000000',
               color: '#fafafa',
               textDecoration: 'none',
               transition: 'all 0.3s ease',
@@ -89,7 +89,7 @@ const Hero = () => {
               minWidth: '150px'
             }}
             onMouseOver={(e) => e.target.style.backgroundColor = '#404040'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#1a1a1a'}
+            onMouseOut={(e) => e.target.style.backgroundColor = '#000000'}
           >
             Voir les projets
           </a>
@@ -98,8 +98,8 @@ const Hero = () => {
             href="#contact"
             style={{
               padding: '14px 28px',
-              border: '1px solid #1a1a1a',
-              color: '#1a1a1a',
+              border: '1px solid #ffffff',
+              color: '#ffffff',
               backgroundColor: 'transparent',
               textDecoration: 'none',
               transition: 'all 0.3s ease',
@@ -110,12 +110,12 @@ const Hero = () => {
               minWidth: '150px'
             }}
             onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#1a1a1a';
+              e.target.style.backgroundColor = '#14001d';
               e.target.style.color = '#fafafa';
             }}
             onMouseOut={(e) => {
               e.target.style.backgroundColor = 'transparent';
-              e.target.style.color = '#1a1a1a';
+              e.target.style.color = '#ffffff';
             }}
           >
             Contact

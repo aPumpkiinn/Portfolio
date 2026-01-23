@@ -1,6 +1,5 @@
 .logoloop {
   position: relative;
-
   --logoloop-gap: 32px;
   --logoloop-logoHeight: 28px;
   --logoloop-fadeColorAuto: #ffffff;
@@ -40,6 +39,9 @@
 .logoloop__list {
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .logoloop--vertical .logoloop__list {
