@@ -1,0 +1,14 @@
+.iridescence-container {
+    /* TRÈS IMPORTANT : Le conteneur doit avoir une hauteur définie pour que le canvas WebGL soit visible. */
+    width: 100%;
+    height: 100%; 
+    overflow: hidden; /* S'assurer qu'il ne cause pas de barres de défilement */
+}
+
+/* Style du canvas WebGL généré */
+.iridescence-container canvas {
+    /* Le canvas doit s'étendre sur son conteneur */
+    width: 100%;
+    height: 100%;
+    display: block; /* Évite les problèmes de marge */
+}
