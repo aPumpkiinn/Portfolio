@@ -4,6 +4,13 @@
 
 /* Déclaration de la variante Regular */
 /* src/index.css */
+@font-face {
+  font-family: 'Rumei House';
+  src: url('/fonts/RumeiHouse.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

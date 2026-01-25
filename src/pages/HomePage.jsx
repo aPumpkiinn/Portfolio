@@ -17,7 +17,7 @@ const HomePage = ({ onOpenContact }) => {
     { label: 'Accueil', href: '#home' },
     { label: 'À Propos', href: '/Apropos' },
     { label: 'Projets', href: '/projects' },
-    { label: 'Contact', href: '/Apropos#contact' } // Redirige vers le bas de AboutPage
+    { label: 'Contact', href: '/Apropos#contact' } 
   ];
 
   const projectsItems = [
@@ -25,7 +25,6 @@ const HomePage = ({ onOpenContact }) => {
     { text: 'Web Development', image: 'https://picsum.photos/600/400?random=1', link: '/projects', filter: 'Web' },
     { text: 'Design UI', image: 'https://picsum.photos/600/400?random=2', link: '/projects', filter: 'Design UI' },
     { text: 'Infographie', image: 'https://picsum.photos/600/400?random=3', link: '/projects', filter: 'Infographie' }
-    
   ];
 
   const handleMenuClick = (item) => {
@@ -34,7 +33,6 @@ const HomePage = ({ onOpenContact }) => {
 
   return (
     <PageTransition>
-        {/* IMPORTANT: minHeight et non height fixe pour le scroll du header */}
         <div style={{ minHeight: '100vh', position: 'relative', backgroundColor: '#000000' }}>
         
         <Header items={homeNavItems} />
@@ -54,6 +52,7 @@ const HomePage = ({ onOpenContact }) => {
             <section className="py-24 px-6 bg-black text-white flex flex-col items-center text-center relative z-10">
                 <div className="max-w-3xl">
                     <FadeIn direction="up">
+                        {/* RETOUR À FONT-TITLE */}
                         <h2 className="text-3xl md:text-5xl font-title mb-8 uppercase tracking-wider">
                             À Propos de moi
                         </h2>
@@ -78,6 +77,7 @@ const HomePage = ({ onOpenContact }) => {
             {/* SECTION PROJETS (TEASER) */}
             <section id="projects" style={{ backgroundColor: '#000000', paddingBottom: '50px' }}>
                 <FadeIn direction="down">
+                    {/* RETOUR À FONT-TITLE */}
                     <h2 className="text-4xl md:text-6xl font-title text-white text-center py-10">
                         Mes Projets Récents
                     </h2>

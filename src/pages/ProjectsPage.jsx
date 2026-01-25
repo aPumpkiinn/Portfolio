@@ -5,7 +5,6 @@ import SkewedCarousel from '../components/SkewedCarousel';
 import PageTransition from '../components/PageTransition';
 
 const allProjects = [
-  // ... vos projets (inchangés)
   { id: 1, title: "Site E-commerce", category: "Web", image: "https://picsum.photos/1920/1080?random=1", desc: "React / Next.js", year: "2025" },
   { id: 2, title: "Dashboard Admin", category: "Web", image: "https://picsum.photos/1920/1080?random=2", desc: "Vue.js / Tailwind", year: "2024" },
   { id: 3, title: "App Mobile Banking", category: "Design UI", image: "https://picsum.photos/1920/1080?random=3", desc: "Figma Prototype", year: "2024" },
@@ -14,7 +13,6 @@ const allProjects = [
   { id: 6, title: "Logo Branding", category: "Infographie", image: "https://picsum.photos/1920/1080?random=6", desc: "Vector Art", year: "2023" },
 ];
 
-// 👇 1. AJOUTEZ onOpenProject ICI
 const ProjectsPage = ({ onOpenProject }) => {
   const location = useLocation();
 
@@ -33,7 +31,8 @@ const ProjectsPage = ({ onOpenProject }) => {
         
         <div className="flex flex-col items-center w-full">
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-12 text-center uppercase font-title">
+          {/* 👇 ICI : Condition pour changer la police seulement si c'est Infographie */}
+          <h1 className={`text-5xl md:text-7xl font-bold mb-12 text-center uppercase ${activeTab === 'Infographie' ? 'font-rumei' : 'font-title'}`}>
              {displayTitle}
           </h1>
 
@@ -58,7 +57,6 @@ const ProjectsPage = ({ onOpenProject }) => {
               </nav>
           </div>
 
-          {/* 👇 2. PASSEZ LA FONCTION AU CARROUSEL ICI */}
           <div className="w-full pb-20">
              <SkewedCarousel 
                 items={filteredProjects} 

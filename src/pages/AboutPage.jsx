@@ -56,22 +56,20 @@ const AboutPage = ({ onOpenContact }) => {
     <PageTransition>
       <div style={{ minHeight: '100vh', backgroundColor: '#000000', color: '#ffffff', position: 'relative', overflowX: 'hidden' }}>
         
-        {/* Si le Header est dans App.js, supprimez cette ligne, sinon gardez-la */}
         <Header items={aboutNavItems} />
         
         <main className="relative z-10 pt-32 px-6 md:px-12 max-w-7xl mx-auto pb-0">
           
           <FadeIn direction="down">
+              {/* RETOUR À FONT-TITLE */}
               <h1 className="text-5xl md:text-7xl mb-16 font-title">
                 <span className="italic">Mieux me</span> connaitre
               </h1>
           </FadeIn>
           
-          {/* --- SECTION BIO + RECHERCHE STAGE (Fusionnés) --- */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-32">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-32">
               <FadeIn delay={0.2} direction="right">
                   <div className="space-y-6">
-                      {/* Paragraphe 1 : Bio */}
                       <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-lg">
                           Toujours passionné par le graphisme, le dessin et les jeux vidéo, 
                           je cherche maintenant à tourner cette passion en profession. 
@@ -79,7 +77,6 @@ const AboutPage = ({ onOpenContact }) => {
                           donner vie à des univers uniques.
                       </p>
 
-                      {/* Paragraphe 2 : Recherche de stage (Intégré ici) */}
                       <p className="text-lg md:text-xl text-gray-100 leading-relaxed max-w-lg font-medium border-l-2 border-[#646cff] pl-4">
                           Dans cette optique, je suis actuellement à la recherche d'un stage de <span className="text-[#646cff]">2-3 mois</span> à partir d'<span className="text-[#646cff]">Avril</span>. 
                           Je souhaite rejoindre une équipe passionnée où je pourrai apporter ma rigueur et ma créativité, 
@@ -89,18 +86,21 @@ const AboutPage = ({ onOpenContact }) => {
               </FadeIn>
               
               <FadeIn delay={0.4} direction="left">
-                  <div className="w-full h-80 bg-[#161616] rounded-[40px] flex items-center justify-center border border-white/5 shadow-2xl overflow-hidden">
-                      <span className="text-white/20 text-4xl font-title italic">Portrait</span>
+                  <div className="h-[300px] w-full max-w-md mx-auto lg:mx-0 rounded-[40px] overflow-hidden border border-white/5 shadow-2xl">
+                      <img 
+                        src="src/public/moi.webp" 
+                        alt="Portrait" 
+                        className="w-full h-full object-cover block"
+                      />
                   </div>
               </FadeIn>
           </div>
 
-          {/* --- MOTIVATIONS & PROJET FUTUR --- */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-32">
-              {/* Mes Motivations */}
               <FadeIn delay={0.3} direction="up">
                   <div className="space-y-6">
-                      <h2 className="text-3xl md:text-4xl font-title italic text-white border-b border-white/10 pb-4">
+                      {/* RETOUR À FONT-TITLE */}
+                      <h2 className="text-3xl md:text-4xl font-title text-white border-b border-white/10 pb-4">
                           Mes motivations
                       </h2>
                       <p className="text-gray-400 text-lg leading-relaxed">
@@ -112,10 +112,10 @@ const AboutPage = ({ onOpenContact }) => {
                   </div>
               </FadeIn>
 
-              {/* Mon Projet Futur */}
               <FadeIn delay={0.5} direction="up">
                   <div className="space-y-6">
-                      <h2 className="text-3xl md:text-4xl font-title italic text-white border-b border-white/10 pb-4">
+                      {/* RETOUR À FONT-TITLE */}
+                      <h2 className="text-3xl md:text-4xl font-title text-white border-b border-white/10 pb-4">
                           Mon projet futur
                       </h2>
                       <p className="text-gray-400 text-lg leading-relaxed">
@@ -128,7 +128,6 @@ const AboutPage = ({ onOpenContact }) => {
               </FadeIn>
           </div>
 
-          {/* --- SECTION LOGOS --- */}
           <FadeIn direction="up" delay={0.6}>
               <div className="border-t border-white/10 pt-10 mb-20">
                   <h3 className="text-center text-sm font-semibold uppercase tracking-widest text-gray-500 mb-8">
@@ -143,10 +142,10 @@ const AboutPage = ({ onOpenContact }) => {
               </div>
           </FadeIn>
 
-          {/* --- RÉSEAUX --- */}
           <FadeIn direction="up" delay={0.8}>
               <div className="flex flex-col items-center pb-32">
-                  <h2 className="text-3xl md:text-4xl font-title italic mb-10">Mes réseaux</h2>
+                  {/* RETOUR À FONT-TITLE */}
+                  <h2 className="text-3xl md:text-4xl font-title mb-10">Mes réseaux</h2>
                   <div className="flex gap-8 mb-12">
                       <a href="#" className="relative w-20 h-20 transition-transform hover:scale-110">
                           <div className="absolute inset-[2px] bg-white rounded-md"></div>
