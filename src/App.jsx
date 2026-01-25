@@ -1,75 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
+// --- COMPOSANTS CRITIQUES (Chargés immédiatement) ---
 import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
-
-// Pages
-import HomePage from './pages/HomePage';
-import ProjectsPage from './pages/ProjectsPage';
-import AboutPage from './pages/AboutPage';
-
-// Modals
-import ContactModal from './components/ContactModal'; 
-// 👇 1. IMPORT DU PROJECT MODAL (Manquant dans ton code)
+import ContactModal from './components/ContactModal';
 import ProjectModal from './components/ProjectModal';
+
+// --- OPTIMISATION : LAZY LOADING (Performance Mobile) ---
+// Les pages ne sont téléchargées que si l'utilisateur y accède.
+const HomePage = lazy(() => import('./pages/HomePage'));
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
 
 import './App.css';
 
 function App() {
   const location = useLocation();
 
-  // --- GESTION DU CONTACT ---
+  // --- ÉTATS ---
   const [isContactOpen, setIsContactOpen] = useState(false);
-  const openContact = () => setIsContactOpen(true);
-  const closeContact = () => setIsContactOpen(false);
-
-  // --- GESTION DES PROJETS (C'était manquant) ---
-  // On stocke le projet cliqué (objet) ou null si fermé
   const [selectedProject, setSelectedProject] = useState(null);
 
-  const openProject = (project) => {
-    setSelectedProject(project);
-    // Optionnel : Bloquer le scroll du body quand la modal est ouverte
-    document.body.style.overflow = 'hidden';
-  };
+  // --- FONCTIONS MÉMOÏSÉES (Performance) ---
+  const openContact = useCallback(() => setIsContactOpen(true), []);
+  const closeContact = useCallback(() => setIsContactOpen(false), []);
 
-  const closeProject = () => {
+  const openProject = useCallback((project) => {
+    setSelectedProject(project);
+  }, []);
+
+  const closeProject = useCallback(() => {
     setSelectedProject(null);
-    document.body.style.overflow = 'unset';
-  };
+  }, []);
+
+  // --- GESTION DU SCROLL LOCK ---
+  // Empêche de scroller le site en arrière-plan quand une modale est ouverte
+  useEffect(() => {
+    const isLocked = isContactOpen || selectedProject !== null;
+    document.body.style.overflow = isLocked ? 'hidden' : 'unset';
+  }, [isContactOpen, selectedProject]);
 
   return (
     <>
+      {/* Note SEO React 19 : 
+          Tu peux placer <title> et <meta> directement dans tes composants de page.
+          React les déplacera automatiquement dans le <head> du document.
+      */}
+      
       <ScrollToTop />
-      <Header />
+      <Header onOpenContact={openContact} />
 
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          
-          {/* On passe openContact à l'accueil */}
-          <Route path="/" element={<HomePage onOpenContact={openContact} />} />
-          
-          {/* 👇 2. On passe openProject à la page Projets */}
-          <Route path="/projects" element={<ProjectsPage onOpenContact={openContact} onOpenProject={openProject} />} />
-          
-          {/* On passe openContact à A Propos */}
-          <Route path="/Apropos" element={<AboutPage onOpenContact={openContact} />} />
-        
-        </Routes>
-      </AnimatePresence>
+      {/* Suspense affiche un écran noir (ou un loader) pendant le chargement des pages lourdes */}
+      <Suspense fallback={<div className="h-screen bg-black" />}>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route 
+              path="/" 
+              element={<HomePage onOpenContact={openContact} />} 
+            />
+            <Route 
+              path="/projects" 
+              element={<ProjectsPage onOpenContact={openContact} onOpenProject={openProject} />} 
+            />
+            <Route 
+              path="/Apropos" 
+              element={<AboutPage onOpenContact={openContact} />} 
+            />
+          </Routes>
+        </AnimatePresence>
+      </Suspense>
 
-      {/* --- LES MODALS --- */}
-
-      {/* Modal Contact */}
-      {/* Note: Pour l'animation de sortie, assure-toi que ContactModal gère bien le onClose comme je te l'ai donné */}
-      <ContactModal isOpen={isContactOpen} onClose={closeContact} />
-
-      {/* Modal Projet (S'affiche si un projet est sélectionné) */}
-      {/* 👇 3. AFFICHAGE DU PROJECT MODAL */}
-      <ProjectModal project={selectedProject} onClose={closeProject} />
-
+      {/* --- MODALES --- */}
+      <ContactModal 
+        isOpen={isContactOpen} 
+        onClose={closeContact} 
+      />
+      
+      <ProjectModal 
+        project={selectedProject} 
+        onClose={closeProject} 
+      />
     </>
   );
 }
