@@ -2,9 +2,14 @@ import React from 'react';
 
 const ContactCTA = ({ onOpen }) => {
   return (
-    <div className="w-full flex flex-col items-center justify-center text-center px-4 py-20">
+    // 👇 CHANGEMENTS ICI :
+    // - 'min-h-screen' : Force la hauteur à 100% de l'écran visible
+    // - 'flex flex-col items-center justify-center' : Centre tout au milieu
+    // - 'py-20' : Garde un peu de marge de sécurité en haut/bas sur mobile
+    <div className="min-h-screen w-full flex flex-col items-center justify-center text-center px-4 py-20">
       
-      <h2 className="text-4xl md:text-7xl font-title uppercase mb-8 tracking-wide text-white">
+      {/* Titre avec votre police personnalisée */}
+      <h2 className="text-4xl md:text-7xl font-title uppercase mb-8 tracking-wide">
         Un projet en tête ?
       </h2>
       

@@ -38,6 +38,9 @@
 .logoloop__list {
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .logoloop--vertical .logoloop__list {
@@ -76,7 +79,6 @@
   display: block;
   object-fit: contain;
   image-rendering: -webkit-optimize-contrast;
-  -webkit-user-drag: none;
   pointer-events: none;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -173,7 +175,9 @@
   .logoloop__track {
     transform: translate3d(0, 0, 0) !important;
   }
-  .logoloop__item img, .logoloop__node {
+
+  .logoloop__item img,
+  .logoloop__node {
     transition: none !important;
   }
 }

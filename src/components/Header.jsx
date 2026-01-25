@@ -29,12 +29,11 @@ const Header = () => {
   ];
 
   // --- 1. ANIMATION D'ENTRÉE ---
-  // Le header descend du haut au chargement de la page
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
       
-      // On part de -100% (caché en haut) vers 0% (visible)
+      // Le header descend du haut (-100% à 0%)
       tl.fromTo(headerRef.current, 
         { yPercent: -100 }, 
         { yPercent: 0, duration: 0.8, ease: 'power3.out' }
@@ -55,12 +54,10 @@ const Header = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      // Si le menu mobile est ouvert, on ne fait rien (pour éviter les bugs)
       if (isMobileOpen) return;
 
-      // Seuil de 50px pour ne pas bouger tout de suite en haut de page
       if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-        // SCROLL VERS LE BAS -> On cache le header (-100%)
+        // SCROLL VERS LE BAS
         gsap.to(headerRef.current, {
           yPercent: -100,
           duration: 0.3,
@@ -68,7 +65,7 @@ const Header = () => {
           overwrite: true
         });
       } else if (currentScrollY < lastScrollY.current) {
-        // SCROLL VERS LE HAUT -> On montre le header (0%)
+        // SCROLL VERS LE HAUT
         gsap.to(headerRef.current, {
           yPercent: 0,
           duration: 0.3,
@@ -84,7 +81,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobileOpen]);
 
-  // --- 3. MENU MOBILE (Configuration) ---
+  // --- 3. MENU MOBILE ---
   useEffect(() => {
     const ctx = gsap.context(() => {
       mobileTl.current
@@ -115,11 +112,10 @@ const Header = () => {
     gsap.to(e.currentTarget, { '--underline-width': '0%', duration: 0.3, ease: 'power2.in' });
   };
 
-  // --- 5. OUVERTURE/FERMETURE MOBILE ---
+  // --- 5. TOGGLE MOBILE ---
   const toggleMenu = () => {
     const nextState = !isMobileOpen;
     setIsMobileOpen(nextState);
-    // Empêche le scroll de la page quand le menu est ouvert
     document.body.style.overflow = nextState ? 'hidden' : ''; 
     
     if (nextState) mobileTl.current.play();
@@ -130,8 +126,13 @@ const Header = () => {
     <header className="classic-header" ref={headerRef}>
       
       {/* LOGO */}
+      {/* Le chemin commence par / car l'image est dans le dossier public */}
       <Link to="/" className="header-logo" ref={logoRef}>
-        <img src="/logo.svg" alt="Mon Portfolio" />
+        <img 
+            src="src/public/logo.svg" 
+            alt="Mon Portfolio" 
+            style={{ height: '90px', width: 'auto' }} // Ajustez la taille ici si nécessaire
+        />
       </Link>
 
       {/* NAVIGATION BUREAU */}
@@ -154,7 +155,7 @@ const Header = () => {
         </ul>
       </nav>
 
-      {/* BOUTON BURGER (MOBILE) */}
+      {/* BOUTON BURGER */}
       <button 
         className={`hamburger-btn ${isMobileOpen ? 'open' : ''}`} 
         onClick={toggleMenu}

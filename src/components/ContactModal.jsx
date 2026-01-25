@@ -1,131 +1,110 @@
-import React, { useState } from 'react';
-import FadeIn from './FadeIn';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { FiX, FiMail, FiSend } from 'react-icons/fi';
+import { SiLinkedin, SiInstagram } from 'react-icons/si';
 
-const ContactModal = ({ onClose }) => {
-  const [formData, setFormData] = useState({ 
-    prenom: '', nom: '', email: '', message: '' 
-  });
-  
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+const ContactModal = ({ isOpen, onClose }) => {
+  const modalRef = useRef(null);
+  const contentRef = useRef(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Simulation d'envoi
-    console.log('Formulaire envoyé :', formData);
-    alert("Message envoyé ! (Simulation)");
-    onClose();
+  // Animation d'entrée / Sortie
+  useEffect(() => {
+    if (isOpen) {
+      // Entrée
+      gsap.set(modalRef.current, { yPercent: 100, autoAlpha: 0 });
+      gsap.to(modalRef.current, {
+        yPercent: 0,
+        autoAlpha: 1,
+        duration: 0.6,
+        ease: 'power3.out',
+      });
+      
+      // Animation des éléments internes
+      gsap.fromTo(contentRef.current.children, 
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, delay: 0.3 }
+      );
+    }
+  }, [isOpen]);
+
+  // Fonction pour animer la sortie avant de fermer réellement
+  const handleClose = () => {
+    gsap.to(modalRef.current, {
+      yPercent: 100,
+      duration: 0.4,
+      ease: 'power3.in',
+      onComplete: onClose // On appelle la fonction de fermeture à la fin de l'anim
+    });
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 md:p-6">
-      
-      {/* --- STYLE CSS POUR L'ANIMATION (Directement intégré ici) --- */}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(40px) scale(0.95); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .animate-overlay {
-          animation: fadeIn 0.4s ease-out forwards;
-        }
-        .animate-modal {
-          animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Effet rebond très doux */
-          animation-delay: 0.1s; /* Le modal arrive juste après le fond */
-          opacity: 0; /* Important : invisible au départ avant que l'animation ne se lance */
-        }
-      `}</style>
+    <div 
+      ref={modalRef}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm text-white overflow-y-auto"
+    >
+      {/* BOUTON FERMER */}
+      <button 
+        onClick={handleClose}
+        className="absolute top-8 right-8 p-4 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300 group"
+      >
+        <FiX size={24} className="group-hover:rotate-90 transition-transform duration-300"/>
+      </button>
 
-      {/* 1. FOND SOMBRE (Overlay) */}
-      <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-overlay"
-        onClick={onClose}
-      ></div>
-
-      {/* 2. FENÊTRE (Modal) */}
-      <div className="relative w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-3xl p-8 shadow-2xl overflow-y-auto max-h-[90vh] animate-modal">
+      {/* CONTENU */}
+      <div ref={contentRef} className="w-full max-w-4xl px-6 py-12 flex flex-col md:flex-row gap-16">
         
-        {/* BOUTON FERMER */}
-        <button 
-          onClick={onClose}
-          className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all z-50"
-        >
-          ✕
-        </button>
-
-        {/* EN-TÊTE */}
-        <div className="mb-10 text-center md:text-left">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white flex items-center justify-center md:justify-start gap-3">
-              <span>👋</span> Parlons projet
-            </h1>
-            <p className="text-gray-400 text-lg">
-              Racontez-moi tout ! J'ai hâte de découvrir votre idée.
+        {/* COLONNE GAUCHE : INFO */}
+        <div className="flex-1 space-y-8">
+          <div>
+            <h2 className="text-5xl md:text-7xl font-title mb-6">Let's <span className="italic text-[#646cff]">Talk</span></h2>
+            <p className="text-gray-400 text-lg leading-relaxed">
+              Un projet en tête ? Une opportunité de stage ? Ou simplement envie de discuter design et tech ? 
+              N'hésitez pas à me contacter.
             </p>
+          </div>
+
+          <div className="space-y-6">
+            <a href="mailto:ton-email@exemple.com" className="flex items-center gap-4 text-xl hover:text-[#646cff] transition-colors group">
+              <div className="p-4 rounded-full bg-white/5 group-hover:bg-[#646cff] transition-colors">
+                <FiMail size={24} className="group-hover:text-white" />
+              </div>
+              <span>ton-email@exemple.com</span>
+            </a>
+            
+            <div className="flex gap-4 pt-4">
+               <a href="#" className="p-4 rounded-full border border-white/20 hover:bg-[#0077b5] hover:border-[#0077b5] transition-all">
+                 <SiLinkedin size={24} />
+               </a>
+               <a href="#" className="p-4 rounded-full border border-white/20 hover:bg-[#E1306C] hover:border-[#E1306C] transition-all">
+                 <SiInstagram size={24} />
+               </a>
+            </div>
+          </div>
         </div>
 
-        {/* FORMULAIRE */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                {/* Prénom */}
-                <div className="flex flex-col group">
-                  <label className="text-xs font-bold mb-2 text-gray-500 uppercase tracking-widest group-focus-within:text-white transition-colors">Prénom</label>
-                  <input 
-                    type="text" name="prenom" placeholder="Votre prénom" 
-                    value={formData.prenom} onChange={handleChange} 
-                    className="bg-transparent border-b border-gray-800 py-3 text-lg text-white placeholder-gray-700 focus:outline-none focus:border-white transition-colors" 
-                    required 
-                  />
-                </div>
-                {/* Nom */}
-                <div className="flex flex-col group">
-                  <label className="text-xs font-bold mb-2 text-gray-500 uppercase tracking-widest group-focus-within:text-white transition-colors">Nom</label>
-                  <input 
-                    type="text" name="nom" placeholder="Votre nom" 
-                    value={formData.nom} onChange={handleChange} 
-                    className="bg-transparent border-b border-gray-800 py-3 text-lg text-white placeholder-gray-700 focus:outline-none focus:border-white transition-colors" 
-                    required 
-                  />
-                </div>
+        {/* COLONNE DROITE : FORMULAIRE */}
+        <div className="flex-1 bg-white/5 p-8 rounded-3xl border border-white/10">
+          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+            <div>
+              <label className="block text-sm uppercase tracking-widest text-gray-500 mb-2">Votre Nom</label>
+              <input type="text" className="w-full bg-black/50 border border-white/20 rounded-xl p-4 focus:border-[#646cff] outline-none transition-colors" placeholder="John Doe" />
             </div>
-
-            {/* Email */}
-            <div className="flex flex-col group">
-                <label className="text-xs font-bold mb-2 text-gray-500 uppercase tracking-widest group-focus-within:text-white transition-colors">Email</label>
-                <input 
-                  type="email" name="email" placeholder="exemple@email.com" 
-                  value={formData.email} onChange={handleChange} 
-                  className="bg-transparent border-b border-gray-800 py-3 text-lg text-white placeholder-gray-700 focus:outline-none focus:border-white transition-colors" 
-                  required 
-                />
+            <div>
+              <label className="block text-sm uppercase tracking-widest text-gray-500 mb-2">Votre Email</label>
+              <input type="email" className="w-full bg-black/50 border border-white/20 rounded-xl p-4 focus:border-[#646cff] outline-none transition-colors" placeholder="john@example.com" />
             </div>
-
-            {/* Message */}
-            <div className="flex flex-col group">
-                <label className="text-xs font-bold mb-2 text-gray-500 uppercase tracking-widest group-focus-within:text-white transition-colors">Message</label>
-                <textarea 
-                  name="message" rows="4" placeholder="Dites-m'en plus sur vos besoins..." 
-                  value={formData.message} onChange={handleChange} 
-                  className="bg-transparent border-b border-gray-800 py-3 text-lg text-white placeholder-gray-700 focus:outline-none focus:border-white resize-none transition-colors" 
-                  required 
-                />
+            <div>
+              <label className="block text-sm uppercase tracking-widest text-gray-500 mb-2">Message</label>
+              <textarea rows="4" className="w-full bg-black/50 border border-white/20 rounded-xl p-4 focus:border-[#646cff] outline-none transition-colors" placeholder="Parlez-moi de votre projet..."></textarea>
             </div>
+            <button className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-[#646cff] hover:text-white transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+              Envoyer <FiSend />
+            </button>
+          </form>
+        </div>
 
-            {/* BOUTON ENVOYER */}
-            <div className="pt-6 flex justify-end">
-                <button 
-                  type="submit" 
-                  className="px-8 py-4 rounded-full bg-white text-black font-bold text-sm tracking-wide uppercase hover:bg-gray-200 hover:scale-105 transition-all flex items-center gap-2"
-                >
-                  Envoyer le message
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                </button>
-            </div>
-
-        </form>
       </div>
     </div>
   );

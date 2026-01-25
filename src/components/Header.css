@@ -1,7 +1,8 @@
 :root {
   --header-bg: #000000;
   --header-text: #ffffff;
-  --header-height: 80px;
+  /* J'ai augmenté un peu la hauteur du header pour accommoder le logo 70px */
+  --header-height: 90px; 
 }
 
 .classic-header {
@@ -18,7 +19,7 @@
   padding: 0 40px;
   box-sizing: border-box;
   z-index: 1000;
-  /* Pas de visibility: hidden ici, GSAP gère tout */
+  /* IMPORTANT: Pas de visibility: hidden ici, GSAP gère l'animation */
 }
 
 /* LOGO */
@@ -30,7 +31,8 @@
 }
 
 .header-logo img {
-  height: 90px; /* Ajustez selon la taille voulue */
+  /* Taille du logo agrandie comme demandé */
+  height: 70px;
   width: auto;
   object-fit: contain;
   display: block;

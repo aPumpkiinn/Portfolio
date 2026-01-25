@@ -1,53 +1,96 @@
+/* src/index.css (Contenu global essentiel) */
+
+/* --- 1. DÉCLARATION DES POLICES (@font-face) --- */
+
+/* Déclaration de la variante Regular */
+/* src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 1. Comportement global */
-html {
-  scroll-behavior: smooth;
-}
 
-/* 2. Reset basique */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box; 
 }
 
-/* 3. LE CORRECTIF EST ICI 👇 */
+/* AJOUTEZ CECI DANS src/index.css */
+
+html, body, #root {
+  /* On autorise le scroll vertical */
+  overflow-y: auto !important; 
+  /* On empêche le scroll horizontal */
+  overflow-x: hidden !important;
+  /* On laisse la hauteur s'adapter au contenu */
+  height: auto !important;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
 html, body {
     width: 100%;
-    /* On laisse la hauteur libre (min-height) pour que le body grandisse */
-    min-height: 100vh; 
-    
-    /* On cache juste le dépassement horizontal, PAS le vertical */
-    overflow-x: hidden; 
-    
-    /* IMPORTANT : Ne mettez JAMAIS 'height: 100%' ou 'overflow-y: hidden/scroll' ici */
-    background-color: #000000;
+    height: 100%; 
+    overflow-x: hidden;
+    display: block; 
+    min-width: 320px;
 }
 
 #root { 
+    /* #root doit prendre toute la place du body/html */
     width: 100%;
-    min-height: 100vh; 
-    position: relative;
+    height: 100%; 
 }
 
-/* 4. Configuration globale (Police, Couleurs) */
+/* --- 3. APPLICATION DE LA POLICE ET VARIABLES GLOBALES --- */
 :root {
+    /* Application de la police par défaut */
     font-family: 'DM Sans', sans-serif; 
-    color: #ffffff;
-    background-color: #000000;
+    font-weight: 400; /* Par défaut Regular */
+    
+    line-height: 1.5;
+
+    /* Le reste des variables et couleurs de base (hérité de votre ancien code) */
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #ffffff;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* 5. Vos polices personnalisées */
-@font-face {
-  font-family: 'Octuple Max';
-  src: url('./assets/fonts/Octuple-max-demo.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+body {
+    margin: 0;
 }
 
-.font-title {
-  font-family: 'Octuple Max', sans-serif;
+/* --- 4. RÈGLES D'HÉRITAGE TYPOGRAPHIQUE --- */
+/* Pour s'assurer que les liens et boutons héritent correctement */
+a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
 }
+a:hover {
+    color: #535bf2;
+}
+h1 {
+    font-weight: 700; /* Force l'utilisation de la variante Bold */
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+/* Cache la barre de scroll pour Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Cache la barre de scroll pour IE, Edge and Firefox */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Ajoutez ici vos styles globaux de base pour les boutons si App.css ne les contient pas */
