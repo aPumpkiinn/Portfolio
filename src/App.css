@@ -1,220 +1,139 @@
-/* src/App.css ou src/index.css */
+/* src/App.css */
 
-/* --- 1. DÉCLARATION DES POLICES (@font-face) --- */
+/* --- 1. CONFIG TAILWIND & FONTS --- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Règle pour masquer la barre de défilement du carrousel */
 .carousel-track::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
-/* src/components/Iridescence.css */
-
-
-/* Déclaration de la variante Regular */
+/* Polices */
 @font-face {
-    font-family: 'DM Sans'; 
-    /* ✅ CORRECTION DU CHEMIN : Chemin absolu vers le dossier src/assets/fonts/ */
-    src: url('/src/assets/fonts/DMSans-Regular.ttf') format('truetype');
-    font-weight: 400; 
-    font-style: normal;
-    font-display: swap; 
+  font-family: 'Octuple Max';
+  src: url('./assets/fonts/Octuple-max-demo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-/* Déclaration de la variante Bold */
+.font-title {
+  font-family: 'Octuple Max', sans-serif;
+  letter-spacing: 0.05em;
+}
+
 @font-face {
-    font-family: 'DM Sans'; 
-    /* ✅ CORRECTION DU CHEMIN : Chemin absolu vers le dossier src/assets/fonts/ */
-    src: url('/src/assets/fonts/DMSans-Bold.ttf') format('truetype');
-    font-weight: 700; 
-    font-style: normal;
-    font-display: swap; 
+  font-family: 'DM Sans';
+  src: url('/src/assets/fonts/DMSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* --- 2. RÉINITIALISATION ET PLEIN ÉCRAN --- */
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/src/assets/fonts/DMSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- 2. RÉINITIALISATION --- */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html, body {
-    width: 100%;
-    height: 100%; 
-    overflow-x: hidden;
-    display: block; 
-    min-width: 320px;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  display: block;
+  min-width: 320px;
 }
 
-#root { 
-    width: 100%;
-    height: 100%; 
+#root {
+  width: 100%;
+  height: 100%;
 }
 
-/* --- 3. VARIABLES ET APPLICATION DE LA POLICE --- */
+/* --- 3. STYLES GLOBAUX --- */
 :root {
-    /* Application de la police */
-    font-family: 'DM Sans', sans-serif; 
-    font-weight: 400; /* Par défaut Regular */
-    
-    line-height: 1.5;
-
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
 }
 a:hover {
-    color: #535bf2;
+  color: #535bf2;
 }
 
+/* 👇 CORRECTION ICI : On a remis le body à zéro */
 body {
-    margin: 0;
+  margin: 0;
+  padding: 0; 
+  min-height: 100vh;
 }
 
 h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
-    /* h1 utilise naturellement le font-weight 700 (Bold) */
+  font-size: 3.2em;
+  line-height: 1.1;
 }
 
-/* --- 4. BOUTONS ET MEDIA QUERIES --- */
+/* --- 4. BOUTONS --- */
 button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit; 
-    background-color: #1a1a1a;
-    cursor: pointer;
-    transition: border-color 0.25s;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
 }
 button:hover {
-    border-color: #646cff;
+  border-color: #646cff;
 }
 button:focus,
 button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        color: #213547;
-        background-color: #2b2b2b;
-    }
-    a:hover {
-        color: #747bff;
-    }
-    button {
-        background-color: #f9f9f9;
-    }
-}
-/* Styles du PillNav (Ajoutés après les styles globaux pour plus de spécificité) */
-
-
-.desktop-only {
-    display: block;
+  :root {
+    color: #213547;
+    background-color: #2b2b2b;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
 }
 
-.mobile-only {
-    display: none;
-}
+.desktop-only { display: block; }
+.mobile-only { display: none; }
 
 @media (max-width: 768px) {
-    .desktop-only {
-        display: none;
-    }
-
-    .mobile-only {
-        display: block;
-    }
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
 }
 
-.mobile-menu-button {
-    width: var(--nav-h);
-    height: var(--nav-h);
-    border-radius: 50%;
-    background: var(--base, #000);
-    border: none;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    cursor: pointer;
-    padding: 0;
-    position: relative;
-}
-
-@media (max-width: 768px) {
-    .mobile-menu-button {
-        display: flex;
-    }
-}
-
-.hamburger-line {
-    width: 16px;
-    height: 2px;
-    background: var(--pill-bg, #fff);
-    border-radius: 1px;
-    transition: all 0.01s ease;
-    transform-origin: center;
-}
-
-.mobile-menu-popover {
-    position: absolute;
-    top: 3em;
-    left: 1rem;
-    right: 1rem;
-    background: var(--base, #f0f0f0);
-    border-radius: 27px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-    z-index: 998;
-    opacity: 0;
-    transform-origin: top center;
-    visibility: hidden;
-}
-
-.mobile-menu-list {
-    list-style: none;
-    margin: 0;
-    padding: 3px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.mobile-menu-popover .mobile-menu-link {
-    display: block;
-    padding: 12px 16px;
-    color: var(--pill-text, #fff);
-    background-color: var(--pill-bg, #fff);
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    border-radius: 50px;
-    transition: all 0.2s ease;
-}
-
-.mobile-menu-popover .mobile-menu-link:hover {
-    cursor: pointer;
-    background-color: var(--base);
-    color: var(--hover-text, #000000);
-}
-
-.projects{
-    background-color: #000;
+.projects {
+  background-color: #000;
 }

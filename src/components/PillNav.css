@@ -1,200 +1,106 @@
-/* PillNav.css */
+/* src/components/PillNav.css */
 
-/* Conteneur global : On le laisse en relatif pour qu'il suive le Header fixe */
 .pill-nav-container {
   position: relative;
-  z-index: 10;
-  /* On retire le position absolute/top pour laisser le Header gérer la position */
+  width: 100%;
+  height: 100px; /* Un peu plus de hauteur pour respirer */
+  display: flex;
+  align-items: center;
+  padding: 0 50px; /* C'est ce qui cale le logo à gauche */
+  box-sizing: border-box;
 }
 
-/* La barre de navigation globale */
 .pill-nav {
-  --nav-h: 48px;       /* Hauteur ajustée */
-  --logo: 48px;        /* Taille logo */
-  --pill-pad-x: 20px;  /* Largeur boutons */
-  --pill-gap: 4px;     /* Espace entre les pilules */
-  
-  width: max-content;
   display: flex;
   align-items: center;
-  gap: 12px;           /* CRUCIAL : Espace entre le Logo et le Menu */
-  margin: 0 auto;      /* Centrage */
+  width: 100%;
+  position: relative; /* Référence cruciale pour le menu au centre */
 }
 
-/* Le conteneur NOIR des liens */
-.pill-nav-items {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: var(--nav-h);
-  background: var(--base, #000); /* Fond Noir */
-  border-radius: 9999px;
-  padding: 5px;        /* CRUCIAL : Crée le contour noir autour des boutons blancs */
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-/* Le Logo (Cercle séparé) */
+/* --- LOGO : RESTE Sagement À GAUCHE --- */
 .pill-logo {
-  width: var(--nav-h);
-  height: var(--nav-h);
+  position: relative; /* IMPORTANT : pas d'absolute ici */
+  z-index: 100;
+  width: 65px;
+  height: 65px;
+  background-color: #000;
   border-radius: 50%;
-  background: var(--base, #000);
-  padding: 10px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   flex-shrink: 0;
-  text-decoration: none;
 }
 
 .pill-logo img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  display: block;
+  transform: scale(1.3);
 }
 
-/* La liste des items */
-.pill-list {
-  list-style: none;
+/* --- MENU : FORCE AU CENTRE DE L'ÉCRAN --- */
+.pill-nav-items.desktop-only {
+  position: absolute;
+  /* On se base sur le milieu du container parent */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  
+  background-color: #000;
+  border-radius: 999px;
+  padding: 6px 8px;
   display: flex;
-  align-items: stretch;
-  gap: var(--pill-gap);
+  align-items: center;
+  height: 54px;
+  z-index: 90;
+}
+
+.pill-list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
-.pill-list > li {
-  display: flex;
-  height: 100%;
-}
-
-/* Les Pilules (Boutons) */
 .pill {
-  display: inline-flex;
+  position: relative;
+  display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 var(--pill-pad-x);
-  
-  /* Couleurs gérées par les variables ou props */
-  background: var(--pill-bg, #fff);
-  color: var(--pill-text, #000);
-  
+  padding: 0 25px;
+  background-color: #fff;
+  color: #000;
+  border-radius: 999px;
   text-decoration: none;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 800;
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  cursor: pointer;
-  position: relative;
   overflow: hidden;
   transition: color 0.3s ease;
 }
 
-/* Le cercle d'animation au survol */
-.pill .hover-circle {
+/* --- ANIMATION HOVER --- */
+.hover-circle {
   position: absolute;
-  left: 50%;
   bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: #000;
   border-radius: 50%;
-  background: var(--base, #000); /* Couleur de l'animation (Noir) */
+  transform: translate(-50%, 50%);
   z-index: 1;
-  pointer-events: none;
 }
 
-/* Gestion des labels (texte qui monte/descend) */
-.pill .label-stack {
+.pill-label {
   position: relative;
   z-index: 2;
-  display: inline-block;
-  line-height: 1;
-  overflow: hidden; /* Important pour masquer le texte qui part */
 }
 
-.pill .pill-label {
-  display: block;
-}
-
-.pill .pill-label-hover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  opacity: 0;
-  color: var(--hover-text, #fff); /* Texte blanc sur fond noir */
-}
-
-/* Indicateur actif (petit point en bas - optionnel) */
-.pill.is-active::after {
-  content: none; /* On retire le point si on veut un look purement "bouton" */
-}
-
-/* --- Mobile & Responsif --- */
-.desktop-only { display: block; }
-.mobile-only { display: none; }
-
-@media (max-width: 768px) {
-  .pill-nav {
-    width: 100%;
-    justify-content: space-between;
-    padding: 0 20px;
-    gap: 0;
-  }
-  
-  .pill-nav-items.desktop-only { display: none; }
-  .mobile-only { display: flex; }
-  
-  .mobile-menu-button {
-    width: var(--nav-h);
-    height: var(--nav-h);
-    border-radius: 50%;
-    background: var(--base, #000);
-    border: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    cursor: pointer;
-    padding: 0;
-  }
-  
-  .hamburger-line {
-    width: 18px;
-    height: 2px;
-    background: #fff;
-    border-radius: 2px;
-  }
-  
-  /* Menu Mobile Popover */
-  .mobile-menu-popover {
-    position: absolute;
-    top: calc(var(--nav-h) + 12px);
-    right: 20px;
-    left: 20px;
-    background: var(--base, #000);
-    border-radius: 20px;
-    padding: 10px;
-    visibility: hidden;
-    transform-origin: top center;
-  }
-  
-  .mobile-menu-link {
-    display: block;
-    padding: 14px 20px;
-    color: #fff; /* Texte blanc sur fond noir */
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    text-align: center;
-    border-radius: 12px;
-  }
-  
-  .mobile-menu-link:hover, .mobile-menu-link.is-active {
-    background: rgba(255,255,255,0.1);
-  }
+.pill:hover {
+  color: #fff;
 }

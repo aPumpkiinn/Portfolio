@@ -1,61 +1,70 @@
-import React, { useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// On active le plugin ScrollTrigger
-gsap.registerPlugin(ScrollTrigger);
+import React, { useState, useEffect, useRef } from 'react';
 
 const FadeIn = ({ 
   children, 
-  delay = 0,       // Retard avant le début (ex: 0.2 pour enchainer)
-  direction = 'up', // 'up', 'down', 'left', 'right'
-  duration = 1,
-  className = '',
-  fullWidth = false // Si vrai, le conteneur prend 100% de la largeur
+  delay = 0, 
+  direction = 'up', 
+  fullWidth = false, 
+  padding = false,
+  duration = 0.8 
 }) => {
-  const elRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const domRef = useRef();
 
   useEffect(() => {
-    const el = elRef.current;
+    const currentElement = domRef.current;
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        // CHANGEMENT ICI : entry.isIntersecting suffit, même si c'est à peine visible
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(currentElement);
+        }
+      });
+    }, {
+      // CORRECTION MAJEURE :
+      // threshold: 0 -> Déclenche dès le tout premier pixel visible
+      // rootMargin: '0px' -> On enlève la marge négative qui bloquait le bas de page
+      threshold: 0, 
+      rootMargin: '0px' 
+    });
 
-    // Calcul de la direction de départ
-    let xStart = 0;
-    let yStart = 0;
-
-    switch (direction) {
-      case 'up': yStart = 50; break;    // Arrive du bas
-      case 'down': yStart = -50; break; // Arrive du haut
-      case 'left': xStart = 50; break;  // Arrive de la droite
-      case 'right': xStart = -50; break;// Arrive de la gauche
-      default: yStart = 50;
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
-    // L'animation GSAP
-    gsap.fromTo(el, 
-      { 
-        autoAlpha: 0, // Opacité 0 + visibility: hidden
-        y: yStart, 
-        x: xStart 
-      },
-      { 
-        duration: duration,
-        autoAlpha: 1, 
-        y: 0, 
-        x: 0,
-        delay: delay,
-        ease: "power3.out", // Effet fluide et naturel
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%", // Démarre quand le haut de l'élément est à 85% de l'écran
-          toggleActions: "play none none reverse" // Joue l'anim, et la rejoue à l'envers si on remonte (optionnel)
-          // Pour jouer une seule fois, mettez : toggleActions: "play none none none"
-        }
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
       }
-    );
-  }, [delay, direction, duration]);
+    };
+  }, []);
+
+  const getTransform = () => {
+    if (!isVisible) {
+      switch (direction) {
+        case 'up': return 'translateY(20px)'; // J'ai réduit un peu la distance pour que ce soit plus vif
+        case 'down': return 'translateY(-20px)';
+        case 'left': return 'translateX(20px)';
+        case 'right': return 'translateX(-20px)';
+        default: return 'none';
+      }
+    }
+    return 'translate(0)';
+  };
 
   return (
-    <div ref={elRef} className={`${className} ${fullWidth ? 'w-full' : ''}`}>
+    <div
+      ref={domRef}
+      className={`${fullWidth ? 'w-full' : ''} ${padding ? 'p-4' : ''}`}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: getTransform(),
+        transition: `opacity ${duration}s ease-out ${delay}s, transform ${duration}s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}s`,
+        willChange: 'opacity, transform',
+      }}
+    >
       {children}
     </div>
   );

@@ -1,0 +1,139 @@
+:root {
+  --header-bg: #000000;
+  --header-text: #ffffff;
+  --header-height: 80px;
+}
+
+.classic-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  box-sizing: border-box;
+  z-index: 1000;
+  /* Pas de visibility: hidden ici, GSAP gère tout */
+}
+
+/* LOGO */
+.header-logo {
+  display: flex;
+  align-items: center;
+  z-index: 1001;
+  text-decoration: none;
+}
+
+.header-logo img {
+  height: 90px; /* Ajustez selon la taille voulue */
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* NAVIGATION BUREAU */
+.desktop-nav {
+  display: flex;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 30px;
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  color: var(--header-text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  padding: 5px 0;
+  display: block;
+}
+
+/* Ligne blanche animée */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: var(--underline-width, 0%); /* Animé par JS */
+  height: 2px;
+  background-color: var(--header-text);
+}
+
+/* MOBILE */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 1001;
+  padding: 10px;
+}
+
+.span-line {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background-color: var(--header-text);
+  transition: all 0.3s ease-in-out;
+}
+
+.hamburger-btn.open .line-1 { transform: translateY(8px) rotate(45deg); }
+.hamburger-btn.open .line-2 { opacity: 0; }
+.hamburger-btn.open .line-3 { transform: translateY(-8px) rotate(-45deg); }
+
+/* OVERLAY MOBILE */
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--header-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mobile-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.mobile-nav-link {
+  text-decoration: none;
+  color: var(--header-text);
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@media (max-width: 768px) {
+  .classic-header { padding: 0 20px; }
+  .desktop-nav { display: none; }
+  .hamburger-btn { display: flex; }
+}

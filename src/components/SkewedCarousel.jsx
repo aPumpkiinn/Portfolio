@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 
-const SkewedCarousel = ({ items = [] }) => {
+// 👇 AJOUT DE LA PROP onOpenProject
+const SkewedCarousel = ({ items = [], onOpenProject }) => {
   const containerRef = useRef(null);
   const trackRef = useRef(null);
   
@@ -9,19 +10,17 @@ const SkewedCarousel = ({ items = [] }) => {
   const [displayItems, setDisplayItems] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   
-  // REFS
+  // REFS PHYSIQUES
   const xPos = useRef(0);
   const lastX = useRef(0);
   const startX = useRef(0);
-  
-  // 🔹 NOUVEAU : On stocke la vitesse du dernier mouvement de souris
   const dragVelocity = useRef(0);
+  const isHovering = useRef(false);
   
-  // CONFIGURATION VITESSE ET PHYSIQUE
+  // CONFIGURATION
   const baseSpeed = 0.5; 
   const currentSpeed = useRef(baseSpeed); 
-  // Facteur de "frottement" : plus c'est bas (0.01), plus ça glisse longtemps. Plus c'est haut (0.1), plus ça s'arrête vite.
-  const friction = 0.03; 
+  const friction = 0.05;
 
   // Duplication des items
   useEffect(() => {
@@ -31,10 +30,9 @@ const SkewedCarousel = ({ items = [] }) => {
     setDisplayItems(duplicated);
   }, [items]);
 
-  // BOUCLE D'ANIMATION (TICKER)
+  // BOUCLE D'ANIMATION
   useEffect(() => {
     if (displayItems.length === 0 || !trackRef.current) return;
-
     const track = trackRef.current;
     
     const update = () => {
@@ -42,16 +40,11 @@ const SkewedCarousel = ({ items = [] }) => {
       const singleSetWidth = totalWidth / (items.length < 4 ? 6 : 3);
       
       if (!isDragging) {
-         // 🔹 PHYSIQUE : Interpolation douce
-         // Si on vient de lancer fort, currentSpeed sera élevé.
-         // Cette ligne va le faire redescendre doucement vers "baseSpeed" (0.5)
-         currentSpeed.current = gsap.utils.interpolate(currentSpeed.current, baseSpeed, friction);
-         
-         // On applique le mouvement
+         const targetSpeed = isHovering.current ? 0 : baseSpeed;
+         currentSpeed.current = gsap.utils.interpolate(currentSpeed.current, targetSpeed, friction);
          xPos.current += currentSpeed.current;
       }
 
-      // INFINI
       const wrappedX = gsap.utils.wrap(0, singleSetWidth, xPos.current);
       gsap.set(track, { x: -wrappedX });
     };
@@ -60,49 +53,44 @@ const SkewedCarousel = ({ items = [] }) => {
     return () => gsap.ticker.remove(update);
   }, [displayItems, isDragging, items]);
 
-
-  // GESTION DU DRAG
+  // GESTION DU DRAG (inchangée)
   const handleMouseDown = (e) => {
     setIsDragging(true);
     startX.current = e.clientX || e.touches[0].clientX;
     lastX.current = startX.current;
-    
-    // On arrête l'auto-scroll quand on attrape
     currentSpeed.current = 0;
-    // On reset la vélocité
     dragVelocity.current = 0;
   };
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
-    
     const clientX = e.clientX || (e.touches && e.touches[0].clientX);
     if (clientX === undefined) return;
-
     const delta = clientX - lastX.current;
     lastX.current = clientX;
-
-    // 🔹 CALCUL DU MOMENTUM :
-    // On stocke la vitesse actuelle pour l'utiliser au relâchement.
     dragVelocity.current = delta;
-
-    // Mouvement manuel (inversé comme demandé précédemment)
     xPos.current -= delta * 1.5; 
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
-    
-    // 🔹 APPLICATION DU MOMENTUM (LE LANCER) :
-    // Au moment de lâcher, on dit au moteur : "Ta vitesse est maintenant celle de mon lancer".
-    // Le signe "-" est important car on a inversé le sens du drag plus haut.
-    // Le "* 1.5" donne un peu plus de puissance au lancer.
     currentSpeed.current = -dragVelocity.current * 1.5;
+  };
+
+  const handleMouseLeave = () => {
+    isHovering.current = false;
+    if (isDragging) {
+        setIsDragging(false);
+        currentSpeed.current = 0; 
+    }
+  };
+
+  const handleMouseEnter = () => {
+    isHovering.current = true;
   };
 
   const handleWheel = (e) => {
     xPos.current -= e.deltaY * 0.5;
-    // Petit momentum sur le scroll aussi
     currentSpeed.current = -e.deltaY * 0.1;
   };
 
@@ -113,7 +101,8 @@ const SkewedCarousel = ({ items = [] }) => {
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave} 
         onTouchStart={handleMouseDown}
         onTouchMove={handleMouseMove}
         onTouchEnd={handleMouseUp}
@@ -139,9 +128,15 @@ const SkewedCarousel = ({ items = [] }) => {
                 <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform skew-x-12 scale-125 flex flex-col items-center justify-center p-4 text-center z-10">
                     <h3 className="text-2xl font-bold mb-2 text-white">{project.title}</h3>
                     <p className="text-gray-300 mb-4">{project.desc}</p>
-                    <a href={project.link || "#"} className="px-4 py-2 border border-white rounded-full text-sm uppercase tracking-widest text-white hover:bg-white hover:text-black transition-colors cursor-pointer">
+                    
+                    {/* 👇 CHANGEMENT ICI : C'est un bouton qui appelle la fonction du parent */}
+                    <button 
+                        onClick={() => onOpenProject && onOpenProject(project)}
+                        className="px-4 py-2 border border-white rounded-full text-sm uppercase tracking-widest text-white hover:bg-white hover:text-black transition-colors cursor-pointer"
+                    >
                         Voir le projet
-                    </a>
+                    </button>
+
                 </div>
               </div>
             </div>

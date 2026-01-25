@@ -1,81 +1,188 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PillNav from './PillNav';
-// Remplace par ton chemin réel
-import LOGO_PATH from '../assets/sonic.svg'; 
-
-const NAV_ITEMS = [
-  { label: 'Accueil', href: '/' },
-  { label: 'À Propos', href: '/about' },
-  { label: 'Projets', href: '/projects' },
-  { label: 'Contact', href: '/about#contact-section' } 
-];
+import { Link, useLocation } from 'react-router-dom';
+import { gsap } from 'gsap';
+import './Header.css';
 
 const Header = () => {
-  const [isHidden, setIsHidden] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const location = useLocation();
+  
+  // --- REFS ---
+  const headerRef = useRef(null);
+  const logoRef = useRef(null);
+  const navLinksRefs = useRef([]);
+  const mobileOverlayRef = useRef(null);
+  const mobileLinksRefs = useRef([]);
+  const hamburgerRef = useRef(null);
+  
+  // Pour le scroll intelligent
   const lastScrollY = useRef(0);
+  
+  // Timeline pour le menu mobile
+  const mobileTl = useRef(gsap.timeline({ paused: true }));
 
+  const navItems = [
+    { label: 'Accueil', href: '/' },
+    { label: 'À Propos', href: '/Apropos' },
+    { label: 'Projets', href: '/projects' },
+    { label: 'Contact', href: '/Apropos#contact' },
+  ];
+
+  // --- 1. ANIMATION D'ENTRÉE ---
+  // Le header descend du haut au chargement de la page
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+      
+      // On part de -100% (caché en haut) vers 0% (visible)
+      tl.fromTo(headerRef.current, 
+        { yPercent: -100 }, 
+        { yPercent: 0, duration: 0.8, ease: 'power3.out' }
+      )
+      .from(logoRef.current, {
+        opacity: 0, x: -20, duration: 0.5, ease: 'power2.out'
+      }, '-=0.4')
+      .from(navLinksRefs.current, {
+        opacity: 0, y: -10, stagger: 0.1, duration: 0.4, ease: 'power2.out'
+      }, '-=0.3');
+    }, headerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // --- 2. LOGIQUE DE SCROLL (Disparition/Apparition) ---
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      // 1. Toujours afficher si on est tout en haut de la page
-      if (currentScrollY < 50) { 
-        setIsHidden(false); 
-        lastScrollY.current = currentScrollY; 
-        return; 
+      // Si le menu mobile est ouvert, on ne fait rien (pour éviter les bugs)
+      if (isMobileOpen) return;
+
+      // Seuil de 50px pour ne pas bouger tout de suite en haut de page
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        // SCROLL VERS LE BAS -> On cache le header (-100%)
+        gsap.to(headerRef.current, {
+          yPercent: -100,
+          duration: 0.3,
+          ease: 'power2.inOut',
+          overwrite: true
+        });
+      } else if (currentScrollY < lastScrollY.current) {
+        // SCROLL VERS LE HAUT -> On montre le header (0%)
+        gsap.to(headerRef.current, {
+          yPercent: 0,
+          duration: 0.3,
+          ease: 'power2.inOut',
+          overwrite: true
+        });
       }
-      
-      // 2. Détection du sens du scroll avec un seuil (delta) de 10px
-      // Scroll vers le bas -> Cacher
-      if (currentScrollY > lastScrollY.current + 10) {
-        setIsHidden(true);
-      } 
-      // Scroll vers le haut -> Afficher
-      else if (currentScrollY < lastScrollY.current - 10) {
-        setIsHidden(false);
-      }
-      
+
       lastScrollY.current = currentScrollY;
     };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMobileOpen]);
+
+  // --- 3. MENU MOBILE (Configuration) ---
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      mobileTl.current
+        .to(mobileOverlayRef.current, {
+          opacity: 1,
+          visibility: 'visible',
+          pointerEvents: 'auto',
+          duration: 0.4,
+          ease: 'power2.inOut'
+        })
+        .to(mobileLinksRefs.current, {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 0.3,
+          ease: 'back.out(1.2)'
+        }, '-=0.2');
+    });
+    return () => ctx.revert();
   }, []);
 
-  // Logique simple pour déterminer le lien actif
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
-  const activeLink = currentPath === '/' ? '/' : `/${currentPath.split('/')[1]}` || '/';
+  // --- 4. HOVER DES LIENS ---
+  const handleMouseEnter = (e) => {
+    gsap.to(e.currentTarget, { '--underline-width': '100%', duration: 0.3, ease: 'power2.out' });
+  };
+
+  const handleMouseLeave = (e) => {
+    gsap.to(e.currentTarget, { '--underline-width': '0%', duration: 0.3, ease: 'power2.in' });
+  };
+
+  // --- 5. OUVERTURE/FERMETURE MOBILE ---
+  const toggleMenu = () => {
+    const nextState = !isMobileOpen;
+    setIsMobileOpen(nextState);
+    // Empêche le scroll de la page quand le menu est ouvert
+    document.body.style.overflow = nextState ? 'hidden' : ''; 
+    
+    if (nextState) mobileTl.current.play();
+    else mobileTl.current.reverse();
+  };
 
   return (
-    <header
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        zIndex: 100,
-        display: 'flex',
-        justifyContent: 'center',
-        paddingTop: '20px',
-        pointerEvents: 'none', /* Laisse passer les clics autour du menu */
-        transition: 'transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)', /* Transition douce */
-        transform: isHidden ? 'translateY(-150%)' : 'translateY(0)',
-      }}
-    >
-      {/* Container cliquable pour le menu lui-même */}
-      <div style={{ pointerEvents: 'auto' }}>
-        <PillNav
-          logo={LOGO_PATH}
-          logoAlt="Mon Portfolio"
-          items={NAV_ITEMS}
-          activeHref={activeLink}
-          
-          // --- CONFIGURATION DES COULEURS (Style Noir & Blanc) ---
-          baseColor="#000000"           /* Fond du Logo, du conteneur Menu et de l'animation hover */
-          pillColor="#FFFFFF"           /* Fond des boutons au repos */
-          pillTextColor="#000000"       /* Texte des boutons au repos */
-          hoveredPillTextColor="#FFFFFF" /* Texte des boutons au survol (devient blanc sur fond noir) */
-        />
+    <header className="classic-header" ref={headerRef}>
+      
+      {/* LOGO */}
+      <Link to="/" className="header-logo" ref={logoRef}>
+        <img src="/logo.svg" alt="Mon Portfolio" />
+      </Link>
+
+      {/* NAVIGATION BUREAU */}
+      <nav className="desktop-nav">
+        <ul className="nav-list">
+          {navItems.map((item, index) => (
+            <li key={index}>
+              <Link
+                to={item.href}
+                className={`nav-link ${location.pathname === item.href ? 'active' : ''}`}
+                ref={el => navLinksRefs.current[index] = el}
+                style={{ '--underline-width': '0%' }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* BOUTON BURGER (MOBILE) */}
+      <button 
+        className={`hamburger-btn ${isMobileOpen ? 'open' : ''}`} 
+        onClick={toggleMenu}
+        ref={hamburgerRef}
+      >
+        <span className="span-line line-1"></span>
+        <span className="span-line line-2"></span>
+        <span className="span-line line-3"></span>
+      </button>
+
+      {/* OVERLAY MOBILE */}
+      <div className="mobile-overlay" ref={mobileOverlayRef}>
+        <nav>
+          <ul className="mobile-nav-list">
+            {navItems.map((item, index) => (
+              <li key={index}>
+                <Link
+                  to={item.href}
+                  className="mobile-nav-link"
+                  ref={el => mobileLinksRefs.current[index] = el}
+                  onClick={toggleMenu}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </header>
   );

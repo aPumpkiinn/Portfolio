@@ -1,6 +1,5 @@
 .logoloop {
   position: relative;
-
   --logoloop-gap: 32px;
   --logoloop-logoHeight: 28px;
   --logoloop-fadeColorAuto: #ffffff;
@@ -26,7 +25,6 @@
   display: flex;
   width: max-content;
   will-change: transform;
-  user-select: none;
   position: relative;
   z-index: 0;
 }
@@ -175,9 +173,7 @@
   .logoloop__track {
     transform: translate3d(0, 0, 0) !important;
   }
-
-  .logoloop__item img,
-  .logoloop__node {
+  .logoloop__item img, .logoloop__node {
     transition: none !important;
   }
 }

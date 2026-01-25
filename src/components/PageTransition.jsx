@@ -1,93 +1,48 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
+import React, { useLayoutEffect } from 'react'; // 👈 Notez useLayoutEffect
+import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
-const PageTransition = ({ onComplete }) => {
-  const containerRef = useRef(null);
-  const contentRef = useRef(null);
-  const barRef = useRef(null);
-  const [counter, setCounter] = useState(0);
+const PageTransition = ({ children }) => {
+  const { pathname } = useLocation();
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        // Une fois l'animation finie, on dit à App.jsx de supprimer ce composant
-        onComplete: () => {
-          if (onComplete) onComplete();
-        }
-      });
-
-      const counterObj = { value: 0 };
-      
-      // 1. Animation simultanée (Compteur + Barre)
-      tl.to(counterObj, {
-        value: 100,
-        duration: 0.8,
-        ease: "power2.out",
-        onUpdate: () => setCounter(Math.floor(counterObj.value))
-      }, 0);
-
-      tl.to(barRef.current, {
-        width: "100%", // La barre se remplit
-        duration: 0.8,
-        ease: "power2.out"
-      }, 0);
-
-      // 2. Le contenu disparaît
-      tl.to(contentRef.current, {
-        opacity: 0,
-        y: -10,
-        duration: 0.3,
-        ease: "power2.in",
-        delay: 0.2
-      });
-
-      // 3. Le rideau noir remonte
-      tl.to(containerRef.current, {
-        height: 0,
-        duration: 0.8,
-        ease: "expo.inOut"
-      });
-
-    }, containerRef);
+  // 👇 C'EST ICI QUE LA MAGIE OPÈRE
+  useLayoutEffect(() => {
+    // 1. On coupe la restauration automatique du navigateur
+    if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+    }
     
+    // 2. On force le scroll à 0,0 AVANT même que l'animation commence
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0; // Pour Safari
+    document.documentElement.scrollTop = 0; // Pour Chrome/Firefox
     
-    
-    return () => ctx.revert();
-  }, [onComplete]);
-
-  
-    
+  }, [pathname]); // Se déclenche à CHAQUE changement de lien
 
   return (
-    <div 
-      ref={containerRef} 
-      // CHANGEMENT ICI : z-[100000] pour être sûr qu'il est AU-DESSUS du Header
-      className="fixed inset-0 z-[100000] bg-[#060010] flex items-center justify-center overflow-hidden px-6"
-      style={{ width: '100%', height: '100vh' }}
-    
-      ref={containerRef} 
-      className="fixed inset-0 z-[9999] bg-[#060010] flex items-center justify-center overflow-hidden px-6"
-      style={{ width: '100%', height: '100vh' }}
-    >
-      {/* Conteneur Flex : Barre à gauche, Texte à droite */}
-      <div ref={contentRef} className="flex items-center w-full max-w-md gap-4">
+    <>
+      {/* 1. CONTENU DU SITE */}
+      <motion.div
+        className="relative z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        {children}
+      </motion.div>
+
+      {/* 2. LE RIDEAU NOIR (STINGER) */}
+      <motion.div
+        className="fixed inset-0 bg-black z-[99999] pointer-events-none"
         
-        {/* La Barre */}
-        <div className="flex-grow h-[3px] bg-gray-800 rounded-full overflow-hidden">
-            <div 
-                ref={barRef} 
-                className="h-full bg-white" // Mettez bg-[#8400ff] si vous voulez du violet
-                style={{ width: '0%' }} 
-            />
-        </div>
-
-        {/* Le Pourcentage */}
-        <div className="text-white text-xl font-bold font-sans min-w-[3ch] text-right">
-          {counter}%
-        </div>
-
-      </div>
-    </div>
+        initial={{ scaleY: 1, originY: 0 }} 
+        animate={{ scaleY: 0, originY: 0 }} 
+        exit={{ scaleY: 1, originY: 1 }}    
+        
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} 
+      />
+    </>
   );
 };
 
