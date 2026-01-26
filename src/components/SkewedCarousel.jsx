@@ -16,21 +16,21 @@ const SkewedCarousel = ({ items = [], onOpenProject }) => {
   const currentSpeed = useRef(baseSpeed); 
   const friction = 0.05;
 
-  // 👇 RESET DE LA POSITION AU CHANGEMENT DE CATÉGORIE
+  // Fonction pour attribuer la police selon la catégorie du projet
+  const getProjectFont = (category) => {
+    if (category === 'Infographie' || category === 'Design UI') return 'font-rumei';
+    if (category === 'Web') return 'font-octuple';
+    return '';
+  };
+
   useEffect(() => {
     if (items.length === 0) return;
-    
-    // On remet le carrousel au début
     xPos.current = 0; 
-    
-    // On duplique les items pour l'effet infini
     const needed = items.length < 4 ? 6 : 3; 
     const duplicated = Array(needed).fill(items).flat();
     setDisplayItems(duplicated);
-
-    // Petit effet de fondu GSAP pour adoucir le changement de catégorie
     gsap.fromTo(trackRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 });
-  }, [items]); // Surveille les changements de la liste filtrée
+  }, [items]);
 
   useEffect(() => {
     if (displayItems.length === 0 || !trackRef.current) return;
@@ -54,7 +54,6 @@ const SkewedCarousel = ({ items = [], onOpenProject }) => {
     return () => gsap.ticker.remove(update);
   }, [displayItems, isDragging, items]);
 
-  // --- Gestion du Drag ---
   const handleMouseDown = (e) => {
     setIsDragging(true);
     const clientX = e.clientX || (e.touches && e.touches[0].clientX);
@@ -94,12 +93,16 @@ const SkewedCarousel = ({ items = [], onOpenProject }) => {
                 <div className="w-full h-full transform skew-x-12 scale-125 origin-center transition-transform duration-700 group-hover:scale-150">
                   <img src={project.image} alt={project.title} className="w-full h-full object-cover opacity-80" draggable="false" />
                 </div>
-                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform skew-x-12 scale-125 flex flex-col items-center justify-center p-4 text-center z-10">
-                    <h3 className="text-2xl font-bold mb-2 text-white">{project.title}</h3>
-                    <p className="text-gray-300 mb-4">{project.desc}</p>
+                
+                {/* Overlay : Toujours visible sur mobile, hover sur desktop */}
+                <div className="absolute inset-0 bg-black/70 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 transform skew-x-12 scale-125 flex flex-col items-center justify-center p-4 text-center z-10">
+                    <h3 className={`text-2xl font-bold mb-2 text-white ${getProjectFont(project.category)}`}>
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-300 mb-4 text-sm md:text-base">{project.desc}</p>
                     <button 
                         onClick={(e) => { e.stopPropagation(); onOpenProject(project); }}
-                        className="px-6 py-2 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors cursor-pointer"
+                        className="px-6 py-2 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors cursor-pointer text-xs font-bold uppercase"
                     >
                         Voir le projet
                     </button>

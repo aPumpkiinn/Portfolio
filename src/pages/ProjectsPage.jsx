@@ -3,7 +3,7 @@ import SkewedCarousel from '../components/SkewedCarousel';
 import PageTransition from '../components/PageTransition';
 import { SiFigma, SiAdobeillustrator, SiReact, SiVite, SiTailwindcss } from 'react-icons/si';
 
-// --- DATA COMPLÈTE (Avec les descriptions pour le modal) ---
+// --- DATA COMPLÈTE ---
 const ALL_PROJECTS = [
   { 
     id: 1, 
@@ -60,13 +60,26 @@ const ProjectsPage = ({ onOpenProject }) => {
     activeTab === "Tous" ? ALL_PROJECTS : ALL_PROJECTS.filter(p => p.category === activeTab)
   ), [activeTab]);
 
+  // Détermination de la police selon la catégorie active
+  const getFontClass = () => {
+    switch (activeTab) {
+      case 'Infographie':
+      case 'Design UI':
+        return 'font-rumei'; // Rumei House Regular par Imoodev
+      case 'Web':
+        return 'font-octuple'; // Octuple Max Solid par deFharo
+      default:
+        return 'font-title'; // Police par défaut pour "Mes Créations"
+    }
+  };
+
   return (
     <PageTransition>
       <title>{`Mes Projets | ${activeTab} — Portfolio`}</title>
       
       <main className="min-h-screen bg-black pt-32 px-4 select-none">
         <header className="text-center mb-16 h-24 flex items-center justify-center">
-          <h1 className={`text-6xl md:text-8xl font-bold uppercase tracking-tighter ${activeTab === 'Infographie' ? 'font-rumei' : 'font-title'}`}>
+          <h1 className={`text-6xl md:text-8xl font-bold uppercase tracking-tighter transition-all duration-500 ${getFontClass()}`}>
             {activeTab === "Tous" ? "Mes Créations" : activeTab}
           </h1>
         </header>
@@ -88,7 +101,6 @@ const ProjectsPage = ({ onOpenProject }) => {
         </nav>
 
         <section className="w-full pb-32">
-          {/* Les objets passés ici contiennent maintenant les descriptions complètes */}
           <SkewedCarousel key={activeTab} items={filteredProjects} onOpenProject={onOpenProject} />
         </section>
       </main>
