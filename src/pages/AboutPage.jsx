@@ -86,7 +86,7 @@ const AboutPage = ({ onOpenContact }) => {
               <FadeIn delay={0.4} direction="left">
                   <div className="h-[450px] w-full max-w-md mx-auto lg:mx-0 rounded-[40px] overflow-hidden border border-white/5 shadow-2xl transition-all duration-500 hover:border-white/20">
                       <img 
-                        src="public/moi.webp" // Chemin conservé selon ton souhait
+                        src="img/Moi.webp"  // Retour au lien normal
                         alt="Kevin Anguile-Diop" 
                         className="w-full h-full object-cover block filter grayscale hover:grayscale-0 transition-all duration-700"
                       />
@@ -162,7 +162,7 @@ const AboutPage = ({ onOpenContact }) => {
                       </a>
                   </div>
                   <a 
-                    href="public/cv.pdf" // Chemin avec public/ ici aussi
+                    href="/cv.pdf" // Retour au lien normal
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-xl font-bold underline underline-offset-8 decoration-1 hover:text-[#646cff] transition-colors mb-16 uppercase tracking-widest"

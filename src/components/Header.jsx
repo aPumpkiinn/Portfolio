@@ -36,7 +36,7 @@ const Header = ({ items = [] }) => {
       {/* --- LOGO --- */}
       <Link to="/" style={{ display: 'flex', alignItems: 'center', transition: 'transform 0.3s' }}>
         <img 
-          src="/logo.webp" 
+          src="img/logo.webp" 
           alt="Logo" 
           style={{ 
             height: scrolled ? '30px' : '40px', 
