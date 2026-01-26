@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom'; // Import de Link ajouté
 
 import Header from '../components/Header';
 import DarkVeil from '../components/DarkVeil'; 
@@ -76,7 +76,7 @@ const AboutPage = ({ onOpenContact }) => {
                       </p>
 
                       <p className="text-lg md:text-xl text-gray-100 leading-relaxed max-w-lg font-medium border-l-2 border-[#646cff] pl-4">
-                          Dans cette optique, je suis actuellement à la recherche d'un stage de <span className="text-[#646cff]">2-3 mois</span> à partir d'<span className="text-[#646cff]">Avril</span>. 
+                          Dans cette optique, je suis actuellement à la recherche d'un stage de <span className="text-[#646cff]">2-3 mois</span> à partir d' <span className="text-[#646cff]">Avril</span>. 
                           Je souhaite rejoindre une équipe passionnée où je pourrai apporter ma rigueur et ma créativité, 
                           tout en continuant à apprendre aux côtés de professionnels.
                       </p>
@@ -86,7 +86,7 @@ const AboutPage = ({ onOpenContact }) => {
               <FadeIn delay={0.4} direction="left">
                   <div className="h-[450px] w-full max-w-md mx-auto lg:mx-0 rounded-[40px] overflow-hidden border border-white/5 shadow-2xl transition-all duration-500 hover:border-white/20">
                       <img 
-                        src="img/Moi.webp"  // Retour au lien normal
+                        src="img/Moi.webp" 
                         alt="Kevin Anguile-Diop" 
                         className="w-full h-full object-cover block filter grayscale hover:grayscale-0 transition-all duration-700"
                       />
@@ -162,7 +162,7 @@ const AboutPage = ({ onOpenContact }) => {
                       </a>
                   </div>
                   <a 
-                    href="/cv.pdf" // Retour au lien normal
+                    href="/cv.pdf" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-xl font-bold underline underline-offset-8 decoration-1 hover:text-[#646cff] transition-colors mb-16 uppercase tracking-widest"
@@ -185,6 +185,16 @@ const AboutPage = ({ onOpenContact }) => {
                 </FadeIn>
             </div>
         </div>
+
+        {/* Pied de page avec lien vers les Mentions Légales */}
+        <footer className="py-12 bg-black text-center border-t border-white/5">
+            <Link 
+                to="/mentions-legales" 
+                className="text-xs text-white/30 hover:text-[#646cff] transition-colors uppercase tracking-[0.2em]"
+            >
+                Mentions Légales
+            </Link>
+        </footer>
 
       </div>
     </PageTransition>

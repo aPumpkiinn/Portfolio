@@ -16,7 +16,6 @@ const SkewedCarousel = ({ items = [], onOpenProject }) => {
   const currentSpeed = useRef(baseSpeed); 
   const friction = 0.05;
 
-  // Fonction pour attribuer la police selon la catégorie du projet
   const getProjectFont = (category) => {
     if (category === 'Infographie' || category === 'Design UI') return 'font-rumei';
     if (category === 'Web') return 'font-octuple';
@@ -34,10 +33,9 @@ const SkewedCarousel = ({ items = [], onOpenProject }) => {
 
   useEffect(() => {
     if (displayItems.length === 0 || !trackRef.current) return;
-    const track = trackRef.current;
     
     const update = () => {
-      const totalWidth = track.scrollWidth;
+      const totalWidth = trackRef.current.scrollWidth;
       const singleSetWidth = totalWidth / (items.length < 4 ? 6 : 3);
       
       if (!isDragging) {
@@ -47,7 +45,7 @@ const SkewedCarousel = ({ items = [], onOpenProject }) => {
       }
 
       const wrappedX = gsap.utils.wrap(0, singleSetWidth, xPos.current);
-      gsap.set(track, { x: -wrappedX });
+      gsap.set(trackRef.current, { x: -wrappedX });
     };
 
     gsap.ticker.add(update);
@@ -89,22 +87,33 @@ const SkewedCarousel = ({ items = [], onOpenProject }) => {
         <div ref={trackRef} className="flex space-x-8 px-4 w-max select-none" style={{ willChange: 'transform' }}>
           {displayItems.map((project, index) => (
             <div key={`${project.id}-${index}`} className="flex-shrink-0 group relative pointer-events-none"> 
-              <div className="relative w-[280px] h-[400px] md:w-[350px] md:h-[500px] overflow-hidden border border-white/30 rounded-2xl transform -skew-x-12 transition-all duration-500 hover:border-white bg-gray-900 mx-4 pointer-events-auto">
-                <div className="w-full h-full transform skew-x-12 scale-125 origin-center transition-transform duration-700 group-hover:scale-150">
-                  <img src={project.image} alt={project.title} className="w-full h-full object-cover opacity-80" draggable="false" />
+              <div className="relative w-[280px] h-[400px] md:w-[350px] md:h-[500px] overflow-hidden border border-white/20 rounded-2xl transform -skew-x-12 transition-all duration-500 bg-black mx-4 pointer-events-auto">
+                
+                {/* Image avec blending Mask radial sur TOUTES les images */}
+                <div className="w-full h-full transform skew-x-12 scale-150 origin-center transition-transform duration-700 group-hover:scale-125">
+                  <img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover object-center opacity-70" 
+                    style={{
+                      maskImage: 'radial-gradient(circle, black 45%, transparent 100%)',
+                      WebkitMaskImage: 'radial-gradient(circle, black 45%, transparent 100%)'
+                    }}
+                    draggable="false" 
+                  />
                 </div>
                 
-                {/* Overlay : Toujours visible sur mobile, hover sur desktop */}
-                <div className="absolute inset-0 bg-black/70 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 transform skew-x-12 scale-125 flex flex-col items-center justify-center p-4 text-center z-10">
+                {/* Overlay Textuel */}
+                <div className="absolute inset-0 bg-black/40 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 transform skew-x-12 scale-150 flex flex-col items-center justify-center p-6 text-center z-10">
                     <h3 className={`text-2xl font-bold mb-2 text-white ${getProjectFont(project.category)}`}>
                       {project.title}
                     </h3>
-                    <p className="text-gray-300 mb-4 text-sm md:text-base">{project.desc}</p>
+                    <p className="text-gray-300 mb-6 text-sm italic">{project.desc}</p>
                     <button 
                         onClick={(e) => { e.stopPropagation(); onOpenProject(project); }}
-                        className="px-6 py-2 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors cursor-pointer text-xs font-bold uppercase"
+                        className="px-6 py-2 border border-white rounded-full text-white hover:bg-white hover:text-black transition-all cursor-pointer text-xs font-bold uppercase tracking-widest"
                     >
-                        Voir le projet
+                        Détails
                     </button>
                 </div>
               </div>

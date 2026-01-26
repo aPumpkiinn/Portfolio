@@ -2,40 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- POLICES OPTIMISÉES --- */
+/* --- POLICES --- */
+@font-face {
+  font-family: 'RumeiHouse';
+  src: url('/fonts/Rumei House.otf') format('opentype');
+  font-weight: normal;
+  font-display: swap;
+}
 
-/* Base : DM Sans */
+@font-face {
+  font-family: 'OctupleMax';
+  src: url('/fonts/Octuple-max-demo.ttf') format('truetype');
+  font-weight: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'DM Sans';
   src: url('/fonts/DMSans-Regular.woff2') format('woff2');
   font-weight: 400;
-  font-display: swap;
-}
-
-/* Infographie & Design : Rumei House Regular */
-@font-face {
-  font-family: 'RumeiHouse';
-  src: url('/fonts/Rumei House.otf') format('opentype'); /* Format OpenType (OTTO)  */
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Développement : Octuple Max Solid */
-@font-face {
-  font-family: 'OctupleMax';
-  src: url('/fonts/Octuple-max-demo.ttf') format('truetype'); /* Format TrueType  */
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Police de titre générique (optionnelle) */
-@font-face {
-  font-family: 'TitleFont';
-  src: url('/fonts/votre-police-titre.woff2') format('woff2');
-  font-weight: 700;
-  font-display: swap;
 }
 
 /* --- STRUCTURE --- */
@@ -47,30 +32,20 @@ html, body {
   background-color: #000;
   color: #fff;
   overflow-x: hidden;
-  scroll-behavior: smooth;
 }
 
 :root {
   font-family: 'DM Sans', system-ui, sans-serif;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-/* --- UTILITAIRES TAILWIND --- */
 @layer utilities {
-  .font-rumei {
-    font-family: 'RumeiHouse', sans-serif;
-  }
-  .font-octuple {
-    font-family: 'OctupleMax', sans-serif;
-  }
+  .font-rumei { font-family: 'RumeiHouse', sans-serif; }
+  .font-octuple { font-family: 'OctupleMax', sans-serif; }
 }
 
-/* Utils classiques */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
+.scrollbar-hide::-webkit-scrollbar { display: none; }

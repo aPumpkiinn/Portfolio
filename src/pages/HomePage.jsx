@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Hero from '../components/Hero'; 
 import FlowingMenu from '../components/FlowingMenu'; 
 import DarkVeil from '../components/DarkVeil'; 
@@ -26,57 +26,20 @@ const HomePage = () => {
 
   const handleMenuClick = useCallback((item) => {
     if (item.link) {
-      navigate(item.link, { state: { category: item.filter || 'Tous' } });
+      navigate(item.link, { state: { filter: item.filter } });
     }
   }, [navigate]);
 
   return (
     <PageTransition>
-      <title>Kevin Anguile-Diop | Portfolio</title>
-      <meta name="description" content="Portfolio de Kevin Anguile-Diop - Designer et Développeur." />
-
-      <div className="min-h-screen relative bg-black">
-        <main>
+      <main className="bg-black min-h-screen">
           {/* SECTION HERO */}
-          <section id="home" className="min-h-screen flex items-center justify-center relative bg-transparent overflow-hidden">
-            <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
-              <DarkVeil 
-                speed={0.5} 
-                noiseIntensity={0.02}
-                scanlineIntensity={0.05}
-                scanlineFrequency={2.0}
-                warpAmount={0.02}
-                resolutionScale={1}
-              />
+          <section id="home" className="relative h-screen w-full overflow-hidden">
+            <div className="absolute inset-0 z-0">
+              <DarkVeil hueShift={0} noiseIntensity={0.05} scanlineIntensity={0.2} speed={0.5} />
             </div>
-            <div className="relative z-10 w-full flex items-center justify-center">
-              <Hero />
-            </div>
-          </section>
-
-          {/* SECTION A PROPOS (TEASER) */}
-          <section className="py-24 px-6 bg-black text-white flex flex-col items-center text-center relative z-10">
-            <div className="max-w-3xl">
-              <FadeIn direction="up">
-                <h2 className="text-3xl md:text-5xl font-title mb-8 uppercase tracking-wider">
-                  À Propos de moi
-                </h2>
-              </FadeIn>
-              <FadeIn delay={0.2} direction="up">
-                <p className="text-gray-400 text-lg md:text-xl leading-relaxed mb-10">
-                  Bienvenue dans mon univers numérique. Je suis un créateur passionné par l'intersection 
-                  entre le design et la technologie.
-                </p>
-              </FadeIn>
-              <FadeIn delay={0.4} direction="up">
-                <button 
-                  onClick={() => navigate('/Apropos')}
-                  className="px-8 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-all duration-300 uppercase tracking-widest text-sm font-semibold"
-                  aria-label="En savoir plus sur Kevin Anguile-Diop"
-                >
-                  En savoir plus
-                </button>
-              </FadeIn>
+            <div className="relative z-10 h-full">
+              <Hero navItems={NAV_ITEMS} />
             </div>
           </section>
 
@@ -89,7 +52,6 @@ const HomePage = () => {
             </FadeIn>
             <FadeIn delay={0.2} duration={1.5}>
               <div className="relative h-[600px] w-full">
-                {/* ✅ MODIFICATION : bgColor est maintenant en noir pur #000000 */}
                 <FlowingMenu 
                   items={PROJECT_CATEGORIES} 
                   bgColor="#000000" 
@@ -108,12 +70,17 @@ const HomePage = () => {
           </section>
         </main>
 
-        <footer className="py-8 bg-black border-t border-white/5 text-white text-center">
+        <footer className="py-12 bg-black border-t border-white/5 text-center flex flex-col items-center gap-4">
           <p className="text-gray-500 text-sm tracking-widest">
-            &copy; {new Date().getFullYear()} — MON PORTFOLIO. TOUS DROITS RÉSERVÉS.
+            © 2026 Kevin Anguile Diop — Tous droits réservés
           </p>
+          <Link 
+            to="/mentions-legales" 
+            className="text-xs text-gray-600 hover:text-[#646cff] transition-colors uppercase tracking-[0.2em]"
+          >
+            Mentions Légales
+          </Link>
         </footer>
-      </div>
     </PageTransition>
   );
 };

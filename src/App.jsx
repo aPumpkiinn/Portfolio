@@ -7,6 +7,7 @@ import ProjectModal from './components/ProjectModal';
 import ContactModal from './components/ContactModal';
 import ScrollToTop from './components/ScrollToTop';
 
+
 // Lazy loading pour alléger le thread principal au démarrage
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
@@ -53,5 +54,12 @@ function App() {
     </div>
   );
 }
+import MentionsLegales from './pages/MentionsLegales';
+
+// Dans votre composant App ou Router :
+<Routes>
+  <Route path="/" element={<ProjectsPage />} />
+  <Route path="/mentions-legales" element={<MentionsLegales />} />
+</Routes>
 
 export default App;
