@@ -4,11 +4,11 @@ import DarkVeil from './DarkVeil';
 const Hero = () => {
   return (
     <div 
-      className="relative w-full min-h-screen flex items-center justify-center bg-black overflow-hidden box-border px-5 py-[60px]"
-      fetchpriority="high" /* Indique au navigateur de traiter ce bloc en priorité LCP */
+      className="relative w-full min-h-screen flex items-center bg-black overflow-hidden box-border px-8 md:px-20 py-[60px]"
+      fetchpriority="high"
     >
       
-      {/* Background Shader - Chargement optimisé */}
+      {/* Background Shader */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <DarkVeil
           hueShift={0}
@@ -21,14 +21,14 @@ const Hero = () => {
         />
       </div>
 
-      {/* Contenu principal */}
-      <div className="relative z-10 w-full max-w-[1200px] px-6 text-center">
+      {/* Contenu principal aligné à gauche */}
+      <div className="relative z-10 w-full max-w-[1200px] text-left">
           
         <p className="text-white text-sm tracking-[0.3em] uppercase mb-8 font-sans opacity-80">
           Portfolio
         </p>
 
-        {/* Titre Principal - Utilisation de vos polices optimisées */}
+        {/* Titre Principal */}
         <h1 className="text-white font-light leading-none tracking-tighter mb-6 text-[clamp(3rem,12vw,9rem)] uppercase">
           ANGUILE-DIOP
           <br />
@@ -37,21 +37,19 @@ const Hero = () => {
           </span>
         </h1>
 
-        <p className="text-white font-light leading-relaxed mx-auto mb-12 max-w-[700px] text-[clamp(1.25rem,3vw,1.875rem)]">
+        <p className="text-white font-light leading-relaxed mb-12 max-w-[700px] text-[clamp(1.25rem,3vw,1.875rem)]">
           Aspirant infographiste de <span className="font-bold">BUT MMI</span>, en recherche de stage.
         </p>
 
-        {/* Actions - Boutons en Noir et Blanc comme demandé */}
-        <div className="flex flex-wrap gap-4 justify-center">
-          <a 
-            href="#projects" 
-            className="px-7 py-3.5 bg-white text-black no-underline font-bold uppercase text-xs tracking-widest hover:bg-gray-200 transition-colors"
-          >
-            Voir mes projets
-          </a>
+        {/* Actions et Présentation alignés à gauche */}
+       
+
+          <p className="text-white/50 text-base md:text-xl font-light tracking-wide italic max-w-xl border-l border-[#646cff]/30 pl-6">
+            Bonjour ! Je suis Kevin, un créatif passionné par le dessin, le design, et les jeux vidéo 
+            toujours en quête de nouvelles idées à exprimés et concretisé .
+          </p>
         </div>
       </div>
-    </div>
   );
 };
 

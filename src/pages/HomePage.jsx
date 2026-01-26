@@ -47,7 +47,7 @@ const HomePage = () => {
           <section id="projects" className="bg-black pb-12">
             <FadeIn direction="down">
               <h2 className="text-4xl md:text-6xl font-title text-white text-center py-10">
-                Mes Projets Récents
+                Mes Différents Projets
               </h2>
             </FadeIn>
             <FadeIn delay={0.2} duration={1.5}>
