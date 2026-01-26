@@ -34,7 +34,7 @@ const Header = ({ items = [], onOpenContact }) => {
       {/* --- LOGO --- */}
       <Link to="/" style={{ display: 'flex', alignItems: 'center', zIndex: 110 }}>
         <img 
-          src="img/logo.webp" 
+          src="/img/logo.webp" 
           alt="Logo" 
           width="142" 
           height="70"
