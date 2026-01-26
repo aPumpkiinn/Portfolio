@@ -137,7 +137,7 @@ const ContactModal = ({ isOpen, onClose }) => {
             <div className="h-full flex flex-col items-center justify-center py-12 text-center space-y-4">
               <FiCheckCircle size={64} className="text-[#646cff] animate-bounce" />
               <h3 className="text-2xl font-title uppercase">C'est envoyé !</h3>
-              <p className="text-gray-400">Merci Kevin, je te répondrai très vite.</p>
+              <p className="text-gray-400">Merci à vous, je vous répondrai très vite.</p>
             </div>
           ) : (
             <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
