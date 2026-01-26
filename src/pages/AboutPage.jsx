@@ -162,7 +162,7 @@ const AboutPage = ({ onOpenContact }) => {
                       </a>
                   </div>
                   <a 
-                    href="img/cv.pdf" 
+                    href="public/CV.pdf" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-xl font-bold underline underline-offset-8 decoration-1 hover:text-[#646cff] transition-colors mb-16 uppercase tracking-widest"
