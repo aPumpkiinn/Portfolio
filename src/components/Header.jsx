@@ -21,19 +21,18 @@ const Header = ({ items = [], onOpenContact }) => {
       width: '100%',
       zIndex: 100,
       padding: scrolled ? '10px 40px' : '20px 40px',
-      backgroundColor: scrolled ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.4)',
+      backgroundColor: scrolled ? 'rgba(0, 0, 0, 0.95)' : 'rgba(0, 0, 0, 0.4)',
       backdropFilter: 'blur(10px)',
       WebkitBackdropFilter: 'blur(10px)',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      transition: 'padding 0.4s ease, background-color 0.4s ease',
-      animation: 'slideDown 0.8s ease-out forwards',
+      transition: 'all 0.4s ease',
       boxSizing: 'border-box'
     }}>
       
       {/* --- LOGO --- */}
-      <Link to="/" aria-label="Accueil" style={{ display: 'flex', alignItems: 'center' }}>
+      <Link to="/" style={{ display: 'flex', alignItems: 'center', zIndex: 110 }}>
         <img 
           src="img/logo.webp" 
           alt="Logo" 
@@ -47,8 +46,8 @@ const Header = ({ items = [], onOpenContact }) => {
         />
       </Link>
 
-      {/* --- NAVIGATION & ACTIONS --- */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        {/* --- NAVIGATION --- */}
         <nav className={`nav-menu ${isOpen ? 'open' : ''}`}>
           <ul className="nav-list">
             {items.map((item, index) => (
@@ -58,35 +57,45 @@ const Header = ({ items = [], onOpenContact }) => {
                 </Link>
               </li>
             ))}
+            {/* Bouton contact intégré au menu mobile pour plus d'espace */}
+            <li className="mobile-only">
+              <button 
+                onClick={() => { onOpenContact(); setIsOpen(false); }}
+                className="nav-link"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#646cff' }}
+              >
+                Contact
+              </button>
+            </li>
           </ul>
         </nav>
 
         {/* --- BOUTON CONTACT (DESKTOP) --- */}
         <button 
           onClick={onOpenContact}
-          className="contact-btn-header"
+          className="contact-btn-desktop"
           style={{
             backgroundColor: 'white',
             color: 'black',
             border: 'none',
-            padding: '8px 20px',
-            fontSize: '0.75rem',
+            padding: '10px 24px',
+            fontSize: '0.7rem',
             fontWeight: 'bold',
             textTransform: 'uppercase',
-            letterSpacing: '0.1em',
+            letterSpacing: '0.2em',
             cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            borderRadius: '2px'
+            borderRadius: '2px',
+            transition: 'all 0.3s ease'
           }}
         >
           Contact
         </button>
 
-        {/* --- BOUTON HAMBURGER (MOBILE) --- */}
+        {/* --- HAMBURGER --- */}
         <button 
           onClick={() => setIsOpen(!isOpen)} 
           className="hamburger-btn"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '5px' }}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', zIndex: 110 }}
         >
           <div style={{ ...lineStyle, transform: isOpen ? 'rotate(45deg) translate(5px, 5px)' : '' }}></div>
           <div style={{ ...lineStyle, opacity: isOpen ? 0 : 1 }}></div>
@@ -98,37 +107,48 @@ const Header = ({ items = [], onOpenContact }) => {
         .nav-link {
           color: #ffffff;
           text-decoration: none;
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           text-transform: uppercase;
-          letter-spacing: 0.1em;
-          opacity: 0.7;
-          transition: opacity 0.3s;
+          letter-spacing: 0.15em;
+          opacity: 0.6;
+          transition: 0.3s;
         }
         .nav-link:hover { opacity: 1; }
 
-        .contact-btn-header:hover {
+        .contact-btn-desktop:hover {
           background-color: #646cff;
           color: white;
         }
 
         @media (max-width: 768px) {
-          .contact-btn-header { display: none; } /* On cache le bouton sur mobile pour utiliser le burger */
+          .contact-btn-desktop { display: none; }
+          
           .nav-menu {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(0,0,0,0.98);
+            background: #000;
             display: flex; align-items: center; justify-content: center;
             transform: translateY(-100%);
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
           }
           .nav-menu.open { transform: translateY(0); }
-          .nav-list { flex-direction: column; gap: 30px; list-style: none; text-align: center; }
-          .nav-link { font-size: 1.5rem; }
+          
+          /* ESPACEMENT DES BOUTONS ICI */
+          .nav-list { 
+            display: flex;
+            flex-direction: column; 
+            gap: 50px; /* Augmenté pour un menu plus aéré */
+            list-style: none; 
+            text-align: center;
+            padding: 0;
+          }
+          .nav-link { font-size: 1.8rem; font-weight: 300; }
+          .mobile-only { display: block; }
         }
 
         @media (min-width: 769px) {
-          .hamburger-btn { display: none; }
-          .nav-list { display: flex; gap: 35px; list-style: none; margin: 0; padding: 0; }
+          .hamburger-btn, .mobile-only { display: none; }
+          .nav-list { display: flex; gap: 40px; list-style: none; }
         }
       `}</style>
     </header>
@@ -136,11 +156,7 @@ const Header = ({ items = [], onOpenContact }) => {
 };
 
 const lineStyle = {
-  width: '24px',
-  height: '2px',
-  backgroundColor: 'white',
-  margin: '5px 0',
-  transition: '0.4s ease',
+  width: '24px', height: '2px', backgroundColor: 'white', margin: '5px 0', transition: '0.4s'
 };
 
 export default Header;
