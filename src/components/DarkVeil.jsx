@@ -9,7 +9,7 @@ void main(){gl_Position=vec4(position,0.0,1.0);}
 
 const fragment = `
 #ifdef GL_ES
-precision lowp float;
+precision highp float; // On remet en highp pour garder la finesse des détails
 #endif
 uniform vec2 uResolution;
 uniform float uTime;
@@ -18,10 +18,8 @@ uniform float uNoise;
 uniform float uScan;
 uniform float uScanFreq;
 uniform float uWarp;
-#define iTime uTime
-#define iResolution uResolution
 
-vec4 buf[8];
+vec4 sigmoid(vec4 x){return 1./(1.+exp(-x));}
 float rand(vec2 c){return fract(sin(dot(c,vec2(12.9898,78.233)))*43758.5453);}
 
 mat3 rgb2yiq=mat3(0.299,0.587,0.114,0.596,-0.274,-0.322,0.211,-0.523,0.312);
@@ -35,9 +33,9 @@ vec3 hueShiftRGB(vec3 col,float deg){
     return clamp(yiq2rgb*yiqShift,0.0,1.0);
 }
 
-vec4 sigmoid(vec4 x){return 1./(1.+exp(-x));}
-
+// TA FONCTION CPPN ORIGINALE (RESTAURÉE)
 vec4 cppn_fn(vec2 coordinate,float in0,float in1,float in2){
+    vec4 buf[8];
     buf[6]=vec4(coordinate.x,coordinate.y,0.3948333106474662+in0,0.36+in1);
     buf[7]=vec4(0.14+in2,sqrt(coordinate.x*coordinate.x+coordinate.y*coordinate.y),0.,0.);
     buf[0]=mat4(vec4(6.5404263,-3.6126034,0.7590882,-1.13613),vec4(2.4582713,3.1660357,1.2219609,0.06276096),vec4(-5.478085,-6.159632,1.8701609,-4.7742867),vec4(6.039214,-5.542865,-0.90925294,3.251348))*buf[6]+mat4(vec4(0.8473259,-5.722911,3.975766,1.6522468),vec4(-0.24321538,0.5839259,-1.7661959,-5.350116),vec4(0.,0.,0.,0.),vec4(0.,0.,0.,0.))*buf[7]+vec4(0.21808943,1.1243913,-1.7969975,5.0294676);
@@ -57,20 +55,20 @@ vec4 cppn_fn(vec2 coordinate,float in0,float in1,float in2){
     return vec4(buf[0].x,buf[0].y,buf[0].z,1.);
 }
 
-void mainImage(out vec4 fragColor,in vec2 fragCoord){
-    vec2 uv=fragCoord/uResolution.xy*2.-1.;
-    uv.y*=-1.;
-    uv+=uWarp*vec2(sin(uv.y*6.283+uTime*0.5),cos(uv.x*6.283+uTime*0.5))*0.05;
-    fragColor=cppn_fn(uv,0.1*sin(0.3*uTime),0.1*sin(0.69*uTime),0.1*sin(0.44*uTime));
-}
-
 void main(){
-    vec4 col;mainImage(col,gl_FragCoord.xy);
-    col.rgb=hueShiftRGB(col.rgb,uHueShift);
-    float scanline_val=sin(gl_FragCoord.y*uScanFreq)*0.5+0.5;
-    col.rgb*=1.-(scanline_val*scanline_val)*uScan;
-    col.rgb+=(rand(gl_FragCoord.xy+uTime)-0.5)*uNoise;
-    gl_FragColor=vec4(clamp(col.rgb,0.0,1.0),1.0);
+    vec2 uv = (gl_FragCoord.xy / uResolution.xy) * 2.0 - 1.0;
+    uv.y *= -1.0;
+    // On garde l'effet de warp
+    uv += uWarp * vec2(sin(uv.y * 6.28 + uTime * 0.5), cos(uv.x * 6.28 + uTime * 0.5)) * 0.05;
+    
+    vec4 col = cppn_fn(uv, 0.1*sin(0.3*uTime), 0.1*sin(0.69*uTime), 0.1*sin(0.44*uTime));
+    
+    col.rgb = hueShiftRGB(col.rgb, uHueShift);
+    float scanline = sin(gl_FragCoord.y * uScanFreq) * 0.5 + 0.5;
+    col.rgb *= 1.0 - (scanline * scanline) * uScan;
+    col.rgb += (rand(gl_FragCoord.xy + uTime) - 0.5) * uNoise;
+    
+    gl_FragColor = vec4(clamp(col.rgb, 0.0, 1.0), 1.0);
 }
 `;
 
@@ -81,21 +79,29 @@ export default function DarkVeil({
   speed = 0.5,
   scanlineFrequency = 0,
   warpAmount = 0,
-  resolutionScale = 1
+  resolutionScale = 0.8 // Remonté à 0.8 pour garder la netteté visuelle
 }) {
   const ref = useRef(null);
+  const isVisible = useRef(true);
+
   useEffect(() => {
     const canvas = ref.current;
     const parent = canvas.parentElement;
 
+    // PROTECTION : Arrête l'animation si on ne la voit pas (crucial pour tes 41s de thread)
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible.current = entry.isIntersecting;
+    }, { threshold: 0.01 });
+    observer.observe(canvas);
+
     const renderer = new Renderer({
-      dpr: Math.min(window.devicePixelRatio, 2),
-      canvas
+      dpr: Math.min(window.devicePixelRatio, 2), // Garde la qualité Retina
+      canvas,
+      alpha: true
     });
 
     const gl = renderer.gl;
     const geometry = new Triangle(gl);
-
     const program = new Program(gl, {
       vertex,
       fragment,
@@ -113,35 +119,54 @@ export default function DarkVeil({
     const mesh = new Mesh(gl, { geometry, program });
 
     const resize = () => {
-      const w = parent.clientWidth,
-        h = parent.clientHeight;
+      const w = parent.clientWidth;
+      const h = parent.clientHeight;
+      // Ajuste la résolution de rendu sans déformer
       renderer.setSize(w * resolutionScale, h * resolutionScale);
-      program.uniforms.uResolution.value.set(w, h);
+      program.uniforms.uResolution.value.set(w * resolutionScale, h * resolutionScale);
     };
 
     window.addEventListener('resize', resize);
     resize();
 
+    let frame;
     const start = performance.now();
-    let frame = 0;
 
-    const loop = () => {
-      program.uniforms.uTime.value = ((performance.now() - start) / 1000) * speed;
+    const loop = (t) => {
+      frame = requestAnimationFrame(loop);
+      
+      // Si on ne voit pas le shader, on ne calcule rien du tout
+      if (!isVisible.current) return;
+
+      program.uniforms.uTime.value = ((t - start) / 1000) * speed;
       program.uniforms.uHueShift.value = hueShift;
       program.uniforms.uNoise.value = noiseIntensity;
       program.uniforms.uScan.value = scanlineIntensity;
       program.uniforms.uScanFreq.value = scanlineFrequency;
       program.uniforms.uWarp.value = warpAmount;
+      
       renderer.render({ scene: mesh });
-      frame = requestAnimationFrame(loop);
     };
 
-    loop();
+    frame = requestAnimationFrame(loop);
 
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener('resize', resize);
+      observer.disconnect();
     };
   }, [hueShift, noiseIntensity, scanlineIntensity, speed, scanlineFrequency, warpAmount, resolutionScale]);
-  return <canvas ref={ref} className="darkveil-canvas" />;
+
+  return (
+    <canvas 
+      ref={ref} 
+      className="darkveil-canvas" 
+      style={{ 
+        width: '100%', 
+        height: '100%', 
+        display: 'block',
+        willChange: 'transform' // Aide le thread principal
+      }} 
+    />
+  );
 }

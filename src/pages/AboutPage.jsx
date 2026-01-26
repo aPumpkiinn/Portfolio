@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom'; // Import de Link ajouté
+import { useLocation, Link } from 'react-router-dom';
 
 import Header from '../components/Header';
-import DarkVeil from '../components/DarkVeil'; 
+// DarkVeil retiré ici
 import FadeIn from '../components/FadeIn'; 
 import LogoLoop from '../components/LogoLoop';
 import ContactCTA from '../components/ContactCTA'; 
@@ -175,9 +175,14 @@ const AboutPage = ({ onOpenContact }) => {
         </main>
 
         <div id="contact" className="relative w-full min-h-screen overflow-hidden flex items-center justify-center">
-            <div className="absolute inset-0 z-0">
-                <DarkVeil hueShift={20} noiseIntensity={0.1} scanlineIntensity={0} speed={0.3} />
-            </div>
+            {/* Background avec halo lumineux radial au lieu du DarkVeil */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'radial-gradient(circle at center, rgba(100, 108, 255, 0.12) 0%, rgba(0,0,0,0) 70%)',
+              zIndex: 0,
+              pointerEvents: 'none'
+            }}></div>
             <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-10 pointer-events-none"></div>
             <div className="relative z-10 w-full">
                 <FadeIn direction="up" delay={0.1}>
@@ -186,7 +191,6 @@ const AboutPage = ({ onOpenContact }) => {
             </div>
         </div>
 
-        {/* Pied de page avec lien vers les Mentions Légales */}
         <footer className="py-12 bg-black text-center border-t border-white/5">
             <Link 
                 to="/mentions-legales" 

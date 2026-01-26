@@ -3,26 +3,13 @@ import DarkVeil from './DarkVeil';
 
 const Hero = () => {
   return (
-    <div style={{ 
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#000000', // Fond noir de secours
-      position: 'relative',
-      padding: '60px 20px',
-      width: '100%', 
-      boxSizing: 'border-box',
-      overflow: 'hidden' // Empêche le shader de déborder
-    }}>
+    <div 
+      className="relative w-full min-h-screen flex items-center justify-center bg-black overflow-hidden box-border px-5 py-[60px]"
+      fetchpriority="high" /* Indique au navigateur de traiter ce bloc en priorité LCP */
+    >
       
-      {/* Ton composant DarkVeil original en fond */}
-      <div style={{ 
-        position: 'absolute', 
-        inset: 0, 
-        zIndex: 0, 
-        pointerEvents: 'none' 
-      }}>
+      {/* Background Shader - Chargement optimisé */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <DarkVeil
           hueShift={0}
           noiseIntensity={0.02}
@@ -35,62 +22,32 @@ const Hero = () => {
       </div>
 
       {/* Contenu principal */}
-      <div style={{
-        position: 'relative',
-        zIndex: 10,
-        maxWidth: '1200px',
-        width: '100%',
-        padding: '0 24px',
-        textAlign: 'center'
-      }}>
+      <div className="relative z-10 w-full max-w-[1200px] px-6 text-center">
           
-        <p style={{
-          color: '#ffffff',
-          fontSize: '0.875rem',
-          letterSpacing: '0.3em',
-          textTransform: 'uppercase',
-          marginBottom: '32px',
-        }}>
+        <p className="text-white text-sm tracking-[0.3em] uppercase mb-8 font-sans opacity-80">
           Portfolio
         </p>
 
-        <h1 style={{
-          fontSize: 'clamp(3rem, 12vw, 9rem)',
-          fontWeight: '300',
-          color: '#ffffff',
-          marginBottom: '24px',
-          lineHeight: '1',
-          letterSpacing: '-0.02em'
-        }}>
+        {/* Titre Principal - Utilisation de vos polices optimisées */}
+        <h1 className="text-white font-light leading-none tracking-tighter mb-6 text-[clamp(3rem,12vw,9rem)] uppercase">
           ANGUILE-DIOP
           <br />
-          <span style={{ fontStyle: 'italic', fontFamily: 'Georgia, serif' }}>
+          <span className="font-rumei italic text-[#646cff]">
             Kevin
           </span>
         </h1>
 
-        <p style={{
-          fontSize: 'clamp(1.25rem, 3vw, 1.875rem)',
-          color: '#ffffff',
-          maxWidth: '700px',
-          fontWeight: '300',
-          lineHeight: '1.6',
-          margin: '0 auto 48px auto'
-        }}>
-          Etudiant de BUT MMI en recherche de stage.
+        <p className="text-white font-light leading-relaxed mx-auto mb-12 max-w-[700px] text-[clamp(1.25rem,3vw,1.875rem)]">
+          Aspirant infographiste de <span className="font-bold">BUT MMI</span>, en recherche de stage.
         </p>
 
-        <div style={{
-          display: 'flex',
-          gap: '16px',
-          justifyContent: 'center',
-          flexWrap: 'wrap'
-        }}>
-          <a href="#projects" style={{ padding: '14px 28px', backgroundColor: '#ffffff', color: '#000', textDecoration: 'none', fontWeight: 'bold' }}>
-            Voir les projets
-          </a>
-          <a href="#contact" style={{ padding: '14px 28px', border: '1px solid #ffffff', color: '#ffffff', textDecoration: 'none' }}>
-            Contact
+        {/* Actions - Boutons en Noir et Blanc comme demandé */}
+        <div className="flex flex-wrap gap-4 justify-center">
+          <a 
+            href="#projects" 
+            className="px-7 py-3.5 bg-white text-black no-underline font-bold uppercase text-xs tracking-widest hover:bg-gray-200 transition-colors"
+          >
+            Voir mes projets
           </a>
         </div>
       </div>
