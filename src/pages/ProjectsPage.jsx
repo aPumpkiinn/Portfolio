@@ -4,13 +4,13 @@ import SkewedCarousel from '../components/SkewedCarousel';
 import PageTransition from '../components/PageTransition';
 import { SiFigma, SiAdobeillustrator, SiReact, SiVite, SiTailwindcss, SiAdobeindesign } from 'react-icons/si';
 
-// --- DATA COMPLÈTE AVEC LE NOUVEAU PROJET ---
+// --- DATA COMPLÈTE ---
 const ALL_PROJECTS = [
   { 
     id: 1, 
     title: "Home Sweet Home", 
     category: "Infographie", 
-    image: "/img/menu.webp", // Assurez-vous du nom du fichier dans /public/images/
+    image: "/img/menu.webp", 
     year: "2025",
     desc: "Menu de Restaurant",
     longDesc: "Mon tout premier projet réalisé sur Adobe InDesign : la conception graphique complète d'un menu pour le restaurant de crêpes 'Home Sweet Home'.", 
@@ -21,7 +21,7 @@ const ALL_PROJECTS = [
     id: 2, 
     title: "Watt Is", 
     category: "Design UI", 
-    image: "/img/Wattis.webp", 
+    image: "/images/Wattis.webp", 
     year: "2025",
     desc: "UI/UX Design",
     longDesc: "Watt Is est une application mobile conçue pour aider les utilisateurs à suivre et réduire leur consommation d'énergie au quotidien via une interface intuitive.", 
@@ -32,7 +32,7 @@ const ALL_PROJECTS = [
     id: 3, 
     title: "Breizh Immo", 
     category: "Design UI", 
-    image: "/img/immo.webp", 
+    image: "/images/immo.webp", 
     year: "2025",
     desc: "Branding",
     longDesc: "Refonte complète de l'identité visuelle pour une agence immobilière basée en Bretagne. L'objectif était de moderniser l'image de marque tout en restant accessible.",
@@ -88,36 +88,43 @@ const ProjectsPage = ({ onOpenProject }) => {
     <PageTransition>
       <title>{`Mes Projets | ${activeTab} — Portfolio`}</title>
       
-      <main className="min-h-screen bg-black pt-32 px-4 select-none flex flex-col">
-        <header className="text-center mb-16 h-24 flex items-center justify-center">
-          <h1 className={`text-6xl md:text-8xl font-bold uppercase tracking-tighter transition-all duration-500 text-white ${getFontClass()}`}>
+      <main className="min-h-screen bg-black pt-24 md:pt-32 px-4 select-none flex flex-col">
+        <header className="text-center mb-12 md:mb-16 h-20 md:h-24 flex items-center justify-center">
+          <h1 className={`text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-all duration-500 text-white ${getFontClass()}`}>
             {activeTab === "Tous" ? "Mes Créations" : activeTab}
           </h1>
         </header>
 
-        <nav className="flex justify-center mb-24" aria-label="Filtres de catégories">
-          <ul className="flex gap-4 bg-white/5 p-2 rounded-full border border-white/10 backdrop-blur-xl">
-            {CATEGORIES.map(cat => (
-              <li key={cat}>
-                <button 
-                  onClick={() => setActiveTab(cat)}
-                  className={`px-6 py-2 rounded-full text-xs font-bold uppercase transition-all duration-300 ${activeTab === cat ? 'bg-white text-black scale-105' : 'text-gray-500 hover:text-white'}`}
-                >
-                  {cat}
-                </button>
-              </li>
-            ))}
-          </ul>
+        {/* --- NAVIGATION RESPONSIVE --- */}
+        <nav className="flex justify-center mb-16 md:mb-24 w-full" aria-label="Filtres de catégories">
+          <div className="max-w-full overflow-x-auto scrollbar-hide px-4">
+            <ul className="flex flex-nowrap gap-3 md:gap-4 bg-white/5 p-2 rounded-full border border-white/10 backdrop-blur-xl w-max mx-auto">
+              {CATEGORIES.map(cat => (
+                <li key={cat}>
+                  <button 
+                    onClick={() => setActiveTab(cat)}
+                    className={`whitespace-nowrap px-5 md:px-8 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase transition-all duration-300 ${
+                      activeTab === cat 
+                      ? 'bg-white text-black scale-105' 
+                      : 'text-gray-500 hover:text-white'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </nav>
 
-        <section className="w-full pb-32 flex-grow">
+        <section className="w-full pb-24 md:pb-32 flex-grow">
           <SkewedCarousel key={activeTab} items={filteredProjects} onOpenProject={onOpenProject} />
         </section>
 
-        <footer className="pb-12 text-center">
+        <footer className="pb-8 md:pb-12 text-center">
             <Link 
                 to="/mentions-legales" 
-                className="text-xs text-white/20 hover:text-[#646cff] transition-colors uppercase tracking-[0.3em] font-light"
+                className="text-[10px] md:text-xs text-white/20 hover:text-[#646cff] transition-colors uppercase tracking-[0.2em] md:tracking-[0.3em] font-light"
             >
                 — Mentions Légales —
             </Link>
