@@ -4,7 +4,7 @@ import SkewedCarousel from '../components/SkewedCarousel';
 import PageTransition from '../components/PageTransition';
 import { SiFigma, SiAdobeillustrator, SiReact, SiVite, SiTailwindcss, SiAdobeindesign } from 'react-icons/si';
 
-// --- DATA COMPLÈTE ---
+// --- DATA COMPLÈTE (Chemins corrigés vers /img/) ---
 const ALL_PROJECTS = [
   { 
     id: 1, 
@@ -21,7 +21,7 @@ const ALL_PROJECTS = [
     id: 2, 
     title: "Watt Is", 
     category: "Design UI", 
-    image: "/images/Wattis.webp", 
+    image: "/img/Wattis.webp", // Corrigé : /images/ -> /img/
     year: "2025",
     desc: "UI/UX Design",
     longDesc: "Watt Is est une application mobile conçue pour aider les utilisateurs à suivre et réduire leur consommation d'énergie au quotidien via une interface intuitive.", 
@@ -32,7 +32,7 @@ const ALL_PROJECTS = [
     id: 3, 
     title: "Breizh Immo", 
     category: "Design UI", 
-    image: "/images/immo.webp", 
+    image: "/img/immo.webp", // Corrigé : /images/ -> /img/
     year: "2025",
     desc: "Branding",
     longDesc: "Refonte complète de l'identité visuelle pour une agence immobilière basée en Bretagne. L'objectif était de moderniser l'image de marque tout en restant accessible.",
@@ -76,9 +76,9 @@ const ProjectsPage = ({ onOpenProject }) => {
     switch (activeTab) {
       case 'Infographie':
       case 'Design UI':
-        return 'font-rumei'; // Rumei House Regular par Imoodev
+        return 'font-rumei';
       case 'Web':
-        return 'font-octuple'; // Octuple Max Solid par deFharo
+        return 'font-octuple';
       default:
         return 'font-title'; 
     }
@@ -88,25 +88,24 @@ const ProjectsPage = ({ onOpenProject }) => {
     <PageTransition>
       <title>{`Mes Projets | ${activeTab} — Portfolio`}</title>
       
-      <main className="min-h-screen bg-black pt-24 md:pt-32 px-4 select-none flex flex-col">
-        <header className="text-center mb-12 md:mb-16 h-20 md:h-24 flex items-center justify-center">
-          <h1 className={`text-5xl md:text-8xl font-bold uppercase tracking-tighter transition-all duration-500 text-white ${getFontClass()}`}>
+      <main className="min-h-screen bg-black pt-24 md:pt-32 px-4 select-none flex flex-col items-center">
+        <header className="text-center mb-12 md:mb-16 h-16 md:h-24 flex items-center justify-center w-full">
+          <h1 className={`text-4xl sm:text-6xl md:text-8xl font-bold uppercase tracking-tighter transition-all duration-500 text-white ${getFontClass()}`}>
             {activeTab === "Tous" ? "Mes Créations" : activeTab}
           </h1>
         </header>
 
-        {/* --- NAVIGATION RESPONSIVE --- */}
-        <nav className="flex justify-center mb-16 md:mb-24 w-full" aria-label="Filtres de catégories">
+        <nav className="flex justify-center mb-12 md:mb-24 w-full" aria-label="Filtres de catégories">
           <div className="max-w-full overflow-x-auto scrollbar-hide px-4">
-            <ul className="flex flex-nowrap gap-3 md:gap-4 bg-white/5 p-2 rounded-full border border-white/10 backdrop-blur-xl w-max mx-auto">
+            <ul className="flex flex-nowrap gap-2 md:gap-4 bg-white/5 p-1.5 md:p-2 rounded-full border border-white/10 backdrop-blur-xl w-max mx-auto">
               {CATEGORIES.map(cat => (
                 <li key={cat}>
                   <button 
                     onClick={() => setActiveTab(cat)}
-                    className={`whitespace-nowrap px-5 md:px-8 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase transition-all duration-300 ${
+                    className={`whitespace-nowrap px-4 md:px-8 py-2 md:py-2.5 rounded-full text-[9px] md:text-xs font-bold uppercase transition-all duration-300 ${
                       activeTab === cat 
-                      ? 'bg-white text-black scale-105' 
-                      : 'text-gray-500 hover:text-white'
+                      ? 'bg-white text-black scale-105 shadow-lg' 
+                      : 'text-gray-500 hover:text-white hover:bg-white/5'
                     }`}
                   >
                     {cat}
@@ -117,11 +116,11 @@ const ProjectsPage = ({ onOpenProject }) => {
           </div>
         </nav>
 
-        <section className="w-full pb-24 md:pb-32 flex-grow">
+        <section className="w-full pb-16 md:pb-32 flex-grow">
           <SkewedCarousel key={activeTab} items={filteredProjects} onOpenProject={onOpenProject} />
         </section>
 
-        <footer className="pb-8 md:pb-12 text-center">
+        <footer className="pb-8 md:pb-12 text-center w-full">
             <Link 
                 to="/mentions-legales" 
                 className="text-[10px] md:text-xs text-white/20 hover:text-[#646cff] transition-colors uppercase tracking-[0.2em] md:tracking-[0.3em] font-light"
@@ -130,6 +129,11 @@ const ProjectsPage = ({ onOpenProject }) => {
             </Link>
         </footer>
       </main>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      `}} />
     </PageTransition>
   );
 };
