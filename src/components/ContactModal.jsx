@@ -82,7 +82,7 @@ const ContactModal = ({ isOpen, onClose }) => {
                 <FiMail size={20} className="sm:hidden group-hover:text-white" />
                 <FiMail size={24} className="hidden sm:block group-hover:text-white" />
               </div>
-              <span className="break-all">ton-email@exemple.com</span>
+              <span className="break-all">Kevinanguilediop@gmail.com</span>
             </a>
             
             {/* Social links - Responsive */}

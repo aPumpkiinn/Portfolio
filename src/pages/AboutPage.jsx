@@ -1,4 +1,3 @@
-// src/pages/AboutPage.jsx
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -61,7 +60,6 @@ const AboutPage = ({ onOpenContact }) => {
         <main className="relative z-10 pt-32 px-6 md:px-12 max-w-7xl mx-auto pb-0">
           
           <FadeIn direction="down">
-              {/* RETOUR À FONT-TITLE */}
               <h1 className="text-5xl md:text-7xl mb-16 font-title">
                 <span className="italic">Mieux me</span> connaitre
               </h1>
@@ -86,11 +84,11 @@ const AboutPage = ({ onOpenContact }) => {
               </FadeIn>
               
               <FadeIn delay={0.4} direction="left">
-                  <div className="h-[300px] w-full max-w-md mx-auto lg:mx-0 rounded-[40px] overflow-hidden border border-white/5 shadow-2xl">
+                  <div className="h-[450px] w-full max-w-md mx-auto lg:mx-0 rounded-[40px] overflow-hidden border border-white/5 shadow-2xl transition-all duration-500 hover:border-white/20">
                       <img 
-                        src="src/public/moi.webp" 
-                        alt="Portrait" 
-                        className="w-full h-full object-cover block"
+                        src="public/moi.webp" // Chemin conservé selon ton souhait
+                        alt="Kevin Anguile-Diop" 
+                        className="w-full h-full object-cover block filter grayscale hover:grayscale-0 transition-all duration-700"
                       />
                   </div>
               </FadeIn>
@@ -99,7 +97,6 @@ const AboutPage = ({ onOpenContact }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-32">
               <FadeIn delay={0.3} direction="up">
                   <div className="space-y-6">
-                      {/* RETOUR À FONT-TITLE */}
                       <h2 className="text-3xl md:text-4xl font-title text-white border-b border-white/10 pb-4">
                           Mes motivations
                       </h2>
@@ -114,7 +111,6 @@ const AboutPage = ({ onOpenContact }) => {
 
               <FadeIn delay={0.5} direction="up">
                   <div className="space-y-6">
-                      {/* RETOUR À FONT-TITLE */}
                       <h2 className="text-3xl md:text-4xl font-title text-white border-b border-white/10 pb-4">
                           Mon projet futur
                       </h2>
@@ -144,19 +140,33 @@ const AboutPage = ({ onOpenContact }) => {
 
           <FadeIn direction="up" delay={0.8}>
               <div className="flex flex-col items-center pb-32">
-                  {/* RETOUR À FONT-TITLE */}
                   <h2 className="text-3xl md:text-4xl font-title mb-10">Mes réseaux</h2>
                   <div className="flex gap-8 mb-12">
-                      <a href="#" className="relative w-20 h-20 transition-transform hover:scale-110">
+                      <a 
+                        href="https://www.linkedin.com/in/anguilé-diop-kévin-7b709b31b/" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="relative w-16 h-16 transition-transform hover:scale-110"
+                      >
                           <div className="absolute inset-[2px] bg-white rounded-md"></div>
                           <SiLinkedin className="relative z-10 w-full h-full text-[#0077b5]" />
                       </a>
-                      <a href="#" className="relative w-20 h-20 transition-transform hover:scale-110">
-                          <div className="absolute inset-0 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] rounded-[20px] opacity-0 hover:opacity-100 transition-opacity"></div>
-                          <SiInstagram className="relative z-10 w-full h-full text-white p-4" />
+                      <a 
+                        href="https://www.instagram.com/k.pumpkinn/" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="relative w-16 h-16 transition-transform hover:scale-110"
+                      >
+                          <div className="absolute inset-0 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] rounded-[15px] opacity-0 hover:opacity-100 transition-opacity"></div>
+                          <SiInstagram className="relative z-10 w-full h-full text-white p-3" />
                       </a>
                   </div>
-                  <a href="/cv.pdf" className="text-xl font-bold underline underline-offset-4 decoration-2 hover:text-gray-400 transition-colors mb-16 uppercase tracking-widest">
+                  <a 
+                    href="public/cv.pdf" // Chemin avec public/ ici aussi
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-xl font-bold underline underline-offset-8 decoration-1 hover:text-[#646cff] transition-colors mb-16 uppercase tracking-widest"
+                  >
                       Consulter mon CV
                   </a>
               </div>

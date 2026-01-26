@@ -1,90 +1,64 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { gsap } from 'gsap';
-import './Header.css';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-const Header = () => {
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const location = useLocation();
-  
-  const headerRef = useRef(null);
-  const logoRef = useRef(null);
-  const navLinksRefs = useRef([]);
-  const mobileOverlayRef = useRef(null);
-  const mobileLinksRefs = useRef([]);
-  const lastScrollY = useRef(0);
-  const mobileTl = useRef(null);
+const Header = ({ items = [] }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const navItems = [
-    { label: 'Accueil', href: '/' },
-    { label: 'À Propos', href: '/Apropos' },
-    { label: 'Projets', href: '/projects' },
-    { label: 'Contact', href: '/Apropos#contact' },
-  ];
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.timeline()
-        .fromTo(headerRef.current, { yPercent: -100 }, { yPercent: 0, duration: 0.8, ease: 'power3.out' })
-        .from(logoRef.current, { opacity: 0, x: -20, duration: 0.5 }, '-=0.4')
-        .from(navLinksRefs.current, { opacity: 0, y: -10, stagger: 0.1, duration: 0.4 }, '-=0.3');
-
-      mobileTl.current = gsap.timeline({ paused: true })
-        .to(mobileOverlayRef.current, { opacity: 1, visibility: 'visible', duration: 0.4, ease: 'power2.inOut' })
-        .to(mobileLinksRefs.current, { opacity: 1, y: 0, stagger: 0.08, duration: 0.3, ease: 'back.out(1.2)' }, '-=0.2');
-    }, headerRef);
-    return () => ctx.revert();
-  }, []);
-
+  // Détecte le scroll pour réduire le header
   useEffect(() => {
     const handleScroll = () => {
-      if (isMobileOpen) return;
-      const currentScrollY = window.pageYOffset;
-      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-        gsap.to(headerRef.current, { yPercent: -105, duration: 0.4, overwrite: true });
-      } else {
-        gsap.to(headerRef.current, { yPercent: 0, duration: 0.4, overwrite: true });
-      }
-      lastScrollY.current = currentScrollY;
+      setScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMobileOpen]);
-
-  const toggleMenu = useCallback(() => {
-    setIsMobileOpen(prev => {
-      const next = !prev;
-      document.body.style.overflow = next ? 'hidden' : ''; 
-      if (next) mobileTl.current.play();
-      else mobileTl.current.reverse();
-      return next;
-    });
   }, []);
 
   return (
-    <header className="classic-header" ref={headerRef} role="banner">
-      <Link to="/" className="header-logo" ref={logoRef} aria-label="Retour à l'accueil">
+    <header style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      zIndex: 100,
+      // Animation du padding et de la couleur au scroll
+      padding: scrolled ? '10px 40px' : '20px 40px',
+      backgroundColor: scrolled ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.4)',
+      backdropFilter: 'blur(10px)',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+      animation: 'slideDown 0.8s ease-out forwards', // Animation d'entrée
+      boxSizing: 'border-box'
+    }}>
+      
+      {/* --- LOGO --- */}
+      <Link to="/" style={{ display: 'flex', alignItems: 'center', transition: 'transform 0.3s' }}>
         <img 
-            src="/logo.svg" 
-            alt="Mon Portfolio" 
-            width="90" 
-            height="90"
-            fetchpriority="high"
-            style={{ height: '90px', width: 'auto' }} 
+          src="/logo.webp" 
+          alt="Logo" 
+          style={{ 
+            height: scrolled ? '30px' : '40px', 
+            width: 'auto', 
+            transition: 'height 0.4s ease' 
+          }} 
         />
       </Link>
 
-      <nav className="desktop-nav" aria-label="Navigation principale">
+      {/* --- BOUTON HAMBURGER --- */}
+      <div onClick={() => setIsOpen(!isOpen)} className="hamburger-btn">
+        <div style={{ ...lineStyle, transform: isOpen ? 'rotate(45deg) translate(5px, 5px)' : '' }}></div>
+        <div style={{ ...lineStyle, opacity: isOpen ? 0 : 1 }}></div>
+        <div style={{ ...lineStyle, transform: isOpen ? 'rotate(-45deg) translate(6px, -6px)' : '' }}></div>
+      </div>
+
+      {/* --- NAVIGATION --- */}
+      <nav className={`nav-menu ${isOpen ? 'open' : ''}`}>
         <ul className="nav-list">
-          {navItems.map((item, index) => (
+          {items.map((item, index) => (
             <li key={index}>
-              <Link
-                to={item.href}
-                className={`nav-link ${location.pathname === item.href ? 'active' : ''}`}
-                ref={el => navLinksRefs.current[index] = el}
-                onMouseEnter={(e) => gsap.to(e.currentTarget, { '--underline-width': '100%', duration: 0.3 })}
-                onMouseLeave={(e) => gsap.to(e.currentTarget, { '--underline-width': '0%', duration: 0.3 })}
-              >
+              <Link to={item.href} onClick={() => setIsOpen(false)} className="nav-link">
                 {item.label}
               </Link>
             </li>
@@ -92,32 +66,75 @@ const Header = () => {
         </ul>
       </nav>
 
-      <button 
-        className={`hamburger-btn ${isMobileOpen ? 'open' : ''}`} 
-        onClick={toggleMenu}
-        aria-label={isMobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
-        aria-expanded={isMobileOpen}
-      >
-        <span className="span-line line-1"></span>
-        <span className="span-line line-2"></span>
-        <span className="span-line line-3"></span>
-      </button>
+      {/* --- ANIMATIONS CSS --- */}
+      <style>{`
+        @keyframes slideDown {
+          from { transform: translateY(-100%); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
 
-      <div className="mobile-overlay" ref={mobileOverlayRef} aria-hidden={!isMobileOpen}>
-        <nav aria-label="Menu mobile">
-          <ul className="mobile-nav-list">
-            {navItems.map((item, index) => (
-              <li key={index}>
-                <Link to={item.href} className="mobile-nav-link" ref={el => mobileLinksRefs.current[index] = el} onClick={toggleMenu}>
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+        .nav-link {
+          color: #ffffff;
+          text-decoration: none;
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          font-weight: 500;
+          position: relative;
+          padding: 5px 0;
+          opacity: 0.8;
+          transition: opacity 0.3s;
+        }
+
+        /* L'animation du soulignement */
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background-color: #fff;
+          transition: width 0.3s ease;
+        }
+
+        .nav-link:hover { opacity: 1; }
+        .nav-link:hover::after { width: 100%; }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+          .nav-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.95);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          }
+          .nav-menu.open { max-height: 400px; }
+          .nav-list { flex-direction: column; padding: 30px; gap: 20px; align-items: center; display: flex; list-style: none; }
+          .nav-link { font-size: 1.1rem; }
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 769px) {
+          .hamburger-btn { display: none; }
+          .nav-list { display: flex; gap: 35px; list-style: none; margin: 0; padding: 0; }
+        }
+      `}</style>
     </header>
   );
+};
+
+// Petit helper pour le style des lignes du hamburger
+const lineStyle = {
+  width: '24px',
+  height: '2px',
+  backgroundColor: 'white',
+  margin: '4px 0',
+  transition: '0.4s ease',
 };
 
 export default Header;
