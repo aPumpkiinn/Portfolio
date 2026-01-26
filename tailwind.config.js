@@ -4,10 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // 'sans' remplace la police par défaut de Tailwind
-        sans: ['DM Sans', 'ui-sans-serif', 'system-ui'],
-        
-        // Vos polices personnalisées
+        sans: ['DM Sans', 'sans-serif'],
         title: ['TitleFont', 'sans-serif'],
         rumei: ['Rumei', 'serif'],
       },

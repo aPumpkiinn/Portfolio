@@ -5,22 +5,17 @@ const FadeIn = ({ children, delay = 0, direction = "up" }) => {
   const elementRef = useRef(null);
 
   useEffect(() => {
-    if (!elementRef.current) return;
-
-    // Utilisation de gsap.context pour libérer la mémoire (Thread Principal)
     const ctx = gsap.context(() => {
       gsap.from(elementRef.current, {
         opacity: 0,
-        y: direction === "up" ? 30 : direction === "down" ? -30 : 0,
-        duration: 0.8,
-        delay: delay,
+        y: direction === "up" ? 20 : direction === "down" ? -20 : 0,
+        duration: 0.6,
+        delay,
         ease: "power2.out",
-        force3D: true, // Accélération GPU
-        clearProps: "all" // Nettoyage après l'anim
+        force3D: true, // Force l'accélération GPU
       });
-    });
-
-    return () => ctx.revert(); // Indispensable pour éviter les 34s de surcharge
+    }, elementRef);
+    return () => ctx.revert();
   }, [delay, direction]);
 
   return (
@@ -29,5 +24,4 @@ const FadeIn = ({ children, delay = 0, direction = "up" }) => {
     </div>
   );
 };
-
 export default FadeIn;

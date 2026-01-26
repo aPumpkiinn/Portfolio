@@ -14,7 +14,6 @@ const NAV_ITEMS = [
   { label: 'Contact', href: '/Apropos#contact' } 
 ];
 
-// REMPLACER LES LIENS PICSUM PAR TES IMAGES LOCALES DANS /public/images/
 const PROJECT_CATEGORIES = [
   { text: 'Tous les projets', image: '/images/projets-all.webp', link: '/projects', filter: 'Tous' },
   { text: 'Web Development', image: '/images/web-dev.webp', link: '/projects', filter: 'Web' },
@@ -41,7 +40,14 @@ const HomePage = () => {
           {/* SECTION HERO */}
           <section id="home" className="min-h-screen flex items-center justify-center relative bg-transparent overflow-hidden">
             <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
-              <DarkVeil speed={0.4} />
+              <DarkVeil 
+                speed={0.5} 
+                noiseIntensity={0.02}
+                scanlineIntensity={0.05}
+                scanlineFrequency={2.0}
+                warpAmount={0.02}
+                resolutionScale={1}
+              />
             </div>
             <div className="relative z-10 w-full flex items-center justify-center">
               <Hero />
@@ -83,9 +89,10 @@ const HomePage = () => {
             </FadeIn>
             <FadeIn delay={0.2} duration={1.5}>
               <div className="relative h-[600px] w-full">
+                {/* ✅ MODIFICATION : bgColor est maintenant en noir pur #000000 */}
                 <FlowingMenu 
                   items={PROJECT_CATEGORIES} 
-                  bgColor="transparent" 
+                  bgColor="#000000" 
                   textColor="#ffffff" 
                   onItemClick={handleMenuClick} 
                 /> 

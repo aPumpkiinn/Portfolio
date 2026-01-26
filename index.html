@@ -5,15 +5,17 @@
   <link rel="icon" type="image/svg+xml" href="/logo.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
+  <link rel="preload" href="/fonts/DMSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/DMSans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="modulepreload" href="/src/main.jsx">
 
-  <title>Kevin Anguile-Diop | Portfolio Designer & Dev</title>
-  <meta name="description" content="Portfolio de Kevin Anguile-Diop, spécialisé en Design UI et Développement Web.">
+  <title>Kevin Anguile-Diop | Portfolio Designer & Développeur</title>
+  <meta name="description" content="Portfolio créatif de Kevin Anguile-Diop, spécialisé en Design UI et Développement Web haute performance.">
 
   <style>
-    /* CSS critique pour éviter le flash blanc */
-    body { background: #000; color: #fff; margin: 0; font-family: sans-serif; }
-    #root { min-height: 100vh; }
+    /* 3. CSS critique inline : Prépare le rendu avant même le chargement du CSS */
+    body { background: #000; color: #fff; margin: 0; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+    #root { min-height: 100vh; background-color: #000; }
   </style>
 </head>
 <body>

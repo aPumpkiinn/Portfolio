@@ -1,6 +1,5 @@
-// src/components/Hero.jsx
-
 import React from 'react';
+import DarkVeil from './DarkVeil';
 
 const Hero = () => {
   return (
@@ -9,17 +8,33 @@ const Hero = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      
-      // ✅ Fond transparent pour hériter de la section parente
-      backgroundColor: 'transparent', 
-      
+      backgroundColor: '#000000', // Fond noir de secours
       position: 'relative',
       padding: '60px 20px',
       width: '100%', 
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      overflow: 'hidden' // Empêche le shader de déborder
     }}>
       
-      {/* Contenu principal centré */}
+      {/* Ton composant DarkVeil original en fond */}
+      <div style={{ 
+        position: 'absolute', 
+        inset: 0, 
+        zIndex: 0, 
+        pointerEvents: 'none' 
+      }}>
+        <DarkVeil
+          hueShift={0}
+          noiseIntensity={0.02}
+          scanlineIntensity={0.05}
+          speed={0.5}
+          scanlineFrequency={2.0}
+          warpAmount={0.02}
+          resolutionScale={1}
+        />
+      </div>
+
+      {/* Contenu principal */}
       <div style={{
         position: 'relative',
         zIndex: 10,
@@ -60,64 +75,21 @@ const Hero = () => {
           maxWidth: '700px',
           fontWeight: '300',
           lineHeight: '1.6',
-          marginBottom: '48px',
-          margin: '0 auto 48px auto' // Centrer le paragraphe
+          margin: '0 auto 48px auto'
         }}>
           Etudiant de BUT MMI en recherche de stage.
         </p>
 
-        {/* CTA */}
         <div style={{
           display: 'flex',
           gap: '16px',
-          alignItems: 'center',
-          justifyContent: 'center', // Centrer les boutons
+          justifyContent: 'center',
           flexWrap: 'wrap'
         }}>
-          <a 
-            href="#projects"
-            style={{
-              padding: '14px 28px',
-              backgroundColor: '#000000',
-              color: '#fafafa',
-              textDecoration: 'none',
-              transition: 'all 0.3s ease',
-              display: 'inline-block',
-              cursor: 'pointer',
-              fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-              textAlign: 'center',
-              minWidth: '150px'
-            }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#404040'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#000000'}
-          >
+          <a href="#projects" style={{ padding: '14px 28px', backgroundColor: '#ffffff', color: '#000', textDecoration: 'none', fontWeight: 'bold' }}>
             Voir les projets
           </a>
-          
-          <a
-            href="#contact"
-            style={{
-              padding: '14px 28px',
-              border: '1px solid #ffffff',
-              color: '#ffffff',
-              backgroundColor: 'transparent',
-              textDecoration: 'none',
-              transition: 'all 0.3s ease',
-              display: 'inline-block',
-              cursor: 'pointer',
-              fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-              textAlign: 'center',
-              minWidth: '150px'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#14001d';
-              e.target.style.color = '#fafafa';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = 'transparent';
-              e.target.style.color = '#ffffff';
-            }}
-          >
+          <a href="#contact" style={{ padding: '14px 28px', border: '1px solid #ffffff', color: '#ffffff', textDecoration: 'none' }}>
             Contact
           </a>
         </div>
