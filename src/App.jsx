@@ -7,11 +7,11 @@ import ProjectModal from './components/ProjectModal';
 import ContactModal from './components/ContactModal';
 import ScrollToTop from './components/ScrollToTop';
 
-
-// Lazy loading pour alléger le thread principal au démarrage
+// Lazy loading pour optimiser le chargement
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
+const MentionsLegales = lazy(() => import('./pages/MentionsLegales')); // Ajouté ici
 
 const NAV_ITEMS = [
   { label: 'Accueil', href: '/' },
@@ -29,6 +29,7 @@ function App() {
   const openProject = useCallback((p) => setSelectedProject(p), []);
   const closeProject = useCallback(() => setSelectedProject(null), []);
 
+  // Bloque le scroll body quand un modal est ouvert
   useEffect(() => {
     document.body.style.overflow = (isContactOpen || selectedProject) ? 'hidden' : 'unset';
   }, [isContactOpen, selectedProject]);
@@ -38,28 +39,30 @@ function App() {
       <ScrollToTop />
       <Header items={NAV_ITEMS} onOpenContact={openContact} />
 
-      {/* Suspense prévient la page blanche pendant le chargement des chunks */}
+      {/* Suspense affiche un fond noir pendant le chargement des pages */}
       <Suspense fallback={<div className="h-screen bg-black" />}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
+            {/* Page d'accueil */}
             <Route path="/" element={<HomePage onOpenContact={openContact} />} />
+            
+            {/* Page Projets - Garde vos descriptions et vos visuels Wattis, immo, Genesis, jimdo */}
             <Route path="/projects" element={<ProjectsPage onOpenProject={openProject} />} />
+            
+            {/* Page À Propos - Recherche de stage à partir d'Avril */}
             <Route path="/Apropos" element={<AboutPage onOpenContact={openContact} />} />
+            
+            {/* Page Mentions Légales - Correction de l'affichage */}
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
           </Routes>
         </AnimatePresence>
       </Suspense>
 
+      {/* Modals globaux */}
       <ContactModal isOpen={isContactOpen} onClose={closeContact} />
       <ProjectModal project={selectedProject} onClose={closeProject} />
     </div>
   );
 }
-import MentionsLegales from './pages/MentionsLegales';
-
-// Dans votre composant App ou Router :
-<Routes>
-  <Route path="/" element={<ProjectsPage />} />
-  <Route path="/mentions-legales" element={<MentionsLegales />} />
-</Routes>
 
 export default App;
