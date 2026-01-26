@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react'; 
 import { useNavigate } from 'react-router-dom';
-
-import Header from '../components/Header';
 import Hero from '../components/Hero'; 
 import FlowingMenu from '../components/FlowingMenu'; 
 import DarkVeil from '../components/DarkVeil'; 
@@ -9,8 +7,6 @@ import ContactCTA from '../components/ContactCTA';
 import FadeIn from '../components/FadeIn'; 
 import PageTransition from '../components/PageTransition'; 
 
-// --- OPTIMISATION 1 : Extraction des données statiques ---
-// On sort ces tableaux du composant pour éviter qu'ils ne soient recréés à chaque rendu.
 const NAV_ITEMS = [
   { label: 'Accueil', href: '#home' },
   { label: 'À Propos', href: '/Apropos' },
@@ -18,17 +14,17 @@ const NAV_ITEMS = [
   { label: 'Contact', href: '/Apropos#contact' } 
 ];
 
+// REMPLACER LES LIENS PICSUM PAR TES IMAGES LOCALES DANS /public/images/
 const PROJECT_CATEGORIES = [
-  { text: 'Tous les projets', image: 'https://picsum.photos/600/400?random=4', link: '/projects', filter: 'Tous' },
-  { text: 'Web Development', image: 'https://picsum.photos/600/400?random=1', link: '/projects', filter: 'Web' },
-  { text: 'Design UI', image: 'https://picsum.photos/600/400?random=2', link: '/projects', filter: 'Design UI' },
-  { text: 'Infographie', image: 'https://picsum.photos/600/400?random=3', link: '/projects', filter: 'Infographie' }
+  { text: 'Tous les projets', image: '/images/projets-all.webp', link: '/projects', filter: 'Tous' },
+  { text: 'Web Development', image: '/images/web-dev.webp', link: '/projects', filter: 'Web' },
+  { text: 'Design UI', image: '/images/design-ui.webp', link: '/projects', filter: 'Design UI' },
+  { text: 'Infographie', image: '/images/infographie.webp', link: '/projects', filter: 'Infographie' }
 ];
 
 const HomePage = () => {
   const navigate = useNavigate();
 
-  // --- OPTIMISATION 2 : Memoization du clic ---
   const handleMenuClick = useCallback((item) => {
     if (item.link) {
       navigate(item.link, { state: { category: item.filter || 'Tous' } });
@@ -37,22 +33,15 @@ const HomePage = () => {
 
   return (
     <PageTransition>
-      {/* --- SEO NATIF REACT 19 --- */}
-      <title>Accueil | Ton Nom - Designer UI & Développeur Web</title>
-      <meta name="description" content="Portfolio créatif spécialisé en expériences numériques uniques. Découvrez mes projets en Design UI, Web et Infographie." />
+      <title>Kevin Anguile-Diop | Portfolio</title>
+      <meta name="description" content="Portfolio de Kevin Anguile-Diop - Designer et Développeur." />
 
       <div className="min-h-screen relative bg-black">
-        
-        <Header items={NAV_ITEMS} />
-
         <main>
           {/* SECTION HERO */}
-          <section 
-            id="home" 
-            className="min-h-screen flex items-center justify-center relative bg-transparent overflow-hidden"
-          >
-            <div className="absolute inset-0 z-0 pointer-events-none">
-              <DarkVeil hueShift={0} noiseIntensity={0} scanlineIntensity={0} speed={0.5} />
+          <section id="home" className="min-h-screen flex items-center justify-center relative bg-transparent overflow-hidden">
+            <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+              <DarkVeil speed={0.4} />
             </div>
             <div className="relative z-10 w-full flex items-center justify-center">
               <Hero />
@@ -70,14 +59,14 @@ const HomePage = () => {
               <FadeIn delay={0.2} direction="up">
                 <p className="text-gray-400 text-lg md:text-xl leading-relaxed mb-10">
                   Bienvenue dans mon univers numérique. Je suis un créateur passionné par l'intersection 
-                  entre le design et la technologie, basé en Bretagne.
+                  entre le design et la technologie.
                 </p>
               </FadeIn>
               <FadeIn delay={0.4} direction="up">
                 <button 
                   onClick={() => navigate('/Apropos')}
                   className="px-8 py-3 border border-white rounded-full text-white hover:bg-white hover:text-black transition-all duration-300 uppercase tracking-widest text-sm font-semibold"
-                  aria-label="En savoir plus sur mon parcours"
+                  aria-label="En savoir plus sur Kevin Anguile-Diop"
                 >
                   En savoir plus
                 </button>
@@ -96,7 +85,7 @@ const HomePage = () => {
               <div className="relative h-[600px] w-full">
                 <FlowingMenu 
                   items={PROJECT_CATEGORIES} 
-                  bgColor="#000000" 
+                  bgColor="transparent" 
                   textColor="#ffffff" 
                   onItemClick={handleMenuClick} 
                 /> 

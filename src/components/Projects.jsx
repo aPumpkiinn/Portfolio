@@ -1,72 +1,99 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import ProjectModal from '../components/ProjectModal';
+import { SiFigma, SiAdobeillustrator, SiReact, SiVite, SiTailwindcss } from 'react-icons/si';
 
-// Fichier de données des projets intégré (peut être déplacé plus tard)
-const projectData = [
-  {
-    title: 'Plateforme E-Commerce Modèle',
-    description: "Une solution complète d'e-commerce construite avec React, Redux pour la gestion d'état, et Stripe pour les paiements. Intégration d'une API RESTful.",
-    techs: ['React', 'Redux', 'Stripe', 'Node/Express'],
-    link: '#', // Lien vers le projet ou le dépôt GitHub
+const ALL_PROJECTS = [
+  { 
+    id: 1, 
+    title: "Watt Is", 
+    category: "Design UI", 
+    image: "/images/watt-is.webp", 
+    description: "UI/UX App Design éco-responsable.", // Texte court pour la carte
+    longDesc: "Watt Is est une application mobile conçue pour aider les utilisateurs à suivre et réduire leur consommation d'énergie au quotidien via une interface intuitive.", // Paragraphe 1 Modal
+    longDesc2: "Le challenge était de rendre des données complexes (kWh, coûts) visuellement simples et engageantes grâce à un design épuré et des micro-interactions fluides.", // Paragraphe 2 Modal
+    year: "2026", 
+    stack: [<SiFigma />, <SiAdobeillustrator />] 
   },
-  {
-    title: 'Application de Gestion de Tâches',
-    description: "Un outil de productivité simple avec authentification utilisateur, permettant de créer, modifier et suivre des tâches en temps réel (websockets).",
-    techs: ['Vue.js', 'Firebase', 'WebSockets', 'SCSS'],
-    link: '#',
+  { 
+    id: 2, 
+    title: "Breizh Immo", 
+    category: "Design UI", 
+    image: "/images/breizh.webp", 
+    description: "Logo & Interface pour agence immobilière.",
+    longDesc: "Refonte complète de l'identité visuelle pour une agence immobilière basée en Bretagne. L'objectif était de moderniser l'image de marque tout en restant accessible.",
+    longDesc2: "Conception du logo, de la charte graphique et du prototype haute fidélité pour le site web vitrine.",
+    year: "2025", 
+    stack: [<SiAdobeillustrator />, <SiFigma />] 
   },
-  // Ajoutez d'autres projets ici
+  { 
+    id: 3, 
+    title: "Genesis", 
+    category: "Infographie", 
+    image: "/images/genesis.webp", 
+    description: "Retro Zombie Game Branding.",
+    longDesc: "Projet de branding pour un jeu vidéo indépendant de type survival-horror avec une esthétique pixel art rétro.",
+    longDesc2: "Travail sur les sprites, les décors et la typographie personnalisée pour coller à l'univers post-apocalyptique des années 80.",
+    year: "2025", 
+    stack: [<SiAdobeillustrator />, <SiFigma />] 
+  },
+  { 
+    id: 4, 
+    title: "Portfolio", 
+    category: "Web", 
+    image: "/images/portfolio.webp", 
+    description: "Creative Development & Portfolio.",
+    longDesc: "Développement de mon portfolio personnel utilisant les dernières technologies web pour une performance et une fluidité maximale.",
+    longDesc2: "Focus sur l'expérience utilisateur, les animations GSAP complexes et l'optimisation SEO/Performance (score 100 PageSpeed).",
+    year: "2026", 
+    stack: [<SiReact />, <SiVite />, <SiTailwindcss />] 
+  }
 ];
 
 const Projects = () => {
+  const [selectedProject, setSelectedProject] = useState(null);
+
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-      <h2 style={{ fontSize: '2.5em', textAlign: 'center', marginBottom: '40px', color: '#333' }}>
-        Mes Derniers Projets
-      </h2>
-        
-      {/* Configuration de la grille responsive */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
-        
-        {/* Mapping des données pour générer les cartes de projet */}
-        {projectData.map((project, index) => (
-          <div key={index} style={{ 
-            border: '1px solid #ddd', 
-            borderRadius: '8px', 
-            padding: '20px', 
-            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-            transition: 'transform 0.3s',
-            cursor: 'pointer'
-          }}
-          onMouseOver={e => e.currentTarget.style.transform = 'translateY(-5px)'}
-          onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
-          >
-            <h3 style={{ color: '#007bff', marginBottom: '10px' }}>{project.title}</h3>
-            <p style={{ color: '#555', marginBottom: '15px' }}>{project.description}</p>
-            
-            <div style={{ marginBottom: '15px' }}>
-              {project.techs.map((tech, i) => (
-                <span key={i} style={{ 
-                  display: 'inline-block', 
-                  padding: '5px 10px', 
-                  borderRadius: '3px', 
-                  fontSize: '0.8em',
-                  marginRight: '5px',
-                  // Ajout de style pour les badges
-                  background: '#f0f0f0', 
-                  color: '#444' 
-                }}>
-                  {tech}
-                </span>
-              ))}
+    <section className="min-h-screen bg-black py-32 px-6">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-white text-6xl md:text-8xl font-title text-center mb-24 uppercase tracking-tighter">
+          Mes Créations
+        </h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {ALL_PROJECTS.map((project) => (
+            <div 
+              key={project.id}
+              onClick={() => setSelectedProject(project)}
+              className="group cursor-pointer bg-[#0d0d0d] border border-white/10 rounded-[40px] overflow-hidden transition-all duration-500 hover:border-white/20"
+            >
+              <div className="h-72 overflow-hidden bg-[#161616]">
+                <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              </div>
+              <div className="p-10">
+                <span className="text-gray-500 text-[10px] uppercase tracking-[0.3em] font-bold mb-3 block">{project.category}</span>
+                <h3 className="text-white text-4xl font-medium mb-4">{project.title}</h3>
+                <p className="text-gray-400 mb-8">{project.description}</p>
+                <button className="text-white font-bold border-b border-white/20 pb-1 group-hover:border-white transition-all">
+                  Voir le projet →
+                </button>
+              </div>
             </div>
-            
-            <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ color: '#007bff', textDecoration: 'none', fontWeight: 'bold' }}>
-              Voir le Projet →
-            </a>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* MODAL - Placé ici pour l'animation de sortie */}
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectModal 
+            project={selectedProject} 
+            isOpen={true} 
+            onClose={() => setSelectedProject(null)} 
+          />
+        )}
+      </AnimatePresence>
+    </section>
   );
 };
 

@@ -1,103 +1,74 @@
-/* src/index.css (Contenu global essentiel) */
-
-/* --- 1. DÉCLARATION DES POLICES (@font-face) --- */
-
-/* Déclaration de la variante Regular */
-/* src/index.css */
-@font-face {
-  font-family: 'Rumei House';
-  src: url('/fonts/RumeiHouse.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* --- 1. POLICES (Optimisation LCP & CLS) --- */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; 
+/* DM Sans (Police de base) */
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/DMSans-Regular.woff2') format('woff2'); /* Priorité au WOFF2 */
+  font-weight: 400;
+  font-display: swap; /* Indispensable pour PageSpeed */
 }
 
-/* AJOUTEZ CECI DANS src/index.css */
+/* Ta police de Titre Principale */
+@font-face {
+  font-family: 'TitleFont';
+  src: url('/fonts/votre-police-titre.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
 
-html, body, #root {
-  /* On autorise le scroll vertical */
-  overflow-y: auto !important; 
-  /* On empêche le scroll horizontal */
-  overflow-x: hidden !important;
-  /* On laisse la hauteur s'adapter au contenu */
-  height: auto !important;
+/* Rumei House (Trademark of Imoodev) */
+@font-face {
+  font-family: 'Rumei';
+  src: url('/fonts/RumeiHouse.otf') format('opentype'); /* On garde ton .otf si tu n'as pas de .woff2 */
+  font-weight: normal;
+  font-display: swap;
+}
+
+/* --- 2. STRUCTURE GLOBALE (Stabilité du layout) --- */
+
+html, body {
+  width: 100%;
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  background-color: #000000; /* On force le noir pour éviter le flash blanc au chargement */
+  color: #ffffff;
+  overflow-x: hidden; /* Empêche le scroll horizontal parasite */
+  scroll-behavior: smooth;
 }
 
-html, body {
-    width: 100%;
-    height: 100%; 
-    overflow-x: hidden;
-    display: block; 
-    min-width: 320px;
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-#root { 
-    /* #root doit prendre toute la place du body/html */
-    width: 100%;
-    height: 100%; 
-}
+/* --- 3. TYPOGRAPHIE & RENDU --- */
 
-/* --- 3. APPLICATION DE LA POLICE ET VARIABLES GLOBALES --- */
 :root {
-    /* Application de la police par défaut */
-    font-family: 'DM Sans', sans-serif; 
-    font-weight: 400; /* Par défaut Regular */
-    
-    line-height: 1.5;
-
-    /* Le reste des variables et couleurs de base (hérité de votre ancien code) */
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #ffffff;
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-    margin: 0;
-}
+/* --- 4. UTILS --- */
 
-/* --- 4. RÈGLES D'HÉRITAGE TYPOGRAPHIQUE --- */
-/* Pour s'assurer que les liens et boutons héritent correctement */
-a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
-}
-a:hover {
-    color: #535bf2;
-}
-h1 {
-    font-weight: 700; /* Force l'utilisation de la variante Bold */
-    font-size: 3.2em;
-    line-height: 1.1;
-}
-
-/* Cache la barre de scroll pour Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
-
-/* Cache la barre de scroll pour IE, Edge and Firefox */
 .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Ajoutez ici vos styles globaux de base pour les boutons si App.css ne les contient pas */
+/* Sélection de texte personnalisée */
+::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
