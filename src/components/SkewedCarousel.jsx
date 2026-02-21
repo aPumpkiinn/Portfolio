@@ -86,19 +86,14 @@ const SkewedCarousel = ({ items = [], onOpenProject }) => {
       >
         <div ref={trackRef} className="flex space-x-8 px-4 w-max select-none" style={{ willChange: 'transform' }}>
           {displayItems.map((project, index) => (
-            <div key={`${project.id}-${index}`} className="flex-shrink-0 group relative pointer-events-none"> 
-              <div className="relative w-[280px] h-[400px] md:w-[350px] md:h-[500px] overflow-hidden border border-white/20 rounded-2xl transform -skew-x-12 transition-all duration-500 bg-black mx-4 pointer-events-auto">
+            <div key={`${project.id}-${index}`} className="flex-shrink-0 group relative pointer-events-none w-[400px] h-[500px]"> 
+              <div className="relative w-[400px] h-[500px] overflow-hidden border border-white/20 rounded-2xl transform -skew-x-12 transition-all duration-500 bg-black mx-4 pointer-events-auto">
                 
-                {/* Image avec blending Mask radial sur TOUTES les images */}
-                <div className="w-full h-full transform skew-x-12 scale-150 origin-center transition-transform duration-700 group-hover:scale-125">
+                <div className="w-full h-full transform skew-x-12 scale-[1.2] transition-transform duration-700 group-hover:scale-[1.1]">
                   <img 
-                    src={project.image} 
+                    src={project.images?.[0]} 
                     alt={project.title} 
-                    className="w-full h-full object-cover object-center opacity-70" 
-                    style={{
-                      maskImage: 'radial-gradient(circle, black 45%, transparent 100%)',
-                      WebkitMaskImage: 'radial-gradient(circle, black 45%, transparent 100%)'
-                    }}
+                    className="w-full h-full object-contain object-center opacity-80" 
                     draggable="false" 
                   />
                 </div>

@@ -1,444 +1,148 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const projectData = [
-    {
-        title: 'Identité Visuelle - Café Artisanal',
-        description: "Création d'une identité de marque complète pour une nouvelle chaîne de cafés haut de gamme : logo, charte graphique, et déclinaisons print/web.",
-        techs: ['Illustrator', 'Photoshop', 'Branding', 'Print'],
-        link: '#', // Lien vers le Behance ou Dribbble du projet
-        color: '#A855F7', 
-    },
-    {
-        title: 'Refonte Site Web - Agence de Voyage',
-        description: "Conception de l'interface utilisateur (UI/UX) pour la refonte complète d'un site d'agence de voyage, avec prototypage haute fidélité.",
-        techs: ['Figma', 'UX/UI', 'Prototypage', 'Design System'],
-        link: '#',
-        color: '#EC4899',
-    },
-    {
-        title: 'Série d\'Affiches - Festival de Musique',
-        description: "Conception et production de la série d'affiches promotionnelles pour un festival de musique électronique, incluant l'adaptation pour les réseaux sociaux.",
-        techs: ['InDesign', 'Typographie', 'Composition', 'Campagne Pub'],
-        link: '#',
-        color: '#10B981',
-    },
-    {
-        title: 'Packaging Éco-responsable - Cosmétiques',
-        description: "Design du packaging d'une gamme de produits cosmétiques naturels, en mettant l'accent sur les matériaux durables et l'esthétique minimaliste.",
-        techs: ['Rendu 3D', 'Maquette', 'Éco-design', 'Impression'],
-        link: '<img src="https://picsum.photos/800/600" alt="Photo aléatoire" />',
-        color: '#F59E0B', 
-    }
-];
-
-const ProjectsCarousel = () => {
+const ProjectModal = ({ project, isOpen, onClose }) => {
+  // État pour suivre l'image actuelle du carrousel
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState(null);
 
+  // Réinitialiser le carrousel à la première image quand on change de projet
   useEffect(() => {
-    if (!isHovered) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % projectData.length);
-      }, 3000);
-      return () => clearInterval(interval);
-    }
-  }, [isHovered]);
+    setCurrentIndex(0);
+  }, [project]);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % projectData.length);
+  if (!project) return null;
+
+  const titleFont = project.category === 'Infographie' ? 'font-rumei' : 'font-title';
+
+  // Créer un tableau d'images robuste (accepte project.images (tableau) ou project.image (texte))
+  const images = project.images && project.images.length > 0 
+    ? project.images 
+    : (project.image ? [project.image] : []);
+
+  // Fonctions pour naviguer dans le carrousel
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + projectData.length) % projectData.length);
-  };
-
-  const getCardStyle = (index) => {
-    const diff = (index - currentIndex + projectData.length) % projectData.length;
-    const totalCards = projectData.length;
-    const isHoveredThis = hoveredCard === index;
-    
-    if (diff === 0) {
-      return {
-        transform: isHoveredThis 
-          ? 'translateX(0) translateZ(50px) rotateY(0deg) scale(1.05)' 
-          : 'translateX(0) translateZ(0) rotateY(0deg) scale(1)',
-        opacity: 1,
-        zIndex: 10,
-        boxShadow: isHoveredThis 
-          ? '0 30px 80px rgba(0,0,0,0.5)' 
-          : '0 20px 60px rgba(0,0,0,0.3)'
-      };
-    } else if (diff === 1 || diff === -(totalCards - 1)) {
-      return {
-        transform: 'translateX(60%) translateZ(-200px) rotateY(-25deg) scale(0.8)',
-        opacity: 0.7,
-        zIndex: 5,
-        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
-      };
-    } else if (diff === totalCards - 1 || diff === -1) {
-      return {
-        transform: 'translateX(-60%) translateZ(-200px) rotateY(25deg) scale(0.8)',
-        opacity: 0.7,
-        zIndex: 5,
-        filter: 'brightness(0.7) blur(0px)',
-        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
-      };
-    } else {
-      return {
-        transform: 'translateX(0) translateZ(-400px) scale(0.6)',
-        opacity: 0,
-        zIndex: 1,
-        filter: 'brightness(0.5) blur(0px)',
-        boxShadow: '0 5px 20px rgba(0,0,0,0.1)'
-      };
-    }
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      background: '#0a0a0a',
-      padding: '60px 20px',
-      fontFamily: '"Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600;700&display=swap');
-          
-          @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) rotate(240deg); }
-          }
-          
-          @keyframes float2 {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(-40px, 40px) rotate(-120deg); }
-            66% { transform: translate(30px, -20px) rotate(-240deg); }
-          }
-          
-          .floating-shape {
-            position: absolute;
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            opacity: 0.03;
-            filter: blur(60px);
-          }
-        `}
-      </style>
-      
-      <div className="floating-shape" style={{
-        width: '400px',
-        height: '400px',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        top: '10%',
-        left: '10%',
-        animation: 'float 20s ease-in-out infinite'
-      }}></div>
-      
-      <div className="floating-shape" style={{
-        width: '500px',
-        height: '500px',
-        background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-        bottom: '10%',
-        right: '10%',
-        animation: 'float2 25s ease-in-out infinite'
-      }}></div>
+    <motion.div
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      {/* Overlay flouté */}
+      <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" />
 
-      <h2 style={{ 
-        fontSize: '3em', 
-        textAlign: 'center', 
-        marginBottom: '60px', 
-        color: 'white',
-        fontWeight: '700',
-        textShadow: '0 2px 10px rgba(0,0,0,0.5)',
-        position: 'relative',
-        zIndex: 1
-      }}>
-        Mes Derniers Projets
-      </h2>
-
-      <div 
-        style={{ 
-          position: 'relative',
-          height: '500px',
-          perspective: '1500px',
-          overflow: 'visible'
-        }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+      <motion.div
+        className="relative w-full max-w-6xl max-h-[90vh] bg-[#0d0d0d] border border-white/10 rounded-3xl sm:rounded-[45px] p-4 sm:p-6 md:p-10 overflow-y-auto shadow-2xl"
+        initial={{ scale: 0.95, y: 40, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.95, y: 40, opacity: 0 }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          transformStyle: 'preserve-3d'
-        }}>
-          {projectData.map((project, index) => {
-            const style = getCardStyle(index);
-            return (
-              <div
-                key={index}
-                style={{
-                  position: 'absolute',
-                  left: '50%',
-                  top: '50%',
-                  width: '450px',
-                  maxWidth: '90vw',
-                  marginLeft: '-225px',
-                  marginTop: '-285px',
-                  height: '570px',
-                  transformStyle: 'preserve-3d',
-                  pointerEvents: 'none'
-                }}
-              >
-                {hoveredCard === index && (
-                  <div style={{
-                    position: 'absolute',
-                    inset: '-80px',
-                    background: `radial-gradient(circle at center, ${project.color}50 0%, transparent 70%)`,
-                    transition: 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-                    pointerEvents: 'none',
-                    filter: 'blur(60px)',
-                    zIndex: -1,
-                    opacity: 1
-                  }}></div>
-                )}
-                
-                <div
-                  onMouseEnter={() => setHoveredCard(index)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%)',
-                    borderRadius: '20px',
-                    border: '1px solid rgba(255,255,255,0.05)',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transform: style.transform,
-                    opacity: style.opacity,
-                    zIndex: style.zIndex,
-                    filter: style.filter,
-                    boxShadow: style.boxShadow,
-                    pointerEvents: style.zIndex === 10 ? 'auto' : 'none'
-                  }}
+        {/* Bouton Fermer */}
+        <button onClick={onClose} className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/30 hover:text-white transition-colors z-50 p-2">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8 md:gap-12 text-left">
+          
+          {/* CARROUSEL D'IMAGES */}
+          <div className="lg:col-span-3 relative w-full h-fit flex items-center justify-center bg-[#161616] rounded-2xl sm:rounded-[35px] overflow-hidden border border-white/5 group">
+            
+            {images.length > 0 && (
+              <AnimatePresence mode="wait">
+                <motion.img 
+                  key={currentIndex}
+                  src={images[currentIndex]} 
+                  alt={`${project.title} - vue ${currentIndex + 1}`} 
+                  className="w-full h-auto max-h-[50vh] lg:max-h-[75vh] object-contain select-none" 
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                />
+              </AnimatePresence>
+            )}
+            
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+            {/* Contrôles du carrousel (affichés seulement s'il y a plus d'1 image) */}
+            {images.length > 1 && (
+              <>
+                {/* Flèche Gauche */}
+                <button 
+                  onClick={prevImage}
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/80 text-white p-2 sm:p-3 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100"
                 >
-                  <div style={{
-                    width: '100%',
-                    height: '100%',
-                    position: 'relative'
-                  }}>
-                    <img 
-                      src={project.image} 
-                      alt={project.title}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
-                      }}
-                      onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
-                      onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+
+                {/* Flèche Droite */}
+                <button 
+                  onClick={nextImage}
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/80 text-white p-2 sm:p-3 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+
+                {/* Petits points (Indicators) */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                  {images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={(e) => { e.stopPropagation(); setCurrentIndex(idx); }}
+                      className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
+                        idx === currentIndex ? 'bg-white w-6 sm:w-8' : 'bg-white/40 hover:bg-white/70 w-1.5 sm:w-2'
+                      }`}
                     />
-                    
-                    <div style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: '33.33%',
-                      background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 50%, transparent 100%)',
-                      padding: '20px 30px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'flex-end'
-                    }}>
-                      <h3 style={{ 
-                        color: 'white', 
-                        marginBottom: '6px',
-                        fontSize: '1.3em',
-                        fontWeight: '700',
-                        textShadow: '0 2px 8px rgba(0,0,0,0.8)',
-                        lineHeight: '1.2'
-                      }}>
-                        {project.title}
-                      </h3>
-
-                      <p style={{
-                        color: '#e0e0e0',
-                        fontSize: '0.8em',
-                        marginBottom: '10px',
-                        lineHeight: '1.4',
-                        textShadow: '0 1px 4px rgba(0,0,0,0.8)',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical'
-                      }}>
-                        {project.description}
-                      </p>
-
-                      <div style={{ marginBottom: '10px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                        {project.techs.map((tech, i) => (
-                          <span 
-                            key={i} 
-                            style={{ 
-                              padding: '4px 10px', 
-                              borderRadius: '15px', 
-                              fontSize: '0.7em',
-                              background: `${project.color}30`,
-                              color: 'white',
-                              fontWeight: '600',
-                              border: `1px solid ${project.color}60`,
-                              textShadow: '0 1px 4px rgba(0,0,0,0.6)'
-                            }}
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      <a 
-                        href={project.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        style={{ 
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          color: 'white',
-                          background: project.color,
-                          padding: '8px 18px',
-                          borderRadius: '10px',
-                          textDecoration: 'none', 
-                          fontWeight: '600',
-                          transition: 'all 0.3s ease',
-                          fontSize: '0.85em',
-                          alignSelf: 'flex-start',
-                          textShadow: '0 1px 3px rgba(0,0,0,0.5)',
-                          boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
-                        }}
-                        onMouseOver={e => {
-                          e.currentTarget.style.transform = 'translateY(-2px)';
-                          e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.4)';
-                        }}
-                        onMouseOut={e => {
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
-                        }}
-                      >
-                        Voir le Projet
-                        <ExternalLink size={14} />
-                      </a>
-                    </div>
-                  </div>
+                  ))}
                 </div>
+              </>
+            )}
+          </div>
+
+          {/* TEXTE */}
+          <div className="lg:col-span-2 flex flex-col py-2 sm:py-4 lg:py-6">
+            <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-4 sm:mb-6 leading-[1.1] tracking-tight ${titleFont}`}>
+              {project.title}
+            </h2>
+
+            <div className="mb-6 sm:mb-8 p-3 sm:p-4 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl inline-block w-fit">
+               <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-gray-500 font-bold block mb-1">Expertise — Domaine</span>
+               <span className="text-white text-lg sm:text-xl font-medium">{project.category}</span>
+            </div>
+
+            <div className="text-gray-400 text-base sm:text-lg md:text-xl leading-relaxed mb-6 sm:mb-8 lg:mb-10 flex-grow">
+              <p className="mb-4 sm:mb-6">{project.longDesc}</p>
+              {project.longDesc2 && <p className="hidden sm:block opacity-80">{project.longDesc2}</p>}
+            </div>
+
+            {/* STACK */}
+            <div className="mt-auto pt-4 sm:pt-6 flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-gray-600 font-bold w-full mb-1 sm:mb-2">Logiciels utilisés</span>
+              {project.stack?.map((icon, i) => (
+                <div key={i} className="w-10 h-10 sm:w-12 sm:h-12 bg-white/5 rounded-xl sm:rounded-2xl flex items-center justify-center text-white border border-white/10">
+                  <span className="text-lg sm:text-xl">{icon}</span>
+                </div>
+              ))}
+              <div className="h-10 sm:h-12 px-4 sm:px-6 ml-auto bg-white/5 rounded-xl sm:rounded-2xl flex items-center justify-center text-white border border-white/10 text-xs sm:text-sm font-bold tracking-widest uppercase">
+                {project.year}
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
-
-        <button
-          onClick={prevSlide}
-          style={{
-            position: 'absolute',
-            left: '20px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: '50px',
-            height: '50px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.05)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-            zIndex: 100,
-            transition: 'all 0.3s'
-          }}
-          onMouseOver={e => {
-            e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-            e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.4)';
-          }}
-          onMouseOut={e => {
-            e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-            e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
-          }}
-        >
-          <ChevronLeft size={24} color="white" />
-        </button>
-
-        <button
-          onClick={nextSlide}
-          style={{
-            position: 'absolute',
-            right: '20px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: '50px',
-            height: '50px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.05)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-            zIndex: 100,
-            transition: 'all 0.3s'
-          }}
-          onMouseOver={e => {
-            e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-            e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.4)';
-          }}
-          onMouseOut={e => {
-            e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-            e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
-          }}
-        >
-          <ChevronRight size={24} color="white" />
-        </button>
-      </div>
-
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '12px',
-        marginTop: '60px'
-      }}>
-        {projectData.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            style={{
-              width: index === currentIndex ? '40px' : '12px',
-              height: '12px',
-              borderRadius: '6px',
-              border: 'none',
-              background: index === currentIndex ? 'white' : 'rgba(255,255,255,0.4)',
-              cursor: 'pointer',
-              transition: 'all 0.3s'
-            }}
-          />
-        ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
-export default ProjectsCarousel;
+export default ProjectModal;
