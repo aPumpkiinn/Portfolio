@@ -45,7 +45,7 @@ const Hero = () => {
        
 
           <p className="text-white/50 text-base md:text-xl font-light tracking-wide italic max-w-xl border-l border-[#646cff]/30 pl-6">
-            Bonjour ! Je suis Kevin, un créatif passionné par le dessin, le design et les jeux vidéo. Toujours en quête de nouvelles idées à exprimer et concrétiser .
+            Bonjour ! Je suis Kevin, un créatif passionné par le dessin, le design et les jeux vidéo. Toujours en quête de nouvelles idées à exprimer et concrétiser.
           </p>
         </div>
       </div>
