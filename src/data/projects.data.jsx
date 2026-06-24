@@ -1,4 +1,4 @@
-import { SiFigma, SiAdobeillustrator, SiReact, SiVite, SiTailwindcss, SiAdobeindesign } from 'react-icons/si';
+import { SiFigma, SiAdobeillustrator, SiReact, SiVite, SiTailwindcss, SiAdobeindesign, SiCanva } from 'react-icons/si';
 
 export const ALL_PROJECTS = [
   { 
@@ -65,12 +65,24 @@ export const ALL_PROJECTS = [
     id: 6,
     title: "Motion",
     category: "Infographie",
-    images: ["/img/Bateau.gif", "/img/Velo.gif"],
+    images: ["/video/motion_design_kevin.mp4", "/img/Bateau.gif"],
     year: "2025",
     desc: "Motion Design",
     description: "Animations After Effects — Apprentissage.",
     longDesc: "Ensemble d'animations réalisées lors de mon apprentissage d'After Effects. Explorations de keyframes, d'expressions et de transitions pour maîtriser le motion design.",
     longDesc2: "Chaque animation représente une étape de progression : du simple morphing à des compositions plus complexes.",
     stack: [<SiAdobeillustrator key="ai" />]
+  },
+  {
+    id: 7,
+    title: "Institut de Soudure",
+    category: "Infographie",
+    images: ["/img/GIS_1.png", "/img/GIS_2.png"],
+    year: "2025",
+    desc: "Communication & Marketing",
+    description: "Création de contenus promotionnels pour les formations du Groupe.",
+    longDesc: "Stage en tant que chargé de communication et marketing au sein du Groupe Institut de Soudure. Création de nombreux posts et visuels destinés à la promotion des formations proposées par le groupe.",
+    longDesc2: "Conception de supports de communication variés (posts réseaux sociaux, visuels promotionnels, bannières) en respectant la charte graphique de l'entreprise.",
+    stack: [<SiFigma key="fig" />, <SiCanva key="canva" />]
   }
 ];

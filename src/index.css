@@ -5,7 +5,7 @@
 /* --- POLICES --- */
 @font-face {
   font-family: 'RumeiHouse';
-  src: url('/fonts/Rumei House.otf') format('opentype');
+  src: url('/fonts/Dirtyline36days.otf') format('opentype');
   font-weight: normal;
   font-display: swap;
 }
@@ -21,6 +21,13 @@
   font-family: 'DM Sans';
   src: url('/fonts/DMSans-Regular.woff2') format('woff2');
   font-weight: 400;
+}
+
+@font-face {
+  font-family: 'OffBitDotBold';
+  src: url('/fonts/OffBitTrial-DotBold.otf') format('opentype');
+  font-weight: bold;
+  font-display: swap;
 }
 
 /* --- STRUCTURE --- */
@@ -41,7 +48,7 @@ html, body {
 
 @layer utilities {
   .font-rumei { font-family: 'RumeiHouse', sans-serif; }
-  .font-octuple { font-family: 'OctupleMax', sans-serif; }
+  .font-octuple { font-family: 'OffBitDotBold', monospace; }
 }
 
 .scrollbar-hide {

@@ -15,13 +15,13 @@ const NAV_ITEMS = [
 ];
 
 const PROJECT_CATEGORIES = [
-  { text: 'Tous les projets', image: '/images/projets-all.webp', link: '/projects', filter: 'Tous' },
-  { text: 'Web Development', image: '/images/web-dev.webp', link: '/projects', filter: 'Web' },
-  { text: 'Design UI', image: '/images/design-ui.webp', link: '/projects', filter: 'Design UI' },
-  { text: 'Infographie', image: '/images/infographie.webp', link: '/projects', filter: 'Infographie' }
+  { text: 'Tous les projets', image: '/images/projets-all.webp', link: '/projects', filter: 'Tous', fontClass: 'font-octuple uppercase font-black' },
+  { text: 'Web Development', image: '/images/web-dev.webp', link: '/projects', filter: 'Web', fontClass: 'font-octuple uppercase font-black' },
+  { text: 'Design UI', image: '/images/design-ui.webp', link: '/projects', filter: 'Design UI', fontClass: 'font-sans italic font-normal tracking-tight' },
+  { text: 'Infographie', image: '/images/infographie.webp', link: '/projects', filter: 'Infographie', fontClass: 'font-rumei italic font-normal tracking-wide' }
 ];
 
-const HomePage = () => {
+const HomePage = ({ onOpenContact }) => {
   const navigate = useNavigate();
 
   const handleMenuClick = useCallback((item) => {
@@ -31,7 +31,7 @@ const HomePage = () => {
   }, [navigate]);
 
   return (
-    <PageTransition>
+    <PageTransition direction="horizontal">
       <main className="bg-black min-h-screen">
           {/* SECTION HERO */}
           <section id="home" className="relative h-screen w-full overflow-hidden">
@@ -46,7 +46,7 @@ const HomePage = () => {
           {/* SECTION PROJETS (TEASER) */}
           <section id="projects" className="bg-black pb-12">
             <FadeIn direction="down">
-              <h2 className="text-4xl md:text-6xl font-title text-white text-center py-10">
+              <h2 className="text-4xl md:text-6xl font-octuple uppercase tracking-tighter text-white text-center py-10">
                 Mes Différents Projets
               </h2>
             </FadeIn>
@@ -65,18 +65,18 @@ const HomePage = () => {
           {/* SECTION CONTACT */}
           <section id="contact" className="bg-black border-t border-white/5">
             <FadeIn direction="up" delay={0.1}>
-              <ContactCTA onOpen={() => navigate('/Apropos#contact')} />
+              <ContactCTA onOpen={onOpenContact} />
             </FadeIn>
           </section>
         </main>
 
-        <footer className="py-12 bg-black border-t border-white/5 text-center flex flex-col items-center gap-4">
-          <p className="text-gray-500 text-sm tracking-widest">
+        <footer className="py-12 bg-black border-t-[4px] border-white/10 text-center flex flex-col items-center gap-4">
+          <p className="text-gray-400 text-sm tracking-widest font-bold uppercase">
             © 2026 Kevin Anguile Diop — Tous droits réservés
           </p>
           <Link 
             to="/mentions-legales" 
-            className="text-xs text-gray-600 hover:text-[#646cff] transition-colors uppercase tracking-[0.2em]"
+            className="text-xs text-[#00c8ff] hover:text-white transition-colors uppercase tracking-[0.2em] font-bold"
           >
             Mentions Légales
           </Link>

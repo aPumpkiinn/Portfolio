@@ -97,19 +97,44 @@ const ProjectModal = ({ project, onClose }) => {
             >
               <AnimatePresence mode="wait" custom={direction}>
                 {projectImages.length > 0 ? (
-                  <motion.img
-                    key={currentIndex}
-                    src={projectImages[currentIndex]}
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-                    className="absolute inset-0 w-full h-full object-contain cursor-zoom-in"
-                    alt={`${project.title} vue ${currentIndex + 1}`}
-                    onClick={() => setLightbox(true)}
-                  />
+                  (() => {
+                    const src = projectImages[currentIndex];
+                    if (src && src.endsWith('.mp4')) {
+                      return (
+                        <motion.video
+                          key={currentIndex}
+                          src={src}
+                          custom={direction}
+                          variants={slideVariants}
+                          initial="enter"
+                          animate="center"
+                          exit="exit"
+                          transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+                          className="absolute inset-0 w-full h-full object-contain cursor-zoom-in"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          onClick={() => setLightbox(true)}
+                        />
+                      );
+                    }
+                    return (
+                      <motion.img
+                        key={currentIndex}
+                        src={src}
+                        custom={direction}
+                        variants={slideVariants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+                        className="absolute inset-0 w-full h-full object-contain cursor-zoom-in"
+                        alt={`${project.title} vue ${currentIndex + 1}`}
+                        onClick={() => setLightbox(true)}
+                      />
+                    );
+                  })()
                 ) : (
                   <div className="text-white/20 uppercase tracking-widest text-xs font-bold">
                     Aucun visuel disponible
@@ -158,7 +183,11 @@ const ProjectModal = ({ project, onClose }) => {
                         : 'w-10 h-10 border-white/10 opacity-40 hover:opacity-70'
                     }`}
                   >
-                    <img src={src} alt="" className="w-full h-full object-cover" />
+                    {src.endsWith('.mp4') ? (
+                      <video src={src} className="w-full h-full object-cover" muted />
+                    ) : (
+                      <img src={src} alt="" className="w-full h-full object-cover" />
+                    )}
                     {i === currentIndex && (
                       <div className="absolute inset-0 border-2 border-white/60 rounded-xl pointer-events-none" />
                     )}
@@ -227,16 +256,30 @@ const ProjectModal = ({ project, onClose }) => {
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
-            <motion.img
-              src={projectImages[currentIndex]}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="max-w-[95vw] max-h-[95vh] object-contain"
-              alt={`${project.title} plein écran`}
-              onClick={(e) => e.stopPropagation()}
-            />
+            {projectImages[currentIndex].endsWith('.mp4') ? (
+              <motion.video
+                src={projectImages[currentIndex]}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="max-w-[95vw] max-h-[95vh] object-contain"
+                autoPlay
+                controls
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <motion.img
+                src={projectImages[currentIndex]}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="max-w-[95vw] max-h-[95vh] object-contain"
+                alt={`${project.title} plein écran`}
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
           </motion.div>
         )}
       </AnimatePresence>

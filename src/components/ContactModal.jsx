@@ -72,7 +72,7 @@ const ContactModal = ({ isOpen, onClose }) => {
   return (
     <div 
       ref={modalRef}
-      className="fixed inset-0 z-[1000] flex flex-col items-center justify-start sm:justify-center bg-black/95 backdrop-blur-sm text-white overflow-y-auto overscroll-contain"
+      className="fixed inset-0 z-[99999] flex flex-col items-center justify-start sm:justify-center bg-black/95 backdrop-blur-sm text-white overflow-y-auto overscroll-contain"
     >
       {/* BOUTON FERMER */}
       <button 
@@ -93,7 +93,7 @@ const ContactModal = ({ isOpen, onClose }) => {
         <div className="flex-1 space-y-6 sm:space-y-8">
           <div>
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-title mb-4 sm:mb-6 leading-tight">
-              Let's <span className="italic text-[#646cff]">Talk</span>
+              Let's <span className="italic text-[#00c8ff]">Talk</span>
             </h2>
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
               Un projet en tête ? Une opportunité de stage ? Ou simplement envie de discuter design et tech ? 
@@ -104,9 +104,9 @@ const ContactModal = ({ isOpen, onClose }) => {
           <div className="space-y-4 sm:space-y-6">
             <a 
               href="mailto:Kevinanguilediop@gmail.com" 
-              className="flex items-center gap-3 sm:gap-4 text-base sm:text-xl hover:text-[#646cff] transition-colors group"
+              className="flex items-center gap-3 sm:gap-4 text-base sm:text-xl hover:text-[#00c8ff] transition-colors group"
             >
-              <div className="p-3 sm:p-4 rounded-full bg-white/5 group-hover:bg-[#646cff] transition-colors flex-shrink-0">
+              <div className="p-3 sm:p-4 rounded-full bg-white/5 group-hover:bg-[#00c8ff] group-hover:text-black transition-colors flex-shrink-0">
                 <FiMail size={24} className="group-hover:text-white" />
               </div>
               <span className="break-all font-light">Kevinanguilediop@gmail.com</span>
@@ -135,7 +135,7 @@ const ContactModal = ({ isOpen, onClose }) => {
         <div className="flex-1 bg-white/5 p-5 sm:p-8 rounded-3xl border border-white/10 relative overflow-hidden">
           {status.sent ? (
             <div className="h-full flex flex-col items-center justify-center py-12 text-center space-y-4">
-              <FiCheckCircle size={64} className="text-[#646cff] animate-bounce" />
+              <FiCheckCircle size={64} className="text-[#00c8ff] animate-bounce" />
               <h3 className="text-2xl font-title uppercase">C'est envoyé !</h3>
               <p className="text-gray-400">Merci à vous, je vous répondrai très vite.</p>
             </div>
@@ -145,7 +145,7 @@ const ContactModal = ({ isOpen, onClose }) => {
                 <label className="block text-xs uppercase tracking-[0.2em] text-gray-500 mb-2 font-bold">Votre Nom</label>
                 <input 
                   type="text" name="name" required
-                  className="w-full bg-black/50 border border-white/20 rounded-xl p-4 focus:border-[#646cff] focus:ring-1 focus:ring-[#646cff] outline-none transition-all" 
+                  className="w-full bg-black/50 border border-white/20 rounded-xl p-4 focus:border-[#00c8ff] focus:ring-1 focus:ring-[#00c8ff] outline-none transition-all" 
                   placeholder="John Doe" 
                 />
               </div>
@@ -154,7 +154,7 @@ const ContactModal = ({ isOpen, onClose }) => {
                 <label className="block text-xs uppercase tracking-[0.2em] text-gray-500 mb-2 font-bold">Votre Email</label>
                 <input 
                   type="email" name="email" required
-                  className="w-full bg-black/50 border border-white/20 rounded-xl p-4 focus:border-[#646cff] focus:ring-1 focus:ring-[#646cff] outline-none transition-all" 
+                  className="w-full bg-black/50 border border-white/20 rounded-xl p-4 focus:border-[#00c8ff] focus:ring-1 focus:ring-[#00c8ff] outline-none transition-all" 
                   placeholder="john@example.com" 
                 />
               </div>
@@ -163,7 +163,7 @@ const ContactModal = ({ isOpen, onClose }) => {
                 <label className="block text-xs uppercase tracking-[0.2em] text-gray-500 mb-2 font-bold">Message</label>
                 <textarea 
                   name="message" required rows="4" 
-                  className="w-full bg-black/50 border border-white/20 rounded-xl p-4 focus:border-[#646cff] focus:ring-1 focus:ring-[#646cff] outline-none transition-all resize-none" 
+                  className="w-full bg-black/50 border border-white/20 rounded-xl p-4 focus:border-[#00c8ff] focus:ring-1 focus:ring-[#00c8ff] outline-none transition-all resize-none" 
                   placeholder="Parlez-moi de votre projet..."
                 ></textarea>
               </div>
@@ -173,7 +173,7 @@ const ContactModal = ({ isOpen, onClose }) => {
               <button 
                 type="submit"
                 disabled={status.sending}
-                className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-[#646cff] hover:text-white transition-all flex items-center justify-center gap-3 uppercase tracking-widest active:scale-95 shadow-lg disabled:opacity-50"
+                className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-[#00c8ff] hover:text-black transition-all flex items-center justify-center gap-3 uppercase tracking-widest active:scale-95 shadow-lg disabled:opacity-50"
               >
                 {status.sending ? "Envoi..." : "Envoyer"} 
                 <FiSend size={18} className={status.sending ? "animate-pulse" : ""} />

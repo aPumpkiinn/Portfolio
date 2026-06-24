@@ -10,10 +10,11 @@ function FlowingMenu({
   bgColor = '#060010',
   marqueeBgColor = '#fff',
   marqueeTextColor = '#060010',
-  borderColor = '#fff'
+  borderColor = '#fff',
+  onItemClick
 }) {
   return (
-    <div className="menu-wrap" style={{ backgroundColor: bgColor }}>
+    <div className="menu-wrap font-octuple tracking-tighter" style={{ backgroundColor: bgColor }}>
       <nav className="menu">
         {items.map((item, idx) => (
           <MenuItem
@@ -24,6 +25,7 @@ function FlowingMenu({
             marqueeBgColor={marqueeBgColor}
             marqueeTextColor={marqueeTextColor}
             borderColor={borderColor}
+            onItemClick={onItemClick}
           />
         ))}
       </nav>
@@ -31,7 +33,7 @@ function FlowingMenu({
   );
 }
 
-function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor }) {
+function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor, fontClass, filter, onItemClick }) {
   const itemRef = useRef(null);
   const marqueeRef = useRef(null);
   const marqueeInnerRef = useRef(null);
@@ -128,8 +130,14 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
   return (
     <div className="menu__item" ref={itemRef} style={{ borderColor }}>
       <a
-        className="menu__item-link"
+        className={`menu__item-link ${fontClass || ''}`}
         href={link}
+        onClick={(e) => {
+          if (onItemClick) {
+            e.preventDefault();
+            onItemClick({ link, text, image, filter });
+          }
+        }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{ color: textColor }}
@@ -140,7 +148,7 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
         <div className="marquee__inner-wrap">
           <div className="marquee__inner" ref={marqueeInnerRef} aria-hidden="true">
             {[...Array(repetitions)].map((_, idx) => (
-              <div className="marquee__part" key={idx} style={{ color: marqueeTextColor }}>
+              <div className={`marquee__part ${fontClass || ''}`} key={idx} style={{ color: marqueeTextColor }}>
                 <span>{text}</span>
                 <div className="marquee__img" style={{ backgroundImage: `url(${image})` }} />
               </div>
