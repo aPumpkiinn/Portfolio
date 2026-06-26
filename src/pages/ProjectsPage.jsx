@@ -10,8 +10,8 @@ const CATEGORIES = ['Tous', 'Web', 'Design UI', 'Infographie'];
 
 const tickerItems = [
   { text: "CREATIVE", icon: "/img/logo.png" },
-  { text: "DEVELOPER", icon: null },
-  { text: "DESIGNER", icon: null },
+  { text: "GRAPHIC DESIGNER", icon: null },
+  { text: "DESIGNER UI", icon: null },
   { text: "MINIMALIST", icon: null },
 ];
 const doubleTicker = [...tickerItems, ...tickerItems, ...tickerItems, ...tickerItems];

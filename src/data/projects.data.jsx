@@ -55,9 +55,9 @@ export const ALL_PROJECTS = [
     category: "Web", 
     images: ["/img/Portfolio.webp"],
     year: "2026",
-    desc: "Développement",
-    description: "Creative Development & Portfolio.",
-    longDesc: "Développement de mon portfolio personnel utilisant les dernières technologies web pour une performance et une fluidité maximale.",
+    desc: "Web Design",
+    description: "Creative Design & Portfolio.",
+    longDesc: "Conception visuelle et maquettage de mon portfolio personnel, avec une forte identité brutaliste et une réflexion sur l'expérience utilisateur.",
     longDesc2: "Focus sur l'expérience utilisateur, les animations GSAP complexes et l'optimisation SEO/Performance.",
     stack: [<SiReact key="re" />, <SiVite key="vi" />, <SiTailwindcss key="tw" />]
   },
