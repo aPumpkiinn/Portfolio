@@ -5,8 +5,8 @@ import PixelBlast from './PixelBlast';
 const Hero = () => {
   const tickerItems = [
     { text: "CREATIVE", icon: "/img/logo.png" },
-    { text: "DEVELOPER", icon: null },
-    { text: "DESIGNER", icon: null },
+    { text: "GRAPHIC DESIGNER", icon: null },
+    { text: "DESIGNER UI", icon: null },
     { text: "MINIMALIST", icon: null },
   ];
 
@@ -119,7 +119,7 @@ const Hero = () => {
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
                 className="block text-xl md:text-2xl font-medium tracking-[0.2em] text-black/60 mt-4 normal-case font-sans"
               >
-                Créatif & Développeur
+                Aspirant Graphic designer
               </motion.span>
             </div>
           </h1>
@@ -132,7 +132,7 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-black/70 text-lg md:text-xl max-w-2xl font-light leading-relaxed"
             >
-              Bonjour, je suis étudiant en deuxième année de BUT MMI, actuellement en recherche d'une alternance. Passionné par le design et le développement, j'aime concevoir des interfaces web fluides, esthétiques et interactives.
+              Bonjour, je suis étudiant en deuxième année de BUT MMI, actuellement en recherche d'une alternance. Passionné par le design graphique et la conception UI, j'aime créer des interfaces visuelles fluides, esthétiques et engageantes.
             </motion.p>
 
             {/* BOUTON INTERACTIF */}
