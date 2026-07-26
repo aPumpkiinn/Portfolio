@@ -6,7 +6,6 @@ import FadeIn from '../components/FadeIn';
 import LogoLoop from '../components/LogoLoop';
 import ContactCTA from '../components/ContactCTA'; 
 import PageTransition from '../components/PageTransition'; 
-import PixelBlast from '../components/PixelBlast';
 import { 
   SiDavinciresolve, SiHtml5, SiCss3, SiAdobeillustrator, 
   SiAdobephotoshop, SiAdobeindesign, SiAdobeaftereffects,
@@ -179,26 +178,7 @@ const AboutPage = ({ onOpenContact }) => {
 
           {/* Section Contact intégrée en bas du cadre blanc */}
           <div id="contact" className="relative w-full border-t-[4px] border-black flex flex-col items-center justify-center py-20 bg-white overflow-hidden">
-              {/* PIXELBLAST BACKGROUND POUR LE CONTACT */}
-              <div className="absolute inset-0 flex justify-center items-center z-0 pointer-events-none overflow-hidden">
-                <div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
-                  <PixelBlast
-                    variant="square"
-                    pixelSize={3}
-                    color="#003f82"
-                    patternScale={2}
-                    patternDensity={1}
-                    enableRipples
-                    rippleSpeed={0.1}
-                    rippleThickness={0.01}
-                    rippleIntensityScale={0.1}
-                    speed={2}
-                    transparent
-                    edgeFade={1}
-                  />
-                </div>
-              </div>
-              
+
               <FadeIn direction="up" delay={0.1}>
                  <div className="relative z-10">
                     <ContactCTA onOpen={onOpenContact} theme="light" />
