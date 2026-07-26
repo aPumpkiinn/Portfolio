@@ -19,9 +19,9 @@ const Header = ({ items = [], onOpenContact }) => {
   return (
     <header className="fixed top-0 left-0 w-full z-[9999] p-4 sm:p-6 md:p-10 pointer-events-none transition-all duration-300">
       
-      {/* CADRE COMPACT EN BLANC ET NOIR AVEC OMBRE BRUTALISTE */}
+      {/* CADRE COMPACT AVEC REBORD ET FOND ULTRA FONCES */}
       <div 
-        className={`max-w-7xl mx-auto w-full bg-white border-[3px] border-black rounded-full flex items-center justify-between px-6 md:px-10 pointer-events-auto transition-all duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${
+        className={`max-w-7xl mx-auto w-full bg-[#161616] border-[3px] border-[#080808] rounded-full flex items-center justify-between px-6 md:px-10 pointer-events-auto transition-all duration-300 shadow-[4px_4px_0px_0px_#111111] hover:shadow-[6px_6px_0px_0px_#111111] ${
           scrolled ? 'h-14 md:h-16' : 'h-18 md:h-20'
         }`}
       >
@@ -47,7 +47,7 @@ const Header = ({ items = [], onOpenContact }) => {
             <Link
               key={index}
               to={item.href}
-              className="relative px-5 py-2 text-black rounded-full z-10 transition-transform duration-200"
+              className="relative px-5 py-2 text-white hover:text-black rounded-full z-10 transition-all duration-200"
               onMouseEnter={() => setHoveredNav(index)}
               style={{ transform: hoveredNav === index ? 'scale(1.1)' : 'scale(1)' }}
             >
@@ -72,7 +72,7 @@ const Header = ({ items = [], onOpenContact }) => {
         {/* BOUTON CONTACT (DESKTOP) — Intègre ton action personnalisée */}
         <button 
           onClick={onOpenContact}
-          className="hidden md:flex items-center gap-2 bg-black text-white border-2 border-black px-6 py-2.5 rounded-full text-[10px] font-sans font-bold uppercase tracking-widest transition-all duration-300 hover:bg-transparent hover:text-black"
+          className="hidden md:flex items-center gap-2 bg-white text-black border-2 border-white px-6 py-2.5 rounded-full text-[10px] font-sans font-bold uppercase tracking-widest transition-all duration-300 hover:bg-transparent hover:text-white"
         >
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -84,19 +84,19 @@ const Header = ({ items = [], onOpenContact }) => {
         {/* BUTTON BURGER INTERACTIF (MOBILE) */}
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden flex flex-col justify-center items-center w-10 h-10 border-2 border-black rounded-full bg-transparent gap-1.5 z-[110] transition-colors"
+          className="md:hidden flex flex-col justify-center items-center w-10 h-10 border-2 border-zinc-700 rounded-full bg-transparent gap-1.5 z-[110] transition-colors"
         >
           <motion.span 
             animate={isOpen ? { rotate: 45, y: 4 } : { rotate: 0, y: 0 }}
-            className="w-4 h-[2px] bg-black block rounded-full transform origin-center" 
+            className="w-4 h-[2px] bg-white block rounded-full transform origin-center" 
           />
           <motion.span 
             animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-            className="w-4 h-[2px] bg-black block rounded-full" 
+            className="w-4 h-[2px] bg-white block rounded-full" 
           />
           <motion.span 
             animate={isOpen ? { rotate: -45, y: -4 } : { rotate: 0, y: 0 }}
-            className="w-4 h-[2px] bg-black block rounded-full transform origin-center" 
+            className="w-4 h-[2px] bg-white block rounded-full transform origin-center" 
           />
         </button>
       </div>
@@ -109,7 +109,7 @@ const Header = ({ items = [], onOpenContact }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-24 left-4 right-4 bg-white border-[3px] border-black rounded-[32px] p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col gap-6 pointer-events-auto md:hidden"
+            className="absolute top-24 left-4 right-4 bg-zinc-900 border-[3px] border-zinc-800 rounded-[32px] p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.8)] flex flex-col gap-6 pointer-events-auto md:hidden"
           >
             <nav className="flex flex-col w-full text-left">
               {items.map((item, index) => (
@@ -117,7 +117,7 @@ const Header = ({ items = [], onOpenContact }) => {
                   key={index}
                   to={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="w-full py-4 font-title font-black text-3xl uppercase tracking-tight text-black border-b border-black/5 last:border-none flex justify-between items-center transition-opacity active:opacity-60"
+                  className="w-full py-4 font-title font-black text-3xl uppercase tracking-tight text-white border-b border-white/10 last:border-none flex justify-between items-center transition-opacity active:opacity-60"
                 >
                   {item.label}
                   <span className="text-xl">→</span>
@@ -127,7 +127,7 @@ const Header = ({ items = [], onOpenContact }) => {
               {/* Bouton contact mobile stylisé en bas du menu */}
               <button 
                 onClick={() => { onOpenContact(); setIsOpen(false); }}
-                className="w-full mt-6 py-4 bg-black text-white rounded-2xl font-sans font-bold text-sm uppercase tracking-widest text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
+                className="w-full mt-6 py-4 bg-white text-black rounded-2xl font-sans font-bold text-sm uppercase tracking-widest text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]"
               >
                 Prendre Contact
               </button>

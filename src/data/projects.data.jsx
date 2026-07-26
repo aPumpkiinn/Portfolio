@@ -76,7 +76,7 @@ export const ALL_PROJECTS = [
   {
     id: 7,
     title: "Institut de Soudure",
-    category: "Infographie",
+    category: "Expérience Pro",
     images: ["/img/GIS_1.png", "/img/GIS_2.png"],
     year: "2025",
     desc: "Communication & Marketing",

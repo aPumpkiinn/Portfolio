@@ -8,6 +8,7 @@ const MasonryGrid = ({ items = [], onOpenProject }) => {
     if (category === 'Infographie') return 'font-rumei italic tracking-wide normal-case';
     if (category === 'Design UI') return 'font-sans italic tracking-normal normal-case';
     if (category === 'Web') return 'font-octuple';
+    if (category === 'Expérience Pro') return 'font-sans font-bold tracking-tight uppercase';
     return 'font-title';
   };
 

@@ -40,13 +40,13 @@ const AboutPage = ({ onOpenContact }) => {
   ];
 
   const techLogos = [
-    { node: <SiDavinciresolve className="text-black" />, title: "DaVinci Resolve" },
-    { node: <SiHtml5 className="text-black" />, title: "HTML5" },
-    { node: <SiCss3 className="text-black" />, title: "CSS3" },
-    { node: <SiAdobeillustrator className="text-black" />, title: "Illustrator" },
-    { node: <SiAdobephotoshop className="text-black" />, title: "Photoshop" },
-    { node: <SiAdobeindesign className="text-black" />, title: "InDesign" },
-    { node: <SiAdobeaftereffects className="text-black" />, title: "After Effects" },
+    { node: <SiDavinciresolve className="text-white" />, title: "DaVinci Resolve" },
+    { node: <SiHtml5 className="text-white" />, title: "HTML5" },
+    { node: <SiCss3 className="text-white" />, title: "CSS3" },
+    { node: <SiAdobeillustrator className="text-white" />, title: "Illustrator" },
+    { node: <SiAdobephotoshop className="text-white" />, title: "Photoshop" },
+    { node: <SiAdobeindesign className="text-white" />, title: "InDesign" },
+    { node: <SiAdobeaftereffects className="text-white" />, title: "After Effects" },
   ];
 
   return (
@@ -56,8 +56,8 @@ const AboutPage = ({ onOpenContact }) => {
         
         <Header items={aboutNavItems} />
         
-        {/* CADRE BLANC BRUTALISTE */}
-        <div className="relative z-10 w-full flex-grow bg-white border-[4px] md:border-[8px] border-black rounded-[32px] md:rounded-[45px] overflow-hidden flex flex-col pt-16 md:pt-24 px-6 md:px-12 xl:px-20 text-black">
+        {/* CADRE AVEC CONTOUR ULTRA FONCE ET EFFET 3D BRUTALISTE */}
+        <div className="relative z-10 w-full flex-grow bg-[#161616] border-[3px] md:border-[6px] border-[#080808] rounded-[32px] md:rounded-[45px] overflow-hidden flex flex-col pt-16 md:pt-24 px-6 md:px-12 xl:px-20 text-white shadow-[8px_8px_0_#111111] md:shadow-[14px_14px_0_#111111]">
           
           <main className="relative z-10 max-w-7xl mx-auto w-full flex flex-col pb-0 flex-grow">
             
@@ -70,14 +70,14 @@ const AboutPage = ({ onOpenContact }) => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-32">
                 <FadeIn delay={0.2} direction="right">
                     <div className="space-y-6">
-                        <p className="text-lg md:text-xl text-black/80 font-sans leading-relaxed max-w-lg">
+                        <p className="text-lg md:text-xl text-white/80 font-sans leading-relaxed max-w-lg">
                             Toujours passionné par le graphisme, le dessin et les jeux vidéo, 
                             je cherche maintenant à tourner cette passion en profession. 
                             Mon approche mêle créativité visuelle et rigueur technique pour 
                             donner vie à des univers uniques.
                         </p>
 
-                        <p className="text-lg md:text-xl text-black font-sans leading-relaxed max-w-lg font-medium border-l-4 border-[#00c8ff] pl-4">
+                        <p className="text-lg md:text-xl text-white font-sans leading-relaxed max-w-lg font-medium border-l-4 border-[#00c8ff] pl-4">
                             Dans cette optique, je suis actuellement à la recherche d'un stage de <span className="text-[#00c8ff] font-bold">2-3 mois</span> à partir d'<span className="text-[#00c8ff] font-bold">Avril</span>. 
                             Je souhaite rejoindre une équipe passionnée où je pourrai apporter ma rigueur et ma créativité, 
                             tout en continuant à apprendre aux côtés de professionnels.
@@ -99,10 +99,10 @@ const AboutPage = ({ onOpenContact }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-32">
                 <FadeIn delay={0.3} direction="up">
                     <div className="space-y-6">
-                        <h2 className="text-3xl md:text-4xl font-octuple text-black border-b-2 border-black pb-4 uppercase tracking-tighter">
+                        <h2 className="text-3xl md:text-4xl font-octuple text-white border-b-2 border-zinc-700 pb-4 uppercase tracking-tighter">
                             Mes motivations
                         </h2>
-                        <p className="text-black/80 text-lg leading-relaxed font-sans">
+                        <p className="text-white/80 text-lg leading-relaxed font-sans">
                             Ce qui me pousse à créer chaque jour, c'est l'envie de repousser les limites de l'imaginaire. 
                             Je suis fasciné par la capacité du design à raconter des histoires sans mots et à 
                             transformer une simple idée en une expérience visuelle immersive. Le défi constant 
@@ -113,10 +113,10 @@ const AboutPage = ({ onOpenContact }) => {
 
                 <FadeIn delay={0.5} direction="up">
                     <div className="space-y-6">
-                        <h2 className="text-3xl md:text-4xl font-octuple text-black border-b-2 border-black pb-4 uppercase tracking-tighter">
+                        <h2 className="text-3xl md:text-4xl font-octuple text-white border-b-2 border-zinc-700 pb-4 uppercase tracking-tighter">
                             Mon projet futur
                         </h2>
-                        <p className="text-black/80 text-lg leading-relaxed font-sans">
+                        <p className="text-white/80 text-lg leading-relaxed font-sans">
                             J'ai pour projet professionnel d'intégrer des studios de création de renom pour 
                             participer à la conception de chartes graphiques complexes et d'éléments visuels 
                             pour de grandes entreprises de jeux vidéo. À long terme, je souhaite diriger 
@@ -127,14 +127,14 @@ const AboutPage = ({ onOpenContact }) => {
             </div>
 
             <FadeIn direction="up" delay={0.6}>
-                <div className="border-t-2 border-black pt-10 mb-20">
-                    <h3 className="text-center text-sm font-black uppercase tracking-[0.3em] text-black/40 mb-8 font-sans">
+                <div className="border-t-2 border-zinc-700 pt-10 mb-20">
+                    <h3 className="text-center text-sm font-black uppercase tracking-[0.3em] text-white/40 mb-8 font-sans">
                         Mes Outils Favoris
                     </h3>
                     <div className="w-full relative overflow-hidden">
                         <LogoLoop
                             logos={techLogos}
-                            speed={80} direction="left" logoHeight={50} gap={60} pauseOnHover={true} scaleOnHover={true} fadeOut={true} fadeOutColor="#ffffff" ariaLabel="Technologies"
+                            speed={80} direction="left" logoHeight={50} gap={60} pauseOnHover={true} scaleOnHover={true} fadeOut={true} fadeOutColor="#18181b" ariaLabel="Technologies"
                         />
                     </div>
                 </div>
@@ -148,7 +148,7 @@ const AboutPage = ({ onOpenContact }) => {
                           href="https://www.linkedin.com/in/anguilé-diop-kévin-7b709b31b/" 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="relative w-16 h-16 transition-transform hover:scale-110 flex items-center justify-center border-2 border-black rounded-xl hover:bg-[#0077b5] group"
+                          className="relative w-16 h-16 transition-transform hover:scale-110 flex items-center justify-center border-2 border-zinc-700 rounded-xl hover:bg-[#0077b5] hover:border-transparent group"
                         >
                             <SiLinkedin className="relative z-10 w-8 h-8 text-[#0077b5] group-hover:text-white transition-colors" />
                         </a>
@@ -156,10 +156,10 @@ const AboutPage = ({ onOpenContact }) => {
                           href="https://www.instagram.com/k.pumpkinn/" 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="relative w-16 h-16 transition-transform hover:scale-110 flex items-center justify-center border-2 border-black rounded-xl hover:border-transparent group overflow-hidden"
+                          className="relative w-16 h-16 transition-transform hover:scale-110 flex items-center justify-center border-2 border-zinc-700 rounded-xl hover:border-transparent group overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <SiInstagram className="relative z-10 w-8 h-8 text-black group-hover:text-white transition-colors" />
+                            <SiInstagram className="relative z-10 w-8 h-8 text-white group-hover:text-white transition-colors" />
                         </a>
                     </div>
                     <a 
@@ -176,20 +176,20 @@ const AboutPage = ({ onOpenContact }) => {
 
           </main>
 
-          {/* Section Contact intégrée en bas du cadre blanc */}
-          <div id="contact" className="relative w-full border-t-[4px] border-black flex flex-col items-center justify-center py-20 bg-white overflow-hidden">
+          {/* Section Contact intégrée en bas du cadre */}
+          <div id="contact" className="relative w-full border-t-[4px] border-[#080808] flex flex-col items-center justify-center py-20 bg-[#161616] overflow-hidden">
 
               <FadeIn direction="up" delay={0.1}>
                  <div className="relative z-10">
-                    <ContactCTA onOpen={onOpenContact} theme="light" />
+                    <ContactCTA onOpen={onOpenContact} theme="dark" />
                  </div>
               </FadeIn>
           </div>
 
-          <footer className="py-8 bg-white text-center border-t border-black/10 mt-auto">
+          <footer className="py-8 bg-[#161616] text-center border-t border-white/10 mt-auto">
               <Link 
                   to="/mentions-legales" 
-                  className="text-xs text-black/40 hover:text-[#00c8ff] font-bold transition-colors uppercase tracking-[0.2em]"
+                  className="text-xs text-white/40 hover:text-[#00c8ff] font-bold transition-colors uppercase tracking-[0.2em]"
               >
                   Mentions Légales
               </Link>

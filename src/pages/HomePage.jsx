@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Hero from '../components/Hero'; 
 import FlowingMenu from '../components/FlowingMenu'; 
-import DarkVeil from '../components/DarkVeil'; 
 import ContactCTA from '../components/ContactCTA';
 import FadeIn from '../components/FadeIn'; 
 import PageTransition from '../components/PageTransition'; 
@@ -18,7 +17,8 @@ const PROJECT_CATEGORIES = [
   { text: 'Tous les projets', image: '/images/projets-all.webp', link: '/projects', filter: 'Tous', fontClass: 'font-octuple uppercase font-black' },
   { text: 'Web Development', image: '/images/web-dev.webp', link: '/projects', filter: 'Web', fontClass: 'font-octuple uppercase font-black' },
   { text: 'Design UI', image: '/images/design-ui.webp', link: '/projects', filter: 'Design UI', fontClass: 'font-sans italic font-normal tracking-tight' },
-  { text: 'Infographie', image: '/images/infographie.webp', link: '/projects', filter: 'Infographie', fontClass: 'font-rumei italic font-normal tracking-wide' }
+  { text: 'Infographie', image: '/images/infographie.webp', link: '/projects', filter: 'Infographie', fontClass: 'font-rumei italic font-normal tracking-wide' },
+  { text: 'Expérience Professionnelle', image: '/img/GIS_1.png', link: '/projects', filter: 'Expérience Pro', fontClass: 'font-sans uppercase font-bold tracking-tight' }
 ];
 
 const HomePage = ({ onOpenContact }) => {
@@ -34,11 +34,8 @@ const HomePage = ({ onOpenContact }) => {
     <PageTransition direction="horizontal">
       <main className="bg-black min-h-screen">
           {/* SECTION HERO */}
-          <section id="home" className="relative h-screen w-full overflow-hidden">
-            <div className="absolute inset-0 z-0">
-              <DarkVeil hueShift={0} noiseIntensity={0.05} scanlineIntensity={0.2} speed={0.5} />
-            </div>
-            <div className="relative z-10 h-full">
+          <section id="home" className="relative min-h-screen w-full flex flex-col">
+            <div className="relative z-10 w-full flex-1 flex flex-col justify-center">
               <Hero navItems={NAV_ITEMS} />
             </div>
           </section>
@@ -63,14 +60,14 @@ const HomePage = ({ onOpenContact }) => {
           </section>
 
           {/* SECTION CONTACT */}
-          <section id="contact" className="bg-black border-t border-white/5">
+          <section id="contact" className="bg-black border-t border-[#080808]">
             <FadeIn direction="up" delay={0.1}>
               <ContactCTA onOpen={onOpenContact} />
             </FadeIn>
           </section>
         </main>
 
-        <footer className="py-12 bg-black border-t-[4px] border-white/10 text-center flex flex-col items-center gap-4">
+        <footer className="py-12 bg-black border-t-[4px] border-[#080808] text-center flex flex-col items-center gap-4">
           <p className="text-gray-400 text-sm tracking-widest font-bold uppercase">
             © 2026 Kevin Anguile Diop — Tous droits réservés
           </p>
