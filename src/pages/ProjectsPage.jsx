@@ -3,15 +3,14 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import MasonryGrid from '../components/MasonryGrid';
 import PageTransition from '../components/PageTransition';
-import PixelBlast from '../components/PixelBlast';
 import { ALL_PROJECTS } from '../data/projects.data.jsx';  // ✅ import centralisé
 
 const CATEGORIES = ['Tous', 'Web', 'Design UI', 'Infographie'];
 
 const tickerItems = [
   { text: "CREATIVE", icon: "/img/logo.png" },
-  { text: "GRAPHIC DESIGNER", icon: null },
-  { text: "DESIGNER UI", icon: null },
+  { text: "DEVELOPER", icon: null },
+  { text: "DESIGNER", icon: null },
   { text: "MINIMALIST", icon: null },
 ];
 const doubleTicker = [...tickerItems, ...tickerItems, ...tickerItems, ...tickerItems];
@@ -54,25 +53,7 @@ const ProjectsPage = ({ onOpenProject }) => {
         {/* CADRE BLANC */}
         <div className="relative z-10 w-full bg-white border-[4px] md:border-[8px] border-black rounded-[32px] md:rounded-[45px] overflow-hidden flex flex-row">
           
-          {/* PIXELBLAST BACKGROUND */}
-          <div className="absolute inset-0 flex justify-center items-center z-0 pointer-events-none overflow-hidden">
-            <div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
-              <PixelBlast
-                variant="square"
-                pixelSize={3}
-                color="#003f82"
-                patternScale={2}
-                patternDensity={1}
-                enableRipples
-                rippleSpeed={0.1}
-                rippleThickness={0.01}
-                rippleIntensityScale={0.1}
-                speed={2}
-                transparent
-                edgeFade={1}
-              />
-            </div>
-          </div>
+
 
           {/* Colonne Gauche : Ticker */}
           <div className="hidden lg:flex absolute left-0 top-0 bottom-0 w-20 xl:w-32 border-r border-black/5 justify-center overflow-hidden py-12 z-0" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>

@@ -7,7 +7,6 @@ import LogoLoop from '../components/LogoLoop';
 import ContactCTA from '../components/ContactCTA'; 
 import PageTransition from '../components/PageTransition'; 
 import PixelBlast from '../components/PixelBlast';
-
 import { 
   SiDavinciresolve, SiHtml5, SiCss3, SiAdobeillustrator, 
   SiAdobephotoshop, SiAdobeindesign, SiAdobeaftereffects,

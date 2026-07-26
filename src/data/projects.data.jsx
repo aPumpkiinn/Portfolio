@@ -33,7 +33,7 @@ export const ALL_PROJECTS = [
     year: "2025",
     desc: "Branding",
     description: "Logo & Interface pour agence immobilière.",
-    longDesc: "Refonte complète de l'identité visuelle pour une agence immobilière basée en Bretagne. L'objectif était de moderniser l'image de marque tout en restant accessible.",
+    longDesc: "Création de l'identité visuelle complète pour une nouvelle agence immobilière basée en Bretagne. L'objectif était de concevoir une image de marque moderne tout en restant accessible.",
     longDesc2: "Conception du logo, de la charte graphique et du prototype haute fidélité pour le site web vitrine.",
     stack: [<SiAdobeillustrator key="ai" />, <SiFigma key="fig" />]
   },
@@ -55,9 +55,9 @@ export const ALL_PROJECTS = [
     category: "Web", 
     images: ["/img/Portfolio.webp"],
     year: "2026",
-    desc: "Web Design",
-    description: "Creative Design & Portfolio.",
-    longDesc: "Conception visuelle et maquettage de mon portfolio personnel, avec une forte identité brutaliste et une réflexion sur l'expérience utilisateur.",
+    desc: "Développement",
+    description: "Développement React & Design.",
+    longDesc: "Conception et développement complet de mon portfolio personnel from scratch en React. Utilisation de Tailwind CSS pour un styling rapide et d'un design system brutaliste.",
     longDesc2: "Focus sur l'expérience utilisateur, les animations GSAP complexes et l'optimisation SEO/Performance.",
     stack: [<SiReact key="re" />, <SiVite key="vi" />, <SiTailwindcss key="tw" />]
   },

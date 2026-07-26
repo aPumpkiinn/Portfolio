@@ -1,12 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import PixelBlast from './PixelBlast';
 
 const Hero = () => {
   const tickerItems = [
     { text: "CREATIVE", icon: "/img/logo.png" },
-    { text: "GRAPHIC DESIGNER", icon: null },
-    { text: "DESIGNER UI", icon: null },
+    { text: "DEVELOPER", icon: null },
+    { text: "DESIGNER", icon: null },
     { text: "MINIMALIST", icon: null },
   ];
 
@@ -18,25 +17,6 @@ const Hero = () => {
       {/* CADRE GENERAL NOIR ET FOND BLANC */}
       <div className="relative w-full flex-grow bg-white border-[4px] md:border-[8px] border-black rounded-[32px] md:rounded-[45px] overflow-hidden flex flex-col justify-center items-center px-6 sm:px-12 md:px-20">
         
-        {/* PIXELBLAST BACKGROUND */}
-        <div className="absolute inset-0 flex justify-center items-center z-0 pointer-events-none overflow-hidden">
-          <div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
-            <PixelBlast
-              variant="square"
-              pixelSize={3}
-              color="#003f82"
-              patternScale={2}
-              patternDensity={1}
-              enableRipples
-              rippleSpeed={0.1}
-              rippleThickness={0.01}
-              rippleIntensityScale={0.1}
-              speed={2}
-              transparent
-              edgeFade={1}
-            />
-          </div>
-        </div>
 
         {/* --- BANDEAUX DÉFILANTS COLLÉS AUX BORDS (justify-between + py-4/py-6) --- */}
         <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-[0.15] z-0 overflow-hidden py-0">
@@ -132,29 +112,22 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-black/70 text-lg md:text-xl max-w-2xl font-light leading-relaxed"
             >
-              Bonjour, je suis étudiant en deuxième année de BUT MMI, actuellement en recherche d'une alternance. Passionné par le design graphique et la conception UI, j'aime créer des interfaces visuelles fluides, esthétiques et engageantes.
+              Bonjour, je suis étudiant en deuxième année de BUT MMI, actuellement en recherche d'une alternance. Passionné par le design et le développement, j'aime concevoir des interfaces web fluides, esthétiques et interactives.
             </motion.p>
 
             {/* BOUTON INTERACTIF */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="relative group shrink-0"
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="mt-6"
             >
               <button 
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="relative overflow-hidden px-10 py-5 rounded-full border-2 border-black text-black bg-[#00c8ff] font-medium uppercase text-xs tracking-widest transition-colors duration-300"
+                className="group relative inline-flex items-center gap-4 px-10 py-5 bg-[#00c8ff] text-black font-bold border-[3px] border-black rounded-full overflow-hidden uppercase tracking-widest text-sm"
               >
-                <span className="absolute inset-0 bg-black translate-y-full transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) group-hover:translate-y-0" />
-                
-                <span className="relative z-10 transition-colors duration-300 group-hover:text-white flex items-center gap-3">
-                  Découvrir mon travail
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="transition-transform duration-300 group-hover:translate-x-1">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
+                <span className="absolute inset-0 w-full h-full bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+                <span className="relative group-hover:text-white transition-colors duration-300">Voir mes projets</span>
               </button>
             </motion.div>
           </div>
