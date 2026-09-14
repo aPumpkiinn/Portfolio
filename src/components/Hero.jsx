@@ -67,7 +67,7 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl font-light leading-relaxed"
             >
-              Bonjour, je suis étudiant en troisième année de BUT MMI, actuellement en recherche d'une alternance <span className="text-[#00c8ff] font-bold">1 semaine entreprise - 1 semaine école</span>. Passionné par le design, j'aime concevoir des visuels, animations et interfaces web fluides, esthétiques et interactives.
+              Bonjour, je suis étudiant en troisième année de BUT MMI, actuellement en recherche d'une alternance 1 semaine entreprise - 1 semaine école. Passionné par le design, j'aime concevoir des visuels, animations et interfaces web fluides, esthétiques et interactives.
             </motion.p>
 
             {/* BOUTON INTERACTIF */}
