@@ -78,7 +78,7 @@ const AboutPage = ({ onOpenContact }) => {
                         </p>
 
                         <p className="text-lg md:text-xl text-white font-sans leading-relaxed max-w-lg font-medium border-l-4 border-[#00c8ff] pl-4">
-                            Dans cette optique, je suis actuellement à la recherche d'une <span className="text-[#00c8ff] font-bold">alternance</span> de <span className="text-[#00c8ff] font-bold">1 an</span> à partir de<span className="text-[#00c8ff] font-bold">Septembre</span>. 
+                            Dans cette optique, je suis actuellement à la recherche d'une <span className="text-[#00c8ff] font-bold">alternance</span> de <span className="text-[#00c8ff] font-bold">1 an</span> à partir de <span className="text-[#00c8ff] font-bold">Septembre</span>. 
                             Je souhaite rejoindre une équipe passionnée où je pourrai apporter ma rigueur et ma créativité, 
                             tout en continuant à apprendre aux côtés de professionnels.
                         </p>
