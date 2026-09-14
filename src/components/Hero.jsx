@@ -67,7 +67,7 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-white/80 text-base sm:text-lg md:text-xl max-w-2xl font-light leading-relaxed"
             >
-              Bonjour, je suis <span className="text-[#00c8ff]">étudiant en troisième année de BUT MMI</span>, actuellement en recherche d'une <span className="text-[#00c8ff] font-bold">alternance 1 semaine entreprise - 1 semaine école</span>. Passionné par le design, j'aime concevoir différents visuels, animations et interfaces web fluides, esthétiques et interactives.
+              Bonjour, je suis <span className="text-[#00c8ff]">étudiant en troisième année de BUT MMI</span>, actuellement en recherche d'une <span className="text-[#00c8ff]">alternance 1 semaine entreprise - 1 semaine école</span>. Passionné par le design, j'aime concevoir différents visuels, animations et interfaces web fluides, esthétiques et interactives.
             </motion.p>
 
             {/* BOUTON INTERACTIF */}
